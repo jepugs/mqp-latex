@@ -1,0 +1,8 @@
+*.log
+auto
+*.aux
+*.pdf
+*.fmt
+*.prv
+*.toc
+_*_.*
