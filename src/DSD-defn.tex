@@ -1,0 +1,31 @@
+\subsection*{Definition of DSD}
+
+\noindent In their original definition, Cao et al. define DSD in terms of a
+vector-valued function $He^{k}(u)$, which computes the expected number of times
+a length-$k$ random walk originating at a vertex $u$ will visit each other vertex
+in the graph. They compute DSD by taking the $l_1$-norm of the difference
+between two such vectors in the limit as $k \to \infty$. We present an
+alternative definition which is more compact and easier to manipulate with the
+usual machinery of linear algebra.
+
+Random walks can be modeled as Markov chains, where the current state is a
+vertex $u$ in the graph, and the transition probability is $\frac{1}{\deg(u)}$
+for the neighbors of $u$ and $0$ otherwise. The transition matrix can be written
+$T = AD$, where $A$ is the adjacency matrix of the graph and $D$ is the unique
+diagonal matrix such that every column of $T$ sums to 1 (i.e.
+$D_{u,u}=\frac{1}{deg(u)}$, or equivalently, $D$ is the inverse of the degree
+matrix). For our purposes, we assume that vertices are labeled by the positive
+integers $1,2,...,n$ and that the rows and columns of the $G$ correspond to this
+ordering.
+
+The marginal distribution of vertices in the $k^{th}$ step of a random walk
+originating from vertex $u$ is given by $T^ke_u$, where $e_u$ is the initial
+state vector, which is the $u^{th}$ standard basis vector in $\R^n$,
+$e_{u,u} := 1$ and $e_{u,j} := 0, u \neq j$ for $u=1,...,n$.
+
+Thus, we can define the DSD, $\delta(u,v)$, by
+
+\[
+  \delta(u,v) = \sum_{k =0}^{\infty}{||T^ke_u - T^ke_v||_1}
+\]
+
