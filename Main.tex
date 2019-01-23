@@ -1,6 +1,10 @@
 \documentclass[11pt,oneside]{report}
+\usepackage[utf8]{inputenc}
 \usepackage{amsmath,amsthm,amssymb}
 \usepackage{url}
+
+\usepackage{enumerate}
+\usepackage{graphicx}
 
 \frenchspacing
 
@@ -20,8 +24,13 @@
 %%%
 % real numbers
 \newcommand{\R}{\mathbb{R}}
+% shortestpath
+\newcommand{\dist}{\mathrm{d}}
+% shorthand for bmatrix
+\newcommand{\colvec}[1]{\begin{bmatrix}#1 \end{bmatrix}}
 
 
+\graphicspath{ {images/} }
 
 \begin{document}
 \title{Characteristics of the DSD Metric}
@@ -47,12 +56,16 @@
 
 
 \chapter{Mathematical Overview}
+\section{Small World Networks}
+\input{src/small-world.tex}
+
 \section{Definition of DSD}
 \input{src/DSD-defn.tex}
 
 \section{DSD on Special Graphs}
+\input{src/special.tex}
 
+\chapter{Simulations}
+\input{src/simulations.tex}
 
 \end{document}
-
-

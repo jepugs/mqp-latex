@@ -1,0 +1,71 @@
+The motivation for DSD comes from small-world networks, which are a class of
+graphs characterized by having a very small average shortest-path distance
+between any two vertices compared to the overall size of the graph.
+
+
+\begin{definition}
+  The \textbf{characteristic path length} of a graph $G = (V,E)$ is the average distance
+  between nodes on the graph, which is given by
+
+  \[ L_G = \frac{1}{|E|} \sum_{\substack{u,v \in V \\ u \neq v}} \dist(u,v)\]
+
+  where $\dist(u,v)$ is shortest-path distance. 
+\end{definition}
+
+\begin{definition}
+  Consider a graph $G = (V,E)$. $G$ is a \textbf{small-world network} if
+  $L_G ~ \log{|V|}$.
+\end{definition}
+
+
+These graphs are ubiquitous in a variety of application areas and commonly have
+other characteristics that aren't necessarily captured in the definition. One
+common additional property is that small-world networks often have highly
+connected subgraphs that are connected via ``hub nodes,'' which are vertices
+with very high degrees. We can describe this structure in terms of the
+clustering coefficient.
+
+\begin{definition}
+  Let $v$ be a vertex in a graph $G = (V,E)$.
+
+  Consider the subgraph formed by the neighborhood of $v$. This subgraph has at
+  most $\deg(v)(\deg(v) - 1)$ edges, which happens when it is a clique. Denote
+  the number of edges of the neighborhood subgraph by $E_{N(v)}$.
+
+  The \textbf{clustering coefficient} $C_v$ is defined by
+  $C_v = \frac{E_{N(v)}}{\deg(v)(\deg(v) - 1)}$, that is, $C_v$ is the
+  proportion of edges in the neighborhood subgraph out of all possible edges.
+  The clustering coefficient of $G$ is the average of all vertex clustering
+  coefficients, $C_G = \frac{\sum_{v \in V}{C_v}}{|V|}$.
+\end{definition}
+
+
+\subsection{Sampling Methods}
+
+The Watts-Strogatz graphs are the simplest random small-world networks. They are
+defined by starting with a regular ring lattice and randomly ``rewiring'' edges
+until the graph is obtained.
+
+\begin{definition}
+  An $n$-$k$ \textbf{regular ring lattice} is a graph $(V, E)$ with $n$ vertices
+  such that $u,v$ is an edge if and only if $|u-v| \leq k$.
+\end{definition}
+
+\begin{definition}
+  Let $v$ be a vertex in a graph. We can \textbf{rewire} $v$ by deleting one
+  edge of $v$ and replacing it with 
+\end{definition}
+
+\begin{definition}
+  Given parameters $n \in \mathbb{N}$, $k < \frac{n}{2}$, and $p \in [0,1]$, a
+  \textbf{Watts-Strogatz graph} is constructed via the following method.
+
+  Start with an $n$-$k$ regular ring lattice. Iterate over each node in the
+  graph and rewire it with probability $p$.
+\end{definition}
+
+The Watts-Strogatz graphs are small-world networks for all but extremely small
+values of $p$. In addition, their clustering coefficients vary with the value of
+$p$, with larger values of $p$ corresponding to smaller values of $C_G$. In
+general, these graphs do not exhibit the clusters-and-hub-nodes structure of
+real life small-world networks.
