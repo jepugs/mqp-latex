@@ -1,41 +1,31 @@
 \section{Introduction}
-In this chapter, we perform simulations to gauge the effectiveness of the DSD metric in improving the prediction of labels on data for scale-free networks [CITE], Watts-Strogatz small-world networks [CITE], and some custom networks. We compare the DSD metric with the shortest-path distance metric, which is used in many modern approaches of label prediction. Although several methods for measuring proximity among vertices in a network use the shortest-path distance in the network (number of hops in our case for unweighted graphs), the DSD metric is designed to capture distinctions in proximity not able to be captured by the shortest-path distance alone. Therefore, we test the DSD metric against the shortest-path distance metric as well as some other defined metrics that we expect to work similarly to the DSD or better/worse in some ways/for some families of graphs. We expect the shortest path distance metric to be less effective than the DSD metric for networks with high clustering coefficients or networks with a small diameter, such as small-world networks. Any vertex in such a network is close to any other node in the network, making the shortest-path distance of any two nodes close. We also expect the DSD metric to be more effective on networks with hub vertices, since these vertices tend to make the network highly connected with a small diameter.
 
-We compare a custom metric based on centrality to the DSD metric as well. Centrality identifies the most important vertices in a network using a type of transfer or flow across the network, and the cohesiveness of the network, which is found using the count of the number of walks starting from a given vertex. We calculate centrality values for each node in the network, then subtract these values to find the distance between two nodes. We study several types of centralities including degree centrality, eigenvector centrality, and dissimilarity based centrality measures. These notions of centrality are more related to the DSD metric than the shortest-paths metric, so we expect that they will be similar in effectiveness to predicting labels.
+In this chapter, we perform simulations to gauge the effectiveness of the DSD metric in improving the prediction of labels on data for scale-free networks [CITE], Watts-Strogatz small-world networks [CITE], and some networks we constructed with hypotheses of how the DSD metric should affect classification on them. We compare the DSD metric with the shortest-path distance metric, which is used in some modern approaches of label prediction, such as k-nearest neighbor classifiers [CITE] and laplacian eigenmaps [CITE]. Although several methods for measuring distance or similarity among vertices in a network use the shortest-path distance in the network, the DSD metric is designed to capture distinctions in similarity not captured by the shortest-path distance alone. Thus, we compare effectiveness of the DSD metric and the shortest-path distance metric. We expect the shortest path distance metric to be less effective than the DSD metric for networks with high clustering coefficients or networks with a small diameter, such as small-world networks. Any vertex in such a network is close to any other node in the network, making the shortest-path distance of any two nodes close. We also expect the DSD metric to be more effective on networks with hub vertices, since these vertices tend to make the network highly connected with a small diameter.
 
+In the same way, we compare the DSD metric with centrality and node influence measures, which are designed to capture the influence of vertices in a graph. Centrality identifies the most important vertices in a graph using various methods such as network flows and walks on the graph [CITE]. Various centrality indices are defined using different properties of vertices that capture different distinctions in similarity than the DSD metric. We study several types of centralities including degree centrality, eigenvector centrality, and dissimilarity based centrality measures. These notions of centrality are more related to the DSD metric than the shortest-paths metric, so we expect that they will be similarly effective in predicting labels.
 
-We hope to reveal certain properties of graphs specific to certain families of graphs that allow the DSD metric to be more effective concerning the classification problem.
+We hope to reveal properties of graphs that allow the DSD metric to be more effective at classification.
 
 \section{Complete Graph with Hubs}
-In this section, we discuss simulations run starting with a complete graph to determine the difference in effectiveness between the DSD metric and the shortest path metric on this graph. We expect the DSD metric to be just as effective than the shortest-path distance metric on this graph because although hub vertices are introduced, the vertices closest to each other in the graph will be of the same color.
+In this section, we construct of a family of graphs with an intuitive initial labeling of vertices and run simulations on this graph to determine the difference in effectiveness between the DSD metric and the shortest path metric on this family of graphs. We expect the DSD metric to be more effective than the shortest-path distance metric on this family of graphs due to the introduction of hub vertices and the small diameter of the graph.
 
 \subsection{Graph Construction}
-The graph used in the simulations in this section was constructed starting with a $K_{n,m}$ complete bipartite graph. This was done in order to initially label the nodes of the graph in a meaningful manner. All nodes in one set (size n) of the bipartite graph were given the same label, and all nodes not in this set (in the other set of size m) were given a label different from that of the first set.\\
+We construct a graph starting with two complete graphs of size $n$ and $m$ (referred to as left component and right component, respectively). A complete graph is defined as a graph in which every pair of vertices is connected by an edge. All nodes in the left component were labeled "red", and all nodes in the right component were labeled "blue". We call the disjoint union of the left and right components as the graph $G = (V,E)$, with vertex set $V$ and edge set $E$. We consider all unique pairs of vertices $u,v$ $\epsilon$ $V$ (where $u \neq v$ and $(u,v)=(v,u)$). With a probability $p$, for each pair of vertices, if the edge $(u,v)$ exists, we remove that edge from $E$, and if the edge $(u,v)$ does not exist, we add that edge to $E$. This essentially takes the entries of the adjacency matrix (excluding the diagonal) and replaces $0$'s with $1$'s and $1$'s with $0$'s with a probability $p$. We then create hub vertices and add an edge from every vertex in $V$ (including the recently added hub vertices) to the hub vertices with a high probability $q$. Lastly, we take the largest connected component of this graph and set it as our graph $G$.
 
-\begin{figure}[!ht]
+\begin{figure}[h!]
 \centering
-\includegraphics[width=0.5\textwidth]{Simulation_Bipartite_Construction.png}
-\caption{An illustration of the initial complete bipartite graph used in the simulation with labeled parameters.}
-\label{fig:bip_construct}
+\includegraphics[width=0.6\textwidth]{Sim_Complete_Graph_With_Hubs_p0.png}
+\includegraphics[width=0.6\textwidth]{Sim_Complete_Graph_With_Hubs_p05.png}
+\includegraphics[width=0.6\textwidth]{Sim_Complete_Graph_With_Hubs_p1.png}
+\caption{A visualization of the graph constructed from the previous section. Each component has 20 vertices and there are two hub nodes. The probability of adding an edge to a hub node was set to $0.8$, and the probability of flipping an edge was set to $0$, $0.5$, and $1$, respectively.}
+\label{fig:complete_graph_with_hubs_1}
 \end{figure}
-
-\noindent
-The two disjoint and independent sets of the initial $K_{n,m}$ complete bipartite graph are represented by $X_{n}$ and $Y_{m}$, as shown in Figure \ref{fig:bip_construct}. The number of nodes in each cluster are $n$ and $m$, respectively, and were set as parameters.\\
-
-% Look at watts strogatz explanation for this paragraph
-\noindent
-In order to introduce randomness to this graph, edges were added and removed from the initial graph, $G = (V,E)$. Figure \ref{fig:bip_construct} illustrates this procedure. For each edge in the initial graph $e=(u,v) \epsilon E$, $u \epsilon X_{n}$, $v \epsilon Y_{m}$, the edge $e$ was removed with a probability $p$. For each node in the disjoint set of the initial graph, $X_{n}$, edges were added between pairs of nodes $u \epsilon X_{n}$ and $v \epsilon X_{n}$ with a probability $q$. A similar procedure was done with nodes from the disjoint set of the initial graph, $Y_{m}$. The two probabilities, $p$ and $q$, were set as parameters as well.\\
 
 \subsection{Data Collection}
-\noindent
-In order to collect data, a Python script was run to construct the graph described previously given the parameters $n$, $m$, $p$, and $q$. Figure \ref{fig:bip_ex_1} shows an example of a constructed graph with parameters $n=10$, $m=10$, $p=0.4$, and $q=0.1$. This graph was stored and some percentage of the node labels were censored. The edges of this graph were then written to a .csv file for processing by another script that calculated the top $k$ closest nodes for each node using the DSD metric and the shortest path distance metric. These distances were used to classify censored nodes and the number of correctly classified nodes was recorded. The percent of the censored nodes that were classified correctly was compared between metrics to see whether or not there was a significant difference in correctness of classification.\\
+To collect data, we constructed a graph using the method mentioned above, and found the DSD distances for the graph. We censored labels of vertices in the graph with a $0.3$ probability, then tried to predict the censored labels using a weighted majority vote algorithm. All vertices were considered when voting for the label of a single vertex, and each vertex was weighted by the inverse of its degree. The label with the highest voting value was set as the predicted label for the vertex. We recorded the total number of censored vertices, and the number of correctly predicted vertices, calculating the percent of correctly predicted labels using the ratio of these values.
 
-\begin{figure}[!ht]
-\centering
-\includegraphics[width=0.85\textwidth]{Simulation_Bipartite_Example_1.png}
-\caption{A visualization of the graph constructed from the previous section with 63 edges.}
-\label{fig:bip_ex_1}
-\end{figure}
+Our results were compared to the shortest path distance and the random labeling straw man.
+
 
 % Add a table of data
 
