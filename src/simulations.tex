@@ -7,29 +7,31 @@ In the same way, we compare the DSD metric with centrality and node influence me
 We hope to reveal properties of graphs that allow the DSD metric to be more effective at classification.
 
 \section{Complete Graph with Hubs}
-In this section, we construct of a family of graphs with an intuitive initial labeling of vertices and run simulations on this graph to determine the difference in effectiveness between the DSD metric and the shortest path metric on this family of graphs. We expect the DSD metric to be more effective than the shortest-path distance metric on this family of graphs due to the introduction of hub vertices and the small diameter of the graph.
+In this section, we construct of a family of graphs with an intuitive initial labeling of vertices and run simulations on this graph to determine the difference in effectiveness between the DSD metric and the shortest path metric on this family of graphs. We do not expect the DSD metric to be much more effective than the shortest-path distance metric on this family of graphs. However, we expect the DSD to perform differently with certain parameters.
 
 \subsection{Graph Construction}
-We construct a graph starting with two complete graphs of size $n$ and $m$ (referred to as left component and right component, respectively). A complete graph is defined as a graph in which every pair of vertices is connected by an edge. All nodes in the left component were labeled "red", and all nodes in the right component were labeled "blue". We call the disjoint union of the left and right components as the graph $G = (V,E)$, with vertex set $V$ and edge set $E$. We consider all unique pairs of vertices $u,v$ $\epsilon$ $V$ (where $u \neq v$ and $(u,v)=(v,u)$). With a probability $p$, for each pair of vertices, if the edge $(u,v)$ exists, we remove that edge from $E$, and if the edge $(u,v)$ does not exist, we add that edge to $E$. This essentially takes the entries of the adjacency matrix (excluding the diagonal) and replaces $0$'s with $1$'s and $1$'s with $0$'s with a probability $p$. We then create hub vertices and add an edge from every vertex in $V$ (including the recently added hub vertices) to the hub vertices with a high probability $q$. Lastly, we take the largest connected component of this graph and set it as our graph $G$.
-
-\begin{figure}[h!]
-\centering
-\includegraphics[width=0.6\textwidth]{Sim_Complete_Graph_With_Hubs_p0.png}
-\includegraphics[width=0.6\textwidth]{Sim_Complete_Graph_With_Hubs_p05.png}
-\includegraphics[width=0.6\textwidth]{Sim_Complete_Graph_With_Hubs_p1.png}
-\caption{A visualization of the graph constructed from the previous section. Each component has 20 vertices and there are two hub nodes. The probability of adding an edge to a hub node was set to $0.8$, and the probability of flipping an edge was set to $0$, $0.5$, and $1$, respectively.}
-\label{fig:complete_graph_with_hubs_1}
-\end{figure}
+We construct a graph starting with two complete graphs of size $n$ and $m$ (referred to as left component and right component, respectively). A complete graph is defined as a graph in which every pair of vertices is connected by an edge. All nodes in the left component were labeled "red", and all nodes in the right component were labeled "blue". We call the disjoint union of the left and right components as the graph $G = (V,E)$, with vertex set $V$ and edge set $E$. In order to reduce the number of edges in $G$, we remove edges from the current edge set with a probability $q$. To introduce noise, we add edges between vertices from separate components (with respect to the original complete graphs) with a probability $p$. Lastly, we take the largest connected component of this graph and set it as our graph $G$.
 
 \subsection{Data Collection}
-To collect data, we constructed a graph using the method mentioned above, and found the DSD distances for the graph. We censored labels of vertices in the graph with a $0.3$ probability, then tried to predict the censored labels using a weighted majority vote algorithm. All vertices were considered when voting for the label of a single vertex, and each vertex was weighted by the inverse of its degree. The label with the highest voting value was set as the predicted label for the vertex. We recorded the total number of censored vertices, and the number of correctly predicted vertices, calculating the percent of correctly predicted labels using the ratio of these values.
+We studied the prediction accuracy of using each metric with a weighted majority vote. The probability of adding noise, $p$, described above was incremented from $0$ to $1$ in intervals of $0.05$ while all other parameters were kept constant. To collect data, we constructed a graph using the method mentioned above, and found the DSD distances for the graph. We censored labels of vertices in the graph with a $0.4$ probability, then tried to predict the censored labels using a weighted majority vote algorithm. All vertices were considered when voting for the label of a single vertex, and each vertex was weighted by the inverse of its DSD distance. The label with the highest voting value was set as the predicted label for the vertex. This process was run $10$ times for each probability $p$ and the average of the accuracies for this $p$ was plotted. We collected data for the shortest path metric in the same way. Figure \ref{fig:complete_graph_plot_shortest_path} and Figure \ref{fig:complete_graph_plot_dsd} display plots of prediction accuracies with respect to the change in the incremented probability $p$.
 
-Our results were compared to the shortest path distance and the random labeling straw man.
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.75\textwidth]{CompleteGraph_Accuracy_spavg1.png}
+\caption{A plot of the data collected using the shortest path metric on the graph constructed from two complete graphs. The graph was constructed using two 200-vertex complete graphs and the probability $q$ of removing edges was set constant at $0.6$.}
+\label{fig:complete_graph_plot_shortest_path}
+\end{figure}
 
-
-% Add a table of data
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.75\textwidth]{CompleteGraph_Accuracy_dsdavg1.png}
+\caption{A plot of the data collected using the DSD metric on the graph constructed from two complete graphs. The graph was constructed using two 200-vertex complete graphs and the probability $q$ of removing edges was set constant at $0.6$.}
+\label{fig:complete_graph_plot_dsd}
+\end{figure}
 
 \subsection{Analysis}
 \noindent
-Compare shortest paths distances data with DSD data. Analyze results.
+We do not expect the DSD to do significantly better than the shortest path distance for $p$ from $0$ to $0.5$, as shown in Figure \ref{fig:complete_graph_plot_dsd} and Figure \ref{fig:complete_graph_plot_shortest_path}. This happens because with low probability $p$ of adding edges between components, it is likely that most neighbors of vertices will be within the same component. For example, with probability $p = 0.1$,  there will be significantly fewer edges between the two components compared to edges within each component. This will cause the shortest path metric to predict correctly with a high accuracy since most neighbors of vertices a short distance away will be vertices in the same component. The DSD metric will also predict well since most neighbors of neighbors of a vertex will also be within the same component.
+
+For probability $p$ greater than $0.5$, we expect the DSD metric to outperform the shortest path metric. This is intuitive since with probability of adding edges between components greater than $0.5$, we expect vertices from one component to have more neighbors from the other component than neighbors from the same component. This means that for the shortest path metric, most neighbors a short distance away will have the opposite label. For the DSD metric, however, neighbors of neighbors become equally likely to belong to either component, so the prediction accuracy stays around $50\%$. This clearly shows that the DSD metric considers different aspects of graph structure that the shortest path metric fails to consider.
 
