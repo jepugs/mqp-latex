@@ -1,11 +1,44 @@
+\section{Elementary Graph Theory}
+
+We begin by recalling some conventional definitions and notations from graph
+theory.
+
+\begin{definition}
+  A \textbf{graph} $G$ is a pair of sets $(V,E)$ such that $E = V \times V$,
+  where equality on $E$ disregards order, that is $(u,v) = (v,u)$. We call $V$
+  the \textbf{vertices} of $G$ and $E$ the \textbf{edges} of $G$.
+\end{definition}
+
+For our purpose, $V$ will always be a sequence of natural numbers starting from
+$1$, that is
+
+\[
+  V = \{ n \in \mathbb{N} : 1 \leq i \leq N \}
+\]
+
+for some $N$.
+
+\begin{remark}[Notation]
+  Let $G$ be a graph.
+
+  \begin{itemize}
+  \item We access the vertices and edges of G by the functions $V(G)$ and $E(G)$
+    respectively.
+  \item $v \in G$ is an equivalent statement to $v \in V(G)$
+  \item $|G|$, called the \textbf{order} of $G$, is equal to $|V(G)|$.
+  \end{itemize}
+\end{remark}
+
+\section{Small-World and Scale-free Networks}
+
 The motivation for DSD comes from small-world networks, which are a class of
 graphs characterized by having a very small average shortest-path distance
 between any two vertices compared to the overall size of the graph.
 
 
 \begin{definition}
-  The \textbf{characteristic path length} of a graph $G = (V,E)$ is the average distance
-  between nodes on the graph, which is given by
+  The \textbf{characteristic path length} of a graph $G = (V,E)$ is the average
+  distance between vertices in the graph, which is given by
 
   \[ L_G = \frac{1}{|E|} \sum_{\substack{u,v \in V \\ u \neq v}} \dist(u,v)\]
 
@@ -14,41 +47,67 @@ between any two vertices compared to the overall size of the graph.
 
 \begin{definition}
   Consider a graph $G = (V,E)$. $G$ is a \textbf{small-world network} if
-  $L_G = O(\log{|V|})$.
+  $L_G \sim \log{|V|}$.
 \end{definition}
-
 
 These graphs are ubiquitous in a variety of application areas and commonly have
 other characteristics that aren't necessarily captured in the definition. One
-common additional property is that small-world networks often have highly
-connected subgraphs that are connected via ``hub nodes,'' which are vertices
-with very high degrees. We can describe this structure in terms of the
-clustering coefficient.
+common additional property is that small-world networks often contain hubs,
+which are vertices with very degree much higher than the average in the graphs.
+This property is most often examined by looking at the distribution of vertex
+degrees in the graph.
+
+% We can partially describe this structure in terms of the
+% clustering coefficient.
+
+% \begin{definition}
+%   Let $v$ be a vertex in a graph $G = (V,E)$.
+
+%   Consider the subgraph formed by the neighborhood of $v$. This subgraph has at
+%   most $\deg(v)(\deg(v) - 1)$ edges, which happens when it is a clique. Denote
+%   the number of edges of the neighborhood subgraph by $E_{N(v)}$.
+
+%   The \textbf{clustering coefficient} $C_v$ is defined by
+%   $C_v = \frac{E_{N(v)}}{\deg(v)(\deg(v) - 1)}$, that is, $C_v$ is the
+%   proportion of edges in the neighborhood subgraph out of all possible edges.
+%   The clustering coefficient of $G$ is the average of all vertex clustering
+%   coefficients, $C_G = \frac{\sum_{v \in V}{C_v}}{|V|}$.
+% \end{definition}
 
 \begin{definition}
-  Let $v$ be a vertex in a graph $G = (V,E)$.
-
-  Consider the subgraph formed by the neighborhood of $v$. This subgraph has at
-  most $\deg(v)(\deg(v) - 1)$ edges, which happens when it is a clique. Denote
-  the number of edges of the neighborhood subgraph by $E_{N(v)}$.
-
-  The \textbf{clustering coefficient} $C_v$ is defined by
-  $C_v = \frac{E_{N(v)}}{\deg(v)(\deg(v) - 1)}$, that is, $C_v$ is the
-  proportion of edges in the neighborhood subgraph out of all possible edges.
-  The clustering coefficient of $G$ is the average of all vertex clustering
-  coefficients, $C_G = \frac{\sum_{v \in V}{C_v}}{|V|}$.
+  A \textbf{scale-free network} is a graph whose vertex degrees follow a power
+  law distribution.
 \end{definition}
 
+\begin{theorem}[R. Cohen and S. Havlin]
+  Scale-free networks are small-world networks.
+\end{theorem}
 
-\subsection{Sampling Methods}
+Real world examples of scale-free networks are abundant and include the world
+wide web, cellular communication networks, and protein-protein interaction (PPI)
+networks. It is not surprising, then, that scale-free networks are necessarily
+small-worlds networks, however we defer to ~\cite{PhysRevLett.90.058701} for
+proof of this.
 
-The Watts-Strogatz graphs are the simplest random small-world networks. They are
-defined by starting with a regular ring lattice and randomly ``rewiring'' edges
+
+\section{Random Graphs}
+
+\begin{definition}
+  A \textbf{random graph} is a random variable for which all outcomes are
+  undirected graphs.
+
+  A \textbf{random graph process}, denoted $(G_t)$, is a family of random graphs
+  indexed by a discrete time $t \in \mathbb{N}$.
+\end{definition}
+
+We are interested in random graph processes which build small-worlds networks.
+The Watts-Strogatz graphs are the earliest example of such a process. They are
+defined by starting with a regular ring lattice and randomly rewiring edges
 until the graph is obtained.
 
 \begin{definition}
   An $n$-$k$ \textbf{regular ring lattice} is a graph $(V, E)$ with $n$ vertices
-  such that $u,v$ is an edge if and only if $|u-v| \leq k$.
+  such that $u,v$ is an edge if and only if $|u-v| \leq \frac{k}{2}$.
 \end{definition}
 
 \begin{definition}
@@ -57,15 +116,56 @@ until the graph is obtained.
 \end{definition}
 
 \begin{definition}
-  Given parameters $n \in \mathbb{N}$, $k < \frac{n}{2}$, and $p \in [0,1]$, a
-  \textbf{Watts-Strogatz graph} is constructed via the following method.
+  Given a probability $p$ and regular ring lattice parameters $n$ and $k$, we
+  define the $(n,k,p)$ \textbf{Watts-Strogatz Process} as follows.
 
-  Start with an $n$-$k$ regular ring lattice. Iterate over each node in the
-  graph and rewire it with probability $p$.
+  Let $r(G,v)$ be a random process that rewires vertex $v$ in a graph $G$. We
+  define a family of graphs, $(G_t)$, by
+
+  \[
+    G_{t+1} = \left\{
+      \begin{array}{lc}
+        r(G_t,t) &: X \leq p \\
+        G_t &: X > p
+      \end{array}
+    \right.
+  \]
+
+  for $t = 1,\dots, |G|$, where $G_0$ is the $n$-$k$ regular ring lattice, and
+  $X$ is a uniform random variable in the range $[0,1]$. That is, we iterate
+  over the vertices of the ring lattice and rewire each one with probability
+  $p$.
+
+  We call graphs sampled from $G_{|G|}$ \textbf{Watts-Strogatz graphs}.
 \end{definition}
 
 The Watts-Strogatz graphs are small-world networks for all but extremely small
-values of $p$. In addition, their clustering coefficients vary with the value of
-$p$, with larger values of $p$ corresponding to smaller values of $C_G$. In
-general, these graphs do not exhibit the clusters-and-hub-nodes structure of
-real life small-world networks.
+values of $p$. However, in general, they are not scale free networks, and thus
+do not capture the structural characteristics of many practical data sets.
+
+\begin{definition}
+  Let any graph $G_0$ be given as well as some parameter $m$, $m \leq |G_0|$. We
+  build the random graph $G_{t+1}$ by adding a new vertex to $G_t$ and
+  connecting it to $m$ vertices of $G_t$ with probabilities proportional to the
+  degree of each vertex. That is, the probability of adding an edge to a vertex
+  $u$ is
+
+  \[
+    p_u = \frac{\deg(v)}{\sum_{v \in G_t} \deg(v)}
+  \]
+
+  on the first step, and this is done a total of m times without replacement.
+
+  We call $(G_t)$ the $(G_o,m)$-\textbf{Barab\'asi-Albert process} and graphs sampled
+  from $G_n$ $(G_o,m,n)$-\textbf{Barab\'asi-Albert graphs}.
+\end{definition}
+
+\begin{theorem}[A. Barab\'asi and R. Albert]
+  \textbf{Barab\'asi-Albert graphs} are scale-free
+\end{theorem}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../Main"
+%%% End:
