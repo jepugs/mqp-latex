@@ -6,3 +6,5 @@ auto
 *.prv
 *.toc
 _*_.*
+Main.bbl
+Main.blg
