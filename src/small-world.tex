@@ -29,6 +29,48 @@ for some $N$.
   \end{itemize}
 \end{remark}
 
+\begin{definition}
+  The \textbf{degree} of a vertex $u \in G$, denoted $\deg (u)$, is the number
+  of edges in $G$ which contain $u$.
+\end{definition}
+
+\begin{definition}
+  The \textbf{adjacency matrix} $A$ of a graph $G$ is given by
+  \[
+    A_{ij} = \begin{cases}
+      1 &: (i,j) ~\text{is an edge in $G$} \\
+      0 &: \text{otherwise} \\
+    \end{cases}
+  \]
+\end{definition}
+
+Note that the adjacency matrix of a graph is not unique in general. Depending on
+the way that the vertices of $G$ are numbered, we may end up with a different
+matrix.
+
+\begin{definition}
+  The \textbf{degree matrix} of $G$ is the diagonal matrix defined by
+  \[
+    D_{ij} = \begin{cases}
+      \deg(i) &: i = j \\
+      0 &: i \neq j
+    \end{cases}
+  \]
+\end{definition}
+
+\begin{definition}
+  The \textbf{graph laplacian} of $G$ is given by $L = D - A$, where $D$ is the
+  degree matrix of $G$ and $A$ is the adjacency matrix. In other words,
+
+  \[
+    L_{ij} = \begin{cases}
+      \deg(i) &: i=j \\
+      -1 &: (i,j) ~\text{is an edge in $G$} \\
+      0 &: \text{otherwise}
+    \end{cases}
+  \]
+\end{definition}
+
 \section{Small-World and Scale-free Networks}
 
 The motivation for DSD comes from small-world networks, which are a class of
@@ -50,12 +92,9 @@ between any two vertices compared to the overall size of the graph.
   $L_G \sim \log{|V|}$.
 \end{definition}
 
-These graphs are ubiquitous in a variety of application areas and commonly have
-other characteristics that aren't necessarily captured in the definition. One
-common additional property is that small-world networks often contain hubs,
-which are vertices with very degree much higher than the average in the graphs.
-This property is most often examined by looking at the distribution of vertex
-degrees in the graph.
+Small-world networks are ubiquitous in a variety of applications areas. However,
+many real-world examples of such graphs also have other distinctive structural
+properties which are not necessarily captured by their small-worldedness alone.
 
 % We can partially describe this structure in terms of the
 % clustering coefficient.
@@ -76,8 +115,14 @@ degrees in the graph.
 
 \begin{definition}
   A \textbf{scale-free network} is a graph whose vertex degrees follow a power
-  law distribution.
+  law. That is, given a randomly selected $u \in G$, $P(\deg(u) = k) \sim
+  k^{-\gamma}$ for some $\gamma > 0$.
 \end{definition}
+
+One of the defining characteristics of power law distributions is that they have
+very long tails. In a scale-free graph with many vertices, this implies the
+existence of \textbf{hubs}, which we informally define as vertices whose degrees
+are far larger than average in the graph.
 
 \begin{theorem}[R. Cohen and S. Havlin]
   Scale-free networks are small-world networks.
@@ -86,8 +131,8 @@ degrees in the graph.
 Real world examples of scale-free networks are abundant and include the world
 wide web, cellular communication networks, and protein-protein interaction (PPI)
 networks. It is not surprising, then, that scale-free networks are necessarily
-small-worlds networks, however we defer to ~\cite{PhysRevLett.90.058701} for
-proof of this.
+small-worlds networks, however we defer to Cohen and Havlin for proof of this
+fact ~\cite{PhysRevLett.90.058701}.
 
 
 \section{Random Graphs}
@@ -140,8 +185,9 @@ until the graph is obtained.
 \end{definition}
 
 The Watts-Strogatz graphs are small-world networks for all but extremely small
-values of $p$. However, in general, they are not scale free networks, and thus
-do not capture the structural characteristics of many practical data sets.
+values of $p$ ~\cite{Watts1998Collective}. However, in general, they are not
+scale free networks ~\cite{Barabasi509}, and thus do not show the structural
+characteristics of many practical data sets.
 
 \begin{definition}
   Let any graph $G_0$ be given as well as some parameter $m$, $m \leq |G_0|$. We
@@ -156,13 +202,53 @@ do not capture the structural characteristics of many practical data sets.
 
   on the first step, and this is done a total of m times without replacement.
 
-  We call $(G_t)$ the $(G_o,m)$-\textbf{Barab\'asi-Albert process} and graphs sampled
-  from $G_n$ $(G_o,m,n)$-\textbf{Barab\'asi-Albert graphs}.
+  We call $(G_t)$ the $(G_o,m)$-\textbf{Barab\'asi-Albert (BA) process} and graphs
+  sampled from $G_n$ $(G_o,m,n)$-\textbf{Barab\'asi-Albert (BA) graphs}.
 \end{definition}
+
+This type of model, where edges to a new vertex are drawn with non-uniform
+probability, is known as a \textbf{preferential attachment} model.
 
 \begin{theorem}[A. Barab\'asi and R. Albert]
   \textbf{Barab\'asi-Albert graphs} are scale-free
 \end{theorem}
+
+In the context of classification problems, one issue that arises is that these
+generative models do not suggest any natural labeling for the vertices of these
+graphs. Thus, we propose a variant on the BA model which yields a labeled graph.
+
+\begin{definition}
+  Let parameters $G_0$ and $m \leq |G_0|$ be given as in the BA process as well
+  as a finite set of labels $S$ and a factor $\rho \ge 1$. In addition, suppose
+  each vertex in $G_0$ has been labeled by an element of $S$. Given a graph
+  $G_t$, we build $G_{t+1}$ as follows.
+
+  As in the BA process, we will add one new vertex and draw edges using
+  preferential attachment, however, we reweight the probability of drawing each
+  edge in order to favor vertices with label $l$ by a factor of $\rho$. We label
+  our new vertex $l$, which is chosen from $S$ with uniform probability.
+
+  Define $V_l$ to be the set of vertices with label $l$. Then, we compute the
+  probability of drawing an edge to a vertex $u$ as
+
+  \[
+    p_u = \begin{cases}
+      \frac{\rho\deg(u)}{w} &: u \in V_l\\
+      
+      \frac{\deg(u)}{w} &: u \in (V(G) - V_l)\\
+    \end{cases}
+  \]
+
+  where $w$ is the weighted degree sum,
+
+  \[
+    w = \rho \sum_{v \in V_l}\deg(v) + \sum_{v \in (V(G) - V_l)}\deg{v}
+  \]
+
+  We call this random process the \textbf{class-weighted Barab\'asi-Albert
+    (CWBA) process} and we call graphs sampled from this model \textbf{CWBA
+    graphs}.
+\end{definition}
 
 
 %%% Local Variables:
