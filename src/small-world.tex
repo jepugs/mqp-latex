@@ -207,15 +207,18 @@ characteristics of many practical data sets.
 \end{definition}
 
 This type of model, where edges to a new vertex are drawn with non-uniform
-probability, is known as a \textbf{preferential attachment} model.
+probability, is known as \textbf{preferential attachment}.
 
 \begin{theorem}[A. Barab\'asi and R. Albert]
   \textbf{Barab\'asi-Albert graphs} are scale-free
 \end{theorem}
 
+\subsection{Labeled Random Graphs}
+
 In the context of classification problems, one issue that arises is that these
-generative models do not suggest any natural labeling for the vertices of these
-graphs. Thus, we propose a variant on the BA model which yields a labeled graph.
+generative models do not suggest any natural labeling for the vertices of the
+resultant graphs. Thus, we propose a variant on the BA model which yields a
+labeled graph.
 
 \begin{definition}
   Let parameters $G_0$ and $m \leq |G_0|$ be given as in the BA process as well
@@ -242,7 +245,7 @@ graphs. Thus, we propose a variant on the BA model which yields a labeled graph.
   where $w$ is the weighted degree sum,
 
   \[
-    w = \rho \sum_{v \in V_l}\deg(v) + \sum_{v \in (V(G) - V_l)}\deg{v}
+    w = \rho \sum_{v \in V_l}\deg(v) + \sum_{v \in (V(G) - V_l)}\deg(v)
   \]
 
   We call this random process the \textbf{class-weighted Barab\'asi-Albert
