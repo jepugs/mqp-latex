@@ -32,6 +32,10 @@
 % add a superscript th in math mode
 \newcommand{\nth}{^{\mathrm{th}}}
 
+%% Metrics
+\newcommand{\dsd}{\delta}
+\newcommand{\spd}{\mathrm{d}}
+
 \graphicspath{ {images/} }
 
 \begin{document}
@@ -53,6 +57,9 @@
 \input{src/small-world.tex}
 
 
+% rename to The DSD Metric
+% do DSD in terms of eigenvalues and spectral gap (regular case first)
+%  keep the circulant graphs
 \chapter{Properties of DSD}
 \section{Definition of DSD}
 \input{src/DSD-defn.tex}

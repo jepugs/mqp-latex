@@ -1,33 +1,45 @@
 \section{Elementary Graph Theory}
 
+% two sentence summary of contents
+
+% early on define complete, complete bipartite, and empty graphs under an
+% example label
+
+% recall \sum \lambda_i = \tr(M)
+
 We begin by recalling some conventional definitions and notations from graph
 theory.
 
 \begin{definition}
   A \textbf{graph} $G$ is a pair of sets $(V,E)$ such that $E = V \times V$,
   where equality on $E$ disregards order, that is $(u,v) = (v,u)$. We call $V$
-  the \textbf{vertices} of $G$ and $E$ the \textbf{edges} of $G$.
+  the set of \textbf{vertices} of $G$ and $E$ the set of \textbf{edges} of $G$.
 \end{definition}
 
-For our purpose, $V$ will always be a sequence of natural numbers starting from
-$1$, that is
-
-\[
-  V = \{ n \in \mathbb{N} : 1 \leq i \leq N \}
-\]
-
-for some $N$.
+\begin{example}[The Pentagon]
+  The \textbf{pentagon}, also known as the \textbf{5-cycle}, is the graph
+  $(V,E)$ defined by $V = \{0,1,2,3,4\}$ and $E = \{(0,1),(1,2),(2,3),(4,0)\}$
+\end{example}
 
 \begin{remark}[Notation]
   Let $G$ be a graph.
 
+  % reword access, ensure that these accessors are useful
   \begin{itemize}
-  \item We access the vertices and edges of G by the functions $V(G)$ and $E(G)$
-    respectively.
-  \item $v \in G$ is an equivalent statement to $v \in V(G)$
-  \item $|G|$, called the \textbf{order} of $G$, is equal to $|V(G)|$.
+  \item Let $G = (V,E)$ be a graph. For convenience, we will use subscript
+    notation to refer to the edge and vertex sets of $G$, i.e. $V_G = V$ and
+    $E_G = E$.
+  \item $v \in G$ is an equivalent statement to $v \in V_G$
+  \item $|G|$, called the \textbf{order} of $G$, is equal to $|V_G|$.
   \end{itemize}
 \end{remark}
+
+\begin{example}
+  The \textbf{empty graph} of order $n$ is the graph such that $|V| = n$ and $E
+  = \varnothing$.
+
+  The \textbf{complete graph} or order $n$, denoted $K_n$, is the graph $|V|$ =
+\end{example}
 
 \begin{definition}
   The \textbf{degree} of a vertex $u \in G$, denoted $\deg (u)$, is the number
@@ -44,9 +56,32 @@ for some $N$.
   \]
 \end{definition}
 
+%% Adjacency matrix properties
+% - symmetric, (eigenvalues are real)
+% - eigenvectors
+% - spectral gap (+ defn)
+% - example: k-regular graphs have largest (simple?) eigenvalue
+
 Note that the adjacency matrix of a graph is not unique in general. Depending on
 the way that the vertices of $G$ are numbered, we may end up with a different
-matrix.
+matrix. However, for every adjacency matrix the following holds:
+
+\begin{remark}
+  Let $A$ be the adjacency matrix of a graph $G$. Then the following is true:
+
+  \begin{enumerate}
+  \item $A$ is symmetric (so the eigenvalues of $A$ are real)
+  \item $A$ is irreducible if and only if $G$ is not the empty graph
+  \item $A$ has a simple positive eigenvalue of maximum magnitude
+  \end{enumerate}
+\end{remark}
+
+\begin{proof}
+  (i) follows trivially from the definition of $A$ (recall that because edges
+  are undirected, $(u,v) \in E_G \iff (v,u) \in E_G$).
+  (ii)
+\end{proof}
+
 
 \begin{definition}
   The \textbf{degree matrix} of $G$ is the diagonal matrix defined by
@@ -71,12 +106,27 @@ matrix.
   \]
 \end{definition}
 
+%% Graph laplacian discussion
+% adjacency and eigenvalues relationship
+
+% relationship between graph laplacian eigenvalues & spectracl gap
+
+% eigenvalue distribution of A or L
+
+% Wigner distribution for graph eigenvalues
+
+% see random matrix theory "semicircle law"
+
+% what happens when this is exponential?
+
+
 \section{Small-World and Scale-free Networks}
 
 The motivation for DSD comes from small-world networks, which are a class of
 graphs characterized by having a very small average shortest-path distance
 between any two vertices compared to the overall size of the graph.
 
+% eigenvalues and eigenvectors
 
 \begin{definition}
   The \textbf{characteristic path length} of a graph $G = (V,E)$ is the average
@@ -95,6 +145,7 @@ between any two vertices compared to the overall size of the graph.
 Small-world networks are ubiquitous in a variety of applications areas. However,
 many real-world examples of such graphs also have other distinctive structural
 properties which are not necessarily captured by their small-worldedness alone.
+[citation needed]
 
 % We can partially describe this structure in terms of the
 % clustering coefficient.
@@ -136,6 +187,8 @@ fact ~\cite{PhysRevLett.90.058701}.
 
 
 \section{Random Graphs}
+
+% exponential distribution eigenvalues
 
 \begin{definition}
   A \textbf{random graph} is a random variable for which all outcomes are
@@ -213,12 +266,34 @@ probability, is known as \textbf{preferential attachment}.
   \textbf{Barab\'asi-Albert graphs} are scale-free
 \end{theorem}
 
+
 \subsection{Labeled Random Graphs}
 
-In the context of classification problems, one issue that arises is that these
-generative models do not suggest any natural labeling for the vertices of the
-resultant graphs. Thus, we propose a variant on the BA model which yields a
-labeled graph.
+Since we wish to use random graphs to test vertex classifiers, an issue that
+arises is that the generative models presented so far do not suggest any natural
+labeling for the vertices of the resultant graphs. Thus, we propose some labeled
+models for generating small-world and scale-free networks.
+
+\begin{definition}
+  Let $m$ be a natural number. We construct the \textbf{complete components
+    graph} of order $n = 2m$ as follows. Let $V = \{1,2, ..., 2m\}$, and then define
+  $E$ by
+
+  \[
+    E = \{ (u,v) : u,v \in \{1,...,m\} ~\text{or}~ u,v \in \{m+1,...,2m\} \}
+  \]
+
+  i.e. the disjoint union of two complete graphs of order $m$.
+\end{definition}
+
+
+In addition, we propose a variant on the BA model which yields a labeled graph.
+
+%% prove theorem: the following are equal: frobenius norm of a matrix,
+%% \sum{\lambda^2}, number of edges in G (or something like this)
+
+% sketch: recall \sum \lambda_i = \tr(M). Consider A^2, whose trace is the sum
+% of degrees
 
 \begin{definition}
   Let parameters $G_0$ and $m \leq |G_0|$ be given as in the BA process as well
@@ -231,21 +306,21 @@ labeled graph.
   edge in order to favor vertices with label $l$ by a factor of $\rho$. We label
   our new vertex $l$, which is chosen from $S$ with uniform probability.
 
-  Define $V_l$ to be the set of vertices with label $l$. Then, we compute the
+  Define $S_l$ to be the set of vertices with label $l$. Then, we compute the
   probability of drawing an edge to a vertex $u$ as
 
   \[
     p_u = \begin{cases}
-      \frac{\rho\deg(u)}{w} &: u \in V_l\\
+      \frac{\rho\deg(u)}{w} &: u \in S_l\\
       
-      \frac{\deg(u)}{w} &: u \in (V(G) - V_l)\\
+      \frac{\deg(u)}{w} &: u \in (V_G - S_l)\\
     \end{cases}
   \]
 
   where $w$ is the weighted degree sum,
 
   \[
-    w = \rho \sum_{v \in V_l}\deg(v) + \sum_{v \in (V(G) - V_l)}\deg(v)
+    w = \rho \sum_{v \in S_l}\deg(v) + \sum_{v \in (V_G - S_l)}\deg(v)
   \]
 
   We call this random process the \textbf{class-weighted Barab\'asi-Albert

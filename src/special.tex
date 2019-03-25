@@ -45,13 +45,13 @@ $e_u = \frac{1}{n}(1_n + \alpha_u)$.
 
 \begin{theorem}
   Let $K_n$ be the complete graph with nodes labelled $1,...,n$. Then for any
-  two distinct nodes $u$ and $v$, $\delta(u,v) = \frac{2(n-1)}{n}$.
+  two distinct nodes $u$ and $v$, $\dsd(u,v) = \frac{2(n-1)}{n}$.
 \end{theorem}
 \begin{proof}
   We will use $\alpha_u$ as defined above. DSD is given by
 
 \begin{align*}
-  \delta(u,v) &= \sum_{k = 0}^{\infty}{||T^ke_u - T^ke_v||_1} \\
+  \dsd(u,v) &= \sum_{k = 0}^{\infty}{||T^ke_u - T^ke_v||_1} \\
               &= \frac{1}{n}\sum_{k = 0}^{\infty}{||T^k(1_n + \alpha_u - 1_n -
                 \alpha_v)||_1}\\
               &= \frac{1}{n}\sum_{k = 0}^{\infty}{||T^k(\alpha_u - \alpha_v)||_1} \\
@@ -69,7 +69,7 @@ be $n$ at index $u$ and $-n$ at index $v$. Thus,
 $||\alpha(u)-\alpha(v)||_1 = 2n$, and so
 
 \begin{align*}
-  \delta(u,v) &= \frac{2n}{n}(\frac{n-1}{n}) \\
+  \dsd(u,v) &= \frac{2n}{n}(\frac{n-1}{n}) \\
               &= \frac{2(n-1)}{n} \\
 \end{align*}
 

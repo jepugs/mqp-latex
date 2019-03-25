@@ -8,6 +8,8 @@ between two such vectors in the limit as $k \to \infty$. We present an
 alternative definition which is more compact and easier to manipulate with the
 usual machinery of linear algebra.
 
+%% Fix this so D is D inverse (the degree matrix inverse)
+
 Random walks can be modeled as Markov chains, where the current state is a
 vertex $u$ in the graph, and the transition probability is $\frac{1}{\deg(u)}$
 for the neighbors of $u$ and $0$ otherwise. The transition matrix can be written
@@ -23,10 +25,10 @@ originating from vertex $u$ is given by $T^ke_u$, where $e_u$ is the initial
 state vector, which is the $u\nth$ standard basis vector in $\R^n$,
 $e_{u,u} := 1$ and $e_{u,j} := 0, u \neq j$ for $u=1,...,n$.
 
-Thus, we can define the DSD, $\delta(u,v)$, by
+Thus, we can define the DSD, $\dsd(u,v)$, by
 
 \[
-  \delta(u,v) = ||\sum_{k =0}^{\infty}{T^ke_u - T^ke_v}||_1
+  \dsd(u,v) = ||\sum_{k =0}^{\infty}{T^ke_u - T^ke_v}||_1
 \]
 
 \subsection{Proof that DSD is a Metric}
@@ -45,8 +47,8 @@ their distance from a fixed vertex.
   \begin{enumerate}
   \item $d(u,v)\geq 0 ~ \forall u,v \in G$,
   \item $d(u,v) = 0 \iff u = v$ (identity of indiscernables),
-  \item $d(u,v) = \delta(v,u) ~\forall u,v \in G$, and
-  \item $d(u,v) \leq \delta(u,w) + \delta(v,w) ~\forall u,v,w \in G$
+  \item $d(u,v) = \dsd(v,u) ~\forall u,v \in G$, and
+  \item $d(u,v) \leq \dsd(u,w) + \dsd(v,w) ~\forall u,v,w \in G$
     (triangle inequality).
   \end{enumerate}\end{definition}
 
@@ -85,7 +87,7 @@ are our finite analog for the $\mathrm{He}$ vectors. Now, note that $T^ke_u$ is
 equal to $T^k_u$. This allows us to rewrite DSD as
 
 \begin{align*}
-  \delta(u,v) &= ||\sum_{k=0}^{\infty}((T^k)_u - (T^k)_v)||_1 \\
+  \dsd(u,v) &= ||\sum_{k=0}^{\infty}((T^k)_u - (T^k)_v)||_1 \\
               &= ||\sum_{k=0}^{\infty}((T^k-T^\infty)_u - (T^k-T^\infty)_v)||_1 \\
               &= ||S_u - S_v||_1
 \end{align*}
@@ -97,10 +99,10 @@ equal to $T^k_u$. This allows us to rewrite DSD as
   We must show:
 
   \begin{enumerate}
-  \item $\delta(u,v)\geq 0 ~ \forall u,v \in G$,
-  \item $\delta(u,v) = 0 \iff u = v$ (identity of indiscernables),
-  \item $\delta(u,v) = \delta(v,u) ~\forall u,v \in G$, and
-  \item $\delta(u,v) \leq \delta(u,w) + \delta(v,w) ~\forall u,v,w \in G$
+  \item $\dsd(u,v)\geq 0 ~ \forall u,v \in G$,
+  \item $\dsd(u,v) = 0 \iff u = v$ (identity of indiscernables),
+  \item $\dsd(u,v) = \dsd(v,u) ~\forall u,v \in G$, and
+  \item $\dsd(u,v) \leq \dsd(u,w) + \dsd(v,w) ~\forall u,v,w \in G$
     (triangle inequality).
   \end{enumerate}
 
