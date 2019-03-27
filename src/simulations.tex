@@ -10,36 +10,53 @@ We hope to reveal properties of graphs that allow the DSD metric to be more effe
 In this section, we discuss several prediction methods that we use for our simulations in chapter 5. These prediction methods can use any graph metric to predict labels. Thus, for a simulation, we test different metrics using the same prediction method and compare results. This allows us to study the effectiveness of various metrics in improving the accuracy of a certain prediction method. In short, the prediction method is not dependent on any metric, but predictive results may change for different metrics. The following prediction methods assume that a graph $G=(V,E)$ is given on which prediction is to be done.
 
 \subsection{Majority Voting Algorithm}
-Cao et al. ~\cite{10.1371/journal.pone.0076339} mentions a simple prediction method called the neighborhood majority voting algorithm. Our implementation of this algorithm considers each vertex $v \epsilon V$ and all neighbors of $v$ within an $\varepsilon$ distance from $v$ (a ball of radius $\varepsilon$). The $\varepsilon$ distance depends on the metric under consideration, and may be changed as a parameter. In an unweighted scheme, each neighbor within the ball of radius $\varepsilon$ votes equally for their own label. In a weighted scheme, each neighbor gets a vote proportional to the reciprocal of their distance to the vertex $v$ in consideration.
+Cao et al. ~\cite{10.1371/journal.pone.0076339} mentions a simple prediction method called the neighborhood majority voting algorithm. We considered two implementations of this algorithm. One implementation considers each vertex $v \epsilon V$ and all neighbors of $v$ within an $\varepsilon$ distance from $v$ (a ball of radius $\varepsilon$). The $\varepsilon$ distance depends on the metric under consideration, and may be changed as a parameter. In an unweighted scheme, each neighbor within the ball of radius $\varepsilon$ votes equally for their own label. In a weighted scheme, each neighbor gets a vote proportional to the reciprocal of their distance to the vertex $v$ in consideration. The other implementation of this algorithm considers each vertex $v \epsilon V$ and the $k$-nearest neighbors of $v$. Voting is done similarly in both an unweighted and weighted scheme.
 
 
-\section{Complete Graph}
-In this section, we construct of a family of graphs with an intuitive initial labeling of vertices and run simulations on this graph to determine the difference in effectiveness between the DSD metric and the shortest path metric on this family of graphs.
+\section{Complete Components}
+In this section, we construct of a family of graphs with an intuitive initial labeling of vertices. We then run simulations on this graph to determine the difference in effectiveness between the DSD metric and the shortest path metric on this family of graphs.
 
 \subsection{Graph Construction}
-We construct a graph starting with two complete graphs of size $n$ and $m$ (referred to as left component and right component, respectively). A complete graph is defined as a graph in which every pair of vertices is connected by an edge. All nodes in the left component were labeled red, and all nodes in the right component were labeled blue. We call the disjoint union of the left and right components as the graph $G = (V,E)$, with vertex set $V$ and edge set $E$. In order to reduce the number of edges in $G$, we remove edges from the current edge set with a probability $q$. To introduce noise, we add edges between vertices from separate components (with respect to the original complete graphs) with a probability $p$. Lastly, we take the largest connected component of this graph and set it as our graph $G$.
+We construct a graph starting with the disjoint union of two $n$-complete graphs $G_{1} = (V_{1},E_{1})$, $G_{2} = (V_{2},E_{2})$. An $n$-complete graph is defined as a graph with $n$ vertices in which every pair of vertices is connected by an edge. All vertices from $G_{1}$ were labeled red, and all vertices from $G_{2}$ were labeled blue. We call the disjoint union of $G_{1}$ and $G_{2}$ as the graph $G = (V,E)$, with vertex set $V = V_{1} \cup V_{2}$ and edge set $E = E_{1} \cup E_{2}$. In order to introduce noise in $G$, we remove edges from the current edge set with a probability $q$, and add edges having one end in $V_{1}$ and the other end in $V_{2}$ with a probability $p$. Lastly, we take the largest connected component of the resulting graph and set it as our graph $G$.
 
 \subsection{Data Collection}
-We studied the prediction accuracy of using each metric with a weighted majority vote. The probability of adding noise, $p$, described above was incremented from $0$ to $1$ in intervals of $0.05$ while all other parameters were kept constant. To collect data, we constructed a graph using the method mentioned above, and found the DSD distances for the graph. We censored labels of vertices in the graph with a $0.4$ probability, then tried to predict the censored labels using a weighted majority vote algorithm. All vertices were considered when voting for the label of a single vertex, and each vertex was weighted by the inverse of its DSD distance. The label with the highest voting value was set as the predicted label for the vertex. This process was run $10$ times for each probability $p$ and the average of the accuracies for this $p$ was plotted. We collected data for the shortest path metric in the same way. Figure \ref{fig:complete_graph_plot_shortest_path} and Figure \ref{fig:complete_graph_plot_dsd} display plots of prediction accuracies with respect to the change in the incremented probability $p$.
+We studied the classification problem on the complete components graph. After constructing the complete components graph $G$ with parameters $n$, $p$ and $q$ described in the section above, we censored a proportion $censorP$ of the labels in $G$. We then used the weighted majority voting algorithm using $k$-nearest neighbors with respect to both the shortest path distance metric and the DSD metric to predict labels. To make sure the prediction accuracy was robust, we ran this process several times and took the average of the resulting prediction accuracies. We adding a parameter called $avgRuns$ to describe how many times we would run this process for the average prediction accuracy.
 
-\begin{figure}[h]
+To test the behavior of the prediction accuracy with respect to different parameters of the complete components graph, we ran several simulations using varying parameter inputs. The parameter $n$, the size of one complete graph used in the construction of the complete components graph, was set to $250$. A constant value for this parameter sufficiently large would allow us to observe differences in prediction accuracy and changing this parameter would not affect the prediction accuracy. The parameter for the average number of runs for calculating prediction accuracy, $avgRuns$ was also set to a constant value of $10$, since this parameter would not affect the prediction accuracy. The parameter for the proportion of the graph labels to censor, $censorP$, was also set to a constant $0.3$ because this would not affect the prediction accuracy, as shown in figure \ref{fig:censor_param}.
+
+\begin{figure}[h!]
 \centering
-\includegraphics[width=0.75\textwidth]{CompleteGraph_Accuracy_spavg1.png}
-\caption{A plot of the data collected using the shortest path metric on the graph constructed from two complete graphs. The graph was constructed using two 200-vertex complete graphs and the probability $q$ of removing edges was set constant at $0.6$.}
-\label{fig:complete_graph_plot_shortest_path}
+\includegraphics[width=1.0\textwidth]{censor_param.png}
+\caption{Plots showing that the censoring parameter $censorP$ has no affect on prediction accuracy. $n = 250$, $avgRuns = 10$, $q = 0.5$, $p$ goes from $0$ to $1$ in intervals of $0.025$, and $censorP$ goes from $0.1$ to $0.9$ in intervals of $0.2$.}
+\label{fig:censor_param}
 \end{figure}
 
-\begin{figure}[h]
+
+The parameters that we varied in our simulations for the complete components graphs were $p$ and $q$. Figure \ref{fig:cc_p_q} shows a plot of prediction accuracies for a fixed $q = 0.5$ and $p$ going from $0$ to $1$ in intervals of $0.025$. Figure \ref{fig:cc_q_p} shows a plot of prediction accuracies for a fixed $p = 0.5$ and $q$ going from $0$ to $1$ in intervals of $0.025$.
+
+\begin{figure}[h!]
 \centering
-\includegraphics[width=0.75\textwidth]{CompleteGraph_Accuracy_dsdavg1.png}
-\caption{A plot of the data collected using the DSD metric on the graph constructed from two complete graphs. The graph was constructed using two 200-vertex complete graphs and the probability $q$ of removing edges was set constant at $0.6$.}
-\label{fig:complete_graph_plot_dsd}
+\includegraphics[width=0.75\textwidth]{{cc_p_n250_q0.5_c0.1_avg10_mv-k20}.png}
+\caption{A plot showing the change in prediction accuracy for a fixed $q = 0.5$ and $p$ from $0$ to $1$ in intervals of $0.025$.}
+\label{fig:cc_p_q}
 \end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.75\textwidth]{{cc_q_n250_p0.5_c0.1_avg10_mv-k20}.png}
+\caption{A plot showing the change in prediction accuracy for a fixed $p = 0.5$ and $q$ from $0$ to $1$ in intervals of $0.025$.}
+\label{fig:cc_q_p}
+\end{figure}
+
 
 \subsection{Analysis}
-\noindent
-We do not expect the DSD to do significantly better than the shortest path distance for $p$ from $0$ to $0.5$, as shown in Figure \ref{fig:complete_graph_plot_dsd} and Figure \ref{fig:complete_graph_plot_shortest_path}. This happens because with low probability $p$ of adding edges between components, it is likely that most neighbors of vertices will be within the same component. For example, with probability $p = 0.1$,  there will be significantly fewer edges between the two components compared to edges within each component. This will cause the shortest path metric to predict correctly with a high accuracy since most neighbors of vertices a short distance away will be vertices in the same component. The DSD metric will also predict well since most neighbors of neighbors of a vertex will also be within the same component.
+We can expect prediction using the DSD metric to do significantly better than prediction using the shortest path distance metric. This can be seen from Figure \ref{fig:cc_p_q} and Figure \ref{fig:cc_q_p}, and can also be shown using expected values.
 
-For probability $p$ greater than $0.5$, we expect the DSD metric to outperform the shortest path metric. This is intuitive since with probability of adding edges between components greater than $0.5$, we expect vertices from one component to have more neighbors from the other component than neighbors from the same component. This means that for the shortest path metric, most neighbors a short distance away will have the opposite label. For the DSD metric, however, neighbors of neighbors become equally likely to belong to either component, so the prediction accuracy stays around $50\%$. This clearly shows that the DSD metric considers different aspects of graph structure that the shortest path metric fails to consider.
+For an arbitrary vertex in the complete components graph, we can find the expected number of vertices with the same label. We will call this the same-class degree of a vertex. We can calculate this value by recalling the construction of the complete components graph. First, we fix a vertex $v$ of a complete components graph. There are $(n-1)$ other vertices of the same label as $v$, and originally, these vertices including $v$ made a complete graph. However, during construction, we deleted edges between vertices in the same class with a probability $q$. Thus, we can say
+$$deg_{same}(v) = (n-1) - (n-1)q = (1-q)(n-1)$$
+The same-class degree of $v$ is equal to the number of neighbors of $v$ when it was in a complete graph, minus the expected number of deleted edges. We can use a similar method to calculate the different-class degree, or the number of vertices with a different label.
+$$deg_{diff}(v) = np$$
+The different-class degree of $v$ is equal to the number of vertices with a different label multiplied by the probability $p$ of adding an edge between the components of different labels. The sum of the same-class degree and different-class degree of a vertex $v$ gives the expected degree of $v$.
+$$deg(v) = deg_{same}(v) + deg_{diff}(v) = (1-q)(n-1) + np$$
 
-
+Using the parameters from the simulation run shown in Figure \ref{fig:cc_p_q}, we get that for an arbitrary vertex $v$, $deg_{same}(v) = (1-0.5)(250-1) = 124.5$. Since $deg_{diff} = 250p$, we know that $deg_{diff}$ will increase or decrease proportional to the change in $p$. For values of $p$ between $0$ and $0.5$, we know that $deg_{same} > deg_{diff}$. It is clear that the shortest path distance metric should predict with a fairly high accuracy for $p$ close to $0$, but should predict no better than a random guess for $p$ close to $0.5$. The prediction accuracy of the shortest path distance only becomes worse for $p$ greater than $0.5$, since $deg_{same} < deg_{diff}$.
