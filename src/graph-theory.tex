@@ -18,7 +18,13 @@ theory.
 
 \begin{example}[The Pentagon]
   The \textbf{pentagon}, also known as the \textbf{5-cycle}, is the graph
-  $(V,E)$ defined by $V = \{0,1,2,3,4\}$ and $E = \{(0,1),(1,2),(2,3),(4,0)\}$
+  $(V,E)$ defined by $V = \{0,1,2,3,4\}$ and $E = \{(0,1),(1,2),(2,3),(4,0)\}$.
+
+  \includegraphics[width=0.4\textwidth,height=0.4\textwidth]{pentagon.eps}
+  \begin{wrapfigure}{r}{\textwidth}
+    \caption{}
+
+  \end{wrapfigure}
 \end{example}
 
 \begin{remark}[Notation]
@@ -34,16 +40,38 @@ theory.
   \end{itemize}
 \end{remark}
 
+When we speak about graphs, we are concerned with the structure of the graph
+rather than the specific symbols in its vertex set. Thus we use the following
+definition of equality.
+
+\begin{definition}[Equivalence of graphs]
+  Two graphs $G_1$ and $G_2$ are equal if there exists a bijection $\phi :
+  V_{G_1} \to V_{G_2}$ such that $(u,v) \in V_{G_1} \Leftrightarrow
+  (\phi(u),\phi(v)) \in V_{G_2}$.
+\end{definition}
+
+For convenience, when we talk about ``a graph'' in the future, we will generally
+be referring to the class of all equivalent classes, as in the next example.
+
 \begin{example}
   The \textbf{empty graph} of order $n$ is the graph such that $|V| = n$ and $E
   = \varnothing$.
 
-  The \textbf{complete graph} or order $n$, denoted $K_n$, is the graph $|V|$ =
+  The \textbf{complete graph} or order $n$, denoted $K_n$, is the graph
+  containing every possible edge, so that $|E_{K_n}| = \frac{n(n-1)}{2}$.
 \end{example}
 
 \begin{definition}
   The \textbf{degree} of a vertex $u \in G$, denoted $\deg (u)$, is the number
   of edges in $G$ which contain $u$.
+\end{definition}
+
+\begin{definition}
+  A \textbf{walk} of a graph $G$ is an alternating sequence of edges and
+  vertices such that each vertex is coincident to the edges before and after it.
+
+  A \textbf{path} is the sequence of edges in a walk where every vertex is
+  unique.
 \end{definition}
 
 \begin{definition}
@@ -66,22 +94,79 @@ Note that the adjacency matrix of a graph is not unique in general. Depending on
 the way that the vertices of $G$ are numbered, we may end up with a different
 matrix. However, for every adjacency matrix the following holds:
 
+
 \begin{remark}
   Let $A$ be the adjacency matrix of a graph $G$. Then the following is true:
 
   \begin{enumerate}
   \item $A$ is symmetric (so the eigenvalues of $A$ are real)
-  \item $A$ is irreducible if and only if $G$ is not the empty graph
-  \item $A$ has a simple positive eigenvalue of maximum magnitude
+  \item $A$ corresponds to a graph that is unique up to equivalence
+  \item $A$ is irreducible if and only if $G$ is connected
+  \item $A$ has a simple positive real eigenvalue $r$ of maximum magnitude
+  \item $r$ has corresponding eigenvector with all positive components
   \end{enumerate}
 \end{remark}
 
 \begin{proof}
-  (i) follows trivially from the definition of $A$ (recall that because edges
-  are undirected, $(u,v) \in E_G \iff (v,u) \in E_G$).
-  (ii)
+  (1) follows trivially from the definition of $A$ (recall that because edges in
+  are undirected, $(u,v) \in E_G \Leftrightarrow (v,u) \in E_G$).
+
+  (2) self-evident
 \end{proof}
 
+To prove the remaining properties, we require some additional results from
+linear algebra. First, recall this equivalent definition of reducibility:
+
+\begin{definition}
+  A matrix is reducible if and only if it can be put in block upper triangular
+  form by simultaneous row and column permutations. In other words, a matrix $M$
+  is irreducible if and only if there exists a permutation matrix $P$ such that
+  $P^{-1}MP$ is block upper triangular.
+\end{definition}
+
+\begin{proof}
+  We can now show (3). First, we observe that $P^{-1}AP$ is an adjacency matrix
+  of a graph equivalent to $G$ for any permutation matrix $P$. So WLOG, suppose
+  that $G$ is connected and $A$ is already in block upper triangular form. Then
+  because $A$ is symmetric, we have
+
+  \[
+    A = \begin{bmatrix}
+      B & \mathbf{0} \\
+      \mathbf{0} & C
+    \end{bmatrix}
+  \]
+
+  where $B$, $C$, are square block matrices. Say that $B$ has size $m \times m$.
+  It is clear that there are no edges connecting the vertices in $\{1, ..., m\}$
+  to those in $\{m+1, ..., n\}$. Thus $G$ is not be connected, which is a
+  contradiction.
+\end{proof}
+
+The irreducibility result allows us to apply the following theorem, resulting
+immediately in the remaining properties of $A$.
+
+\begin{theorem}[Perron-Frobenius for Nonnegative Matrices]
+  Let $A$ be an irreducible nonnegative square matrix of order $n$ and period
+  $h$. The following is true.
+
+  \begin{enumerate}
+  \item Let $r$ be the maximum magnitude of the eigenvalues of $A$. $r$ is a
+    (real,positive) simple eigenvalue of $A$.
+  \item $r$ has left and right eigenvectors whose components are all positive
+  \item The only eigenvectors of $A$ whose components are all positive have
+    eigenvalue $r$.
+  \item
+    \[ \min_i \sum_j a_{ij} \leq r \leq \max_i \sum_j a_{ij} \].
+  \end{enumerate}
+\end{theorem}
+
+
+Which shows (4) and (5). Indeed, The irreducibility and nonnegativity of $A$
+yields many other interesting properties which we omit here.
+
+We will next explore graph Laplacians, whose spectra are closely related to
+those of adjacency matrices.
 
 \begin{definition}
   The \textbf{degree matrix} of $G$ is the diagonal matrix defined by
@@ -265,68 +350,6 @@ probability, is known as \textbf{preferential attachment}.
 \begin{theorem}[A. Barab\'asi and R. Albert]
   \textbf{Barab\'asi-Albert graphs} are scale-free
 \end{theorem}
-
-
-\subsection{Labeled Random Graphs}
-
-Since we wish to use random graphs to test vertex classifiers, an issue that
-arises is that the generative models presented so far do not suggest any natural
-labeling for the vertices of the resultant graphs. Thus, we propose some labeled
-models for generating small-world and scale-free networks.
-
-\begin{definition}
-  Let $m$ be a natural number. We construct the \textbf{complete components
-    graph} of order $n = 2m$ as follows. Let $V = \{1,2, ..., 2m\}$, and then define
-  $E$ by
-
-  \[
-    E = \{ (u,v) : u,v \in \{1,...,m\} ~\text{or}~ u,v \in \{m+1,...,2m\} \}
-  \]
-
-  i.e. the disjoint union of two complete graphs of order $m$.
-\end{definition}
-
-
-In addition, we propose a variant on the BA model which yields a labeled graph.
-
-%% prove theorem: the following are equal: frobenius norm of a matrix,
-%% \sum{\lambda^2}, number of edges in G (or something like this)
-
-% sketch: recall \sum \lambda_i = \tr(M). Consider A^2, whose trace is the sum
-% of degrees
-
-\begin{definition}
-  Let parameters $G_0$ and $m \leq |G_0|$ be given as in the BA process as well
-  as a finite set of labels $S$ and a factor $\rho \ge 1$. In addition, suppose
-  each vertex in $G_0$ has been labeled by an element of $S$. Given a graph
-  $G_t$, we build $G_{t+1}$ as follows.
-
-  As in the BA process, we will add one new vertex and draw edges using
-  preferential attachment, however, we reweight the probability of drawing each
-  edge in order to favor vertices with label $l$ by a factor of $\rho$. We label
-  our new vertex $l$, which is chosen from $S$ with uniform probability.
-
-  Define $S_l$ to be the set of vertices with label $l$. Then, we compute the
-  probability of drawing an edge to a vertex $u$ as
-
-  \[
-    p_u = \begin{cases}
-      \frac{\rho\deg(u)}{w} &: u \in S_l\\
-      
-      \frac{\deg(u)}{w} &: u \in (V_G - S_l)\\
-    \end{cases}
-  \]
-
-  where $w$ is the weighted degree sum,
-
-  \[
-    w = \rho \sum_{v \in S_l}\deg(v) + \sum_{v \in (V_G - S_l)}\deg(v)
-  \]
-
-  We call this random process the \textbf{class-weighted Barab\'asi-Albert
-    (CWBA) process} and we call graphs sampled from this model \textbf{CWBA
-    graphs}.
-\end{definition}
 
 
 %%% Local Variables:

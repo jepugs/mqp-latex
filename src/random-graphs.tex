@@ -1,0 +1,79 @@
+Since we wish to use random graphs to test vertex classifiers, an issue that
+arises is that the generative models presented so far do not suggest any natural
+labeling for the vertices of the resultant graphs. Thus, we propose some labeled
+models for generating small-world and scale-free networks.
+
+\begin{definition}
+  Let $m$ be a natural number. We construct the \textbf{complete components
+    graph} of order $n = 2m$ as follows. Let $V = \{1,2, ..., 2m\}$, and then define
+  $E$ by
+
+  \[
+    E = \{ (u,v) : u,v \in \{1,...,m\} ~\text{or}~ u,v \in \{m+1,...,2m\} \}
+  \]
+
+  i.e. the disjoint union of two complete graphs of order $m$.
+\end{definition}
+
+\begin{definition}
+  Let parameters $(m,p,q)$ be given, $m \in \mathbb{N}$ and $p,q \in [0,1]$, and
+  let $G_0$ be the complete components graph of order $2m$. We construct a
+  \textbf{Noisy Complete Components (NCC)} graphs as follows.
+
+  Iterate over ever pair of vertices in the graph (i.e. the edge set of
+  $K_{2m}$). For every pair $(u,v) \in E_{G_0}$, that is, for the edges that
+  already exist in $G_0$, we delete the edge with probability $q$. Likewise, for
+  each pair $(u,v) \notin E_{G_0}$, we add the edge $(u,v)$ with probability
+  $p$.
+
+  The resultant graph is an NCC graph.
+\end{definition}
+
+For most values of $p$ and $q$, the resulting NCC graphs will be small world
+networks. However, these graphs are extremely regular, so they do not exhibit
+scale-free properties. Thus, we also propose a variant on the Barab\'asi-Albert
+model which adds labels while preserving the power law degree distribution.
+
+%% prove theorem: the following are equal: frobenius norm of a matrix,
+%% \sum{\lambda^2}, number of edges in G (or something like this)
+
+% sketch: recall \sum \lambda_i = \tr(M). Consider A^2, whose trace is the sum
+% of degrees
+
+\begin{definition}
+  Let parameters $G_0$ and $m \leq |G_0|$ be given as in the BA process as well
+  as a finite set of labels $S$ and a factor $\rho \ge 1$. In addition, suppose
+  each vertex in $G_0$ has been labeled by an element of $S$. Given a graph
+  $G_t$, we build $G_{t+1}$ as follows.
+
+  As in the BA process, we will add one new vertex and draw edges using
+  preferential attachment, however, we reweight the probability of drawing each
+  edge in order to favor vertices with label $l$ by a factor of $\rho$. We label
+  our new vertex $l$, which is chosen from $S$ with uniform probability.
+
+  Define $S_l$ to be the set of vertices with label $l$. Then, we compute the
+  probability of drawing an edge to a vertex $u$ as
+
+  \[
+    p_u = \begin{cases}
+      \frac{\rho\deg(u)}{w} &: u \in S_l\\
+      
+      \frac{\deg(u)}{w} &: u \in (V_G - S_l)\\
+    \end{cases}
+  \]
+
+  where $w$ is the weighted degree sum,
+
+  \[
+    w = \rho \sum_{v \in S_l}\deg(v) + \sum_{v \in (V_G - S_l)}\deg(v)
+  \]
+
+  We call this random process the \textbf{class-weighted Barab\'asi-Albert
+    (CWBA) process} and we call graphs sampled from this model \textbf{CWBA
+    graphs}.
+\end{definition}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../Main"
+%%% End:
