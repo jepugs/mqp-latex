@@ -1,7 +1,7 @@
-Since we wish to use random graphs to test vertex classifiers, an issue that
-arises is that the generative models presented so far do not suggest any natural
-labeling for the vertices of the resultant graphs. Thus, we propose some labeled
-models for generating small-world and scale-free networks.
+We wish to use random graphs to test vertex classifiers. An issue that arises is
+that the generative models presented so far do not suggest any natural labeling
+for the vertices of the resultant graphs. Thus, we propose some models for
+generating labeled small-world and scale-free networks.
 
 \begin{definition}
   Let $m$ be a natural number. We construct the \textbf{complete components
@@ -29,6 +29,7 @@ models for generating small-world and scale-free networks.
   The resultant graph is an NCC graph.
 \end{definition}
 
+% TODO: Prove this for some values of p, q & identify interesting special cases
 For most values of $p$ and $q$, the resulting NCC graphs will be small world
 networks. However, these graphs are extremely regular, so they do not exhibit
 scale-free properties. Thus, we also propose a variant on the Barab\'asi-Albert
@@ -40,6 +41,7 @@ model which adds labels while preserving the power law degree distribution.
 % sketch: recall \sum \lambda_i = \tr(M). Consider A^2, whose trace is the sum
 % of degrees
 
+% TODO: refer back to previous chapter definition of BA 
 \begin{definition}
   Let parameters $G_0$ and $m \leq |G_0|$ be given as in the BA process as well
   as a finite set of labels $S$ and a factor $\rho \ge 1$. In addition, suppose
@@ -47,11 +49,12 @@ model which adds labels while preserving the power law degree distribution.
   $G_t$, we build $G_{t+1}$ as follows.
 
   As in the BA process, we will add one new vertex and draw edges using
-  preferential attachment, however, we reweight the probability of drawing each
-  edge in order to favor vertices with label $l$ by a factor of $\rho$. We label
-  our new vertex $l$, which is chosen from $S$ with uniform probability.
+  preferential attachment, however, we label our new vertex $l$, which is chosen
+  from $S$ with uniform probability. Then, we reweight the probability of
+  drawing each edge in order to favor vertices with label $l$ by a factor of
+  $\rho$.
 
-  Define $S_l$ to be the set of vertices with label $l$. Then, we compute the
+  Define $S_l$ to be the set of vertices with label $l$. Then, we define the
   probability of drawing an edge to a vertex $u$ as
 
   \[
@@ -71,6 +74,8 @@ model which adds labels while preserving the power law degree distribution.
   We call this random process the \textbf{class-weighted Barab\'asi-Albert
     (CWBA) process} and we call graphs sampled from this model \textbf{CWBA
     graphs}.
+
+  % TODO: add example
 \end{definition}
 
 %%% Local Variables:
