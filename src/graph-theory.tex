@@ -11,21 +11,27 @@ We begin by recalling some conventional definitions and notations from graph
 theory.
 
 \begin{definition}
-  A \textbf{graph} $G$ is a pair of sets $(V,E)$ such that $E = V \times V$,
-  where equality on $E$ disregards order, that is $(u,v) = (v,u)$. We call $V$
-  the set of \textbf{vertices} of $G$ and $E$ the set of \textbf{edges} of $G$.
+  A \textbf{graph} $G$ is a pair of sets $(V,E)$ such that
+  $E \subseteq \{ \{x,y\} | x,y \in V \}$. We call $V$ the set of
+  \textbf{vertices} of $G$ and $E$ the set of \textbf{edges} of $G$.
 \end{definition}
+
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=0.4\textwidth]{pentagon.eps}
+  \end{center}
+  \caption{The Pentagon}
+\end{figure}
 
 \begin{example}[The Pentagon]
   The \textbf{pentagon}, also known as the \textbf{5-cycle}, is the graph
-  $(V,E)$ defined by $V = \{0,1,2,3,4\}$ and $E = \{(0,1),(1,2),(2,3),(4,0)\}$.
+  $(V,E)$ defined by $V = \{0,1,2,3,4\}$ and
+  $E = \{\{0,1\},\{1,2\},\{2,3\},\{\},\{4,0\}\}$
 
-  \includegraphics[width=0.4\textwidth,height=0.4\textwidth]{pentagon.eps}
-  \begin{wrapfigure}{r}{\textwidth}
-    \caption{}
-
-  \end{wrapfigure}
 \end{example}
+
+
 
 \begin{remark}[Notation]
   Let $G$ be a graph.
@@ -45,13 +51,13 @@ rather than the specific symbols in its vertex set. Thus we use the following
 definition of equality.
 
 \begin{definition}[Equivalence of graphs]
-  Two graphs $G_1$ and $G_2$ are equal if there exists a bijection $\phi :
-  V_{G_1} \to V_{G_2}$ such that $(u,v) \in V_{G_1} \Leftrightarrow
-  (\phi(u),\phi(v)) \in V_{G_2}$.
+  Two graphs $G_1$ and $G_2$ are equal if there exists a bijection
+  $\phi : V_{G_1} \to V_{G_2}$ such that
+  $(u,v) \in V_{G_1}$ if and only if $(\phi(u),\phi(v)) \in V_{G_2}$.
 \end{definition}
 
 For convenience, when we talk about ``a graph'' in the future, we will generally
-be referring to the class of all equivalent classes, as in the next example.
+be referring to the class of all equivalent graphs, as in the next example.
 
 \begin{example}
   The \textbf{empty graph} of order $n$ is the graph such that $|V| = n$ and $E
@@ -68,7 +74,7 @@ be referring to the class of all equivalent classes, as in the next example.
 
 \begin{definition}
   A \textbf{walk} of a graph $G$ is an alternating sequence of edges and
-  vertices such that each vertex is coincident to the edges before and after it.
+  vertices such that each vertex is incident to the edges before and after it.
 
   A \textbf{path} is the sequence of edges in a walk where every vertex is
   unique.
@@ -78,10 +84,12 @@ be referring to the class of all equivalent classes, as in the next example.
   The \textbf{adjacency matrix} $A$ of a graph $G$ is given by
   \[
     A_{ij} = \begin{cases}
-      1 &: (i,j) ~\text{is an edge in $G$} \\
+      1 &: \{v_i,v_j\} ~\text{is an edge in $G$} \\
       0 &: \text{otherwise} \\
     \end{cases}
   \]
+
+  where the set $\{v_i\}_{i=1}^{|V_G|}$ is an ordering of the vertices in $G$.
 \end{definition}
 
 %% Adjacency matrix properties
@@ -95,40 +103,31 @@ the way that the vertices of $G$ are numbered, we may end up with a different
 matrix. However, for every adjacency matrix the following holds:
 
 
-\begin{remark}
+\begin{definition}
+  A matrix is \textbf{reducible} if and only if it can be put in block upper triangular
+  form by simultaneous row and column permutations. In other words, a matrix $M$
+  is reducible if and only if there exists a permutation matrix $P$ such that
+  $P^{-1}MP$ is block upper triangular. Otherwise, it is said to be
+  \textbf{irreducible}.
+\end{definition}
+
+\begin{proposition}
   Let $A$ be the adjacency matrix of a graph $G$. Then the following is true:
 
   \begin{enumerate}
   \item $A$ is symmetric (so the eigenvalues of $A$ are real)
   \item $A$ corresponds to a graph that is unique up to equivalence
   \item $A$ is irreducible if and only if $G$ is connected
-  \item $A$ has a simple positive real eigenvalue $r$ of maximum magnitude
-  \item $r$ has corresponding eigenvector with all positive components
   \end{enumerate}
-\end{remark}
+\end{proposition}
 
 \begin{proof}
-  (1) follows trivially from the definition of $A$ (recall that because edges in
-  are undirected, $(u,v) \in E_G \Leftrightarrow (v,u) \in E_G$).
+  We omit proofs for (1) and (2) as they are self-evident.
 
-  (2) self-evident
-\end{proof}
-
-To prove the remaining properties, we require some additional results from
-linear algebra. First, recall this equivalent definition of reducibility:
-
-\begin{definition}
-  A matrix is reducible if and only if it can be put in block upper triangular
-  form by simultaneous row and column permutations. In other words, a matrix $M$
-  is irreducible if and only if there exists a permutation matrix $P$ such that
-  $P^{-1}MP$ is block upper triangular.
-\end{definition}
-
-\begin{proof}
-  We can now show (3). First, we observe that $P^{-1}AP$ is an adjacency matrix
-  of a graph equivalent to $G$ for any permutation matrix $P$. So WLOG, suppose
-  that $G$ is connected and $A$ is already in block upper triangular form. Then
-  because $A$ is symmetric, we have
+  For (3), we first observe that $P^{-1}AP$ is an adjacency matrix of a graph
+  equivalent to $G$ for any permutation matrix $P$. So WLOG, suppose that $G$ is
+  connected and $A$ is already in block upper triangular form. Then because $A$
+  is symmetric, we have
 
   \[
     A = \begin{bmatrix}
@@ -143,17 +142,18 @@ linear algebra. First, recall this equivalent definition of reducibility:
   contradiction.
 \end{proof}
 
-The irreducibility result allows us to apply the following theorem, resulting
-immediately in the remaining properties of $A$.
+The irreducibility result allows us to apply the Perron-Frobenius Theorem for
+nonnegative matrices, resulting immediately in the remaining properties of $A$.
 
-\begin{theorem}[Perron-Frobenius for Nonnegative Matrices]
-  Let $A$ be an irreducible nonnegative square matrix of order $n$ and period
-  $h$. The following is true.
+\begin{theorem}[CITATION HERE]
+  Let $A$ be an irreducible nonnegative square matrix of order $n$. The
+  following is true.
 
   \begin{enumerate}
-  \item Let $r$ be the maximum magnitude of the eigenvalues of $A$. $r$ is a
-    (real,positive) simple eigenvalue of $A$.
-  \item $r$ has left and right eigenvectors whose components are all positive
+  \item Let $r$ be the maximum magnitude of the eigenvalues of $A$. Then $r$ is
+    a (real, positive) simple eigenvalue of $A$.
+  \item The eigenvalue $r$ has left and right eigenvectors whose components are
+    all positive
   \item The only eigenvectors of $A$ whose components are all positive have
     eigenvalue $r$.
   \item
@@ -161,9 +161,10 @@ immediately in the remaining properties of $A$.
   \end{enumerate}
 \end{theorem}
 
-
-Which shows (4) and (5). Indeed, The irreducibility and nonnegativity of $A$
-yields many other interesting properties which we omit here.
+Because $A$ is nonnegative and irreducible for all connected graphs, these
+properties hold for all such adjacency matrices. Indeed, The irreducibility and
+nonnegativity of $A$ yields many other interesting properties which we omit
+here.
 
 We will next explore graph Laplacians, whose spectra are closely related to
 those of adjacency matrices.
@@ -207,9 +208,9 @@ those of adjacency matrices.
 
 \section{Small-World and Scale-free Networks}
 
-The motivation for DSD comes from small-world networks, which are a class of
-graphs characterized by having a very small average shortest-path distance
-between any two vertices compared to the overall size of the graph.
+Small-world networks are a class of graphs characterized by having a very small
+average shortest-path distance between any two vertices compared to the overall
+size of the graph.
 
 % eigenvalues and eigenvectors
 
@@ -222,7 +223,7 @@ between any two vertices compared to the overall size of the graph.
   where $\dist(u,v)$ is shortest-path distance. 
 \end{definition}
 
-\begin{definition}
+\begin{definition}[Page 1 of ~\cite{PhysRevLett.90.058701}]
   Consider a graph $G = (V,E)$. $G$ is a \textbf{small-world network} if
   $L_G \sim \log{|V|}$.
 \end{definition}
@@ -249,10 +250,11 @@ properties which are not necessarily captured by their small-worldedness alone.
 %   coefficients, $C_G = \frac{\sum_{v \in V}{C_v}}{|V|}$.
 % \end{definition}
 
-\begin{definition}
+% TODO: get citation of uncorr random scale-free networks
+\begin{definition}[Equation (1) of ~\cite{}]
   A \textbf{scale-free network} is a graph whose vertex degrees follow a power
-  law. That is, given a randomly selected $u \in G$, $P(\deg(u) = k) \sim
-  k^{-\gamma}$ for some $\gamma > 0$.
+  law. That is, given a randomly selected $u \in G$,
+  $P(\deg(u) = k) \sim k^{-\gamma}$ for some $\gamma > 0$.
 \end{definition}
 
 One of the defining characteristics of power law distributions is that they have
@@ -260,15 +262,16 @@ very long tails. In a scale-free graph with many vertices, this implies the
 existence of \textbf{hubs}, which we informally define as vertices whose degrees
 are far larger than average in the graph.
 
-\begin{theorem}[R. Cohen and S. Havlin]
+% TODO: cite with better precision?
+\begin{theorem}[Main result of ~\cite{PhysRevLett.90.058701}]
   Scale-free networks are small-world networks.
 \end{theorem}
 
 Real world examples of scale-free networks are abundant and include the world
 wide web, cellular communication networks, and protein-protein interaction (PPI)
 networks. It is not surprising, then, that scale-free networks are necessarily
-small-worlds networks, however we defer to Cohen and Havlin for proof of this
-fact ~\cite{PhysRevLett.90.058701}.
+small-world networks, however we defer to Cohen and Havlin for proof of this
+fact 
 
 
 \section{Random Graphs}
@@ -283,10 +286,10 @@ fact ~\cite{PhysRevLett.90.058701}.
   indexed by a discrete time $t \in \mathbb{N}$.
 \end{definition}
 
-We are interested in random graph processes which build small-worlds networks.
-The Watts-Strogatz graphs are the earliest example of such a process. They are
-defined by starting with a regular ring lattice and randomly rewiring edges
-until the graph is obtained.
+We are interested in random graph processes which build small-world networks.
+The Watts-Strogatz graphs are an example of such a process. They are defined by
+starting with a regular ring lattice and randomly rewiring edges until the graph
+is obtained.
 
 \begin{definition}
   An $n$-$k$ \textbf{regular ring lattice} is a graph $(V, E)$ with $n$ vertices
@@ -295,7 +298,8 @@ until the graph is obtained.
 
 \begin{definition}
   Let $v$ be a vertex in a graph. We can \textbf{rewire} $v$ by deleting one
-  edge of $v$ and replacing it with 
+  edge of $v$ and drawing a new one by sampling uniformly from all vertices that
+  do not share an edge with $v$.
 \end{definition}
 
 \begin{definition}
@@ -322,12 +326,15 @@ until the graph is obtained.
   We call graphs sampled from $G_{|G|}$ \textbf{Watts-Strogatz graphs}.
 \end{definition}
 
+% TODO: email O Cathain about this: it was shown empirically-- should it be a
+% theorem?
 The Watts-Strogatz graphs are small-world networks for all but extremely small
 values of $p$ ~\cite{Watts1998Collective}. However, in general, they are not
 scale free networks ~\cite{Barabasi509}, and thus do not show the structural
 characteristics of many practical data sets.
 
-\begin{definition}
+% TODO: ask about restated definitions
+\begin{definition}[Pg. 511 of ~\cite{Barabasi509}]
   Let any graph $G_0$ be given as well as some parameter $m$, $m \leq |G_0|$. We
   build the random graph $G_{t+1}$ by adding a new vertex to $G_t$ and
   connecting it to $m$ vertices of $G_t$ with probabilities proportional to the
