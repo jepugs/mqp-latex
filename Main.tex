@@ -5,7 +5,8 @@
 \usepackage{cite}
 
 \usepackage{enumerate}
-\usepackage{graphicx,wrapfig,lipsum}
+\usepackage{graphicx}
+\usepackage{wrapfig}
 
 \frenchspacing
 
@@ -14,6 +15,7 @@
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}
 \newtheorem*{remark}{Remark}
+\newtheorem{proposition}{Proposition}
 \newtheorem{corollary}{Corollary}
 \newtheorem*{example}{Example}
 
@@ -39,8 +41,8 @@
 \graphicspath{ {images/} }
 
 \begin{document}
-\title{Characteristics of the DSD Metric}
-\author{Daniel Kim, John Pugmire, Tianyang Yi\\Worcester Polytechnic Institute\\}
+\title{Metric-Based Classification of Graph Vertices}
+\author{Daniel Kim, John Pugmire\\Worcester Polytechnic Institute\\}
 \maketitle
 \tableofcontents
 
@@ -62,10 +64,10 @@
 % introduction to random graphs and our models
 \input{src/random-graphs.tex}
 
-% rename to The DSD Metric
 % do DSD in terms of eigenvalues and spectral gap (regular case first)
 %  keep the circulant graphs
-\chapter{Properties of DSD}
+\chapter{Metrics on Graphs}
+
 \section{Definition of DSD}
 \input{src/DSD-defn.tex}
 
