@@ -1,4 +1,5 @@
 \section{Introduction}
+% Fix citations
 
 In this chapter, we perform simulations to gauge the effectiveness of the DSD metric in improving the prediction of labels on data for scale-free networks [CITE], Watts-Strogatz small-world networks [CITE], and some networks we constructed with hypotheses of how the DSD metric should affect classification on them. We compare the DSD metric with the shortest-path distance metric, which is used in some modern approaches of label prediction, such as k-nearest neighbor classifiers [CITE] and laplacian eigenmaps [CITE]. Although several methods for measuring distance or similarity among vertices in a network use the shortest-path distance in the network, the DSD metric is designed to capture distinctions in similarity not captured by the shortest-path distance alone. Thus, we compare effectiveness of the DSD metric and the shortest-path distance metric. We expect the shortest path distance metric to be less effective than the DSD metric for networks with high clustering coefficients or networks with a small diameter, such as small-world networks. Any vertex in such a network is close to any other node in the network, making the shortest-path distance of any two nodes close. We also expect the DSD metric to be more effective on networks with hub vertices, since these vertices tend to make the network highly connected with a small diameter.
 
@@ -10,6 +11,7 @@ We hope to reveal properties of graphs that allow the DSD metric to be more effe
 In this section, we discuss several prediction methods that we use for our simulations in chapter 5. These prediction methods can use any graph metric to predict labels. Thus, for a simulation, we test different metrics using the same prediction method and compare results. This allows us to study the effectiveness of various metrics in improving the accuracy of a certain prediction method. In short, the prediction method is not dependent on any metric, but predictive results may change for different metrics. The following prediction methods assume that a graph $G=(V,E)$ is given on which prediction is to be done.
 
 \subsection{Majority Voting Algorithm}
+% Weighting by dist? Metric?
 Cao et al. ~\cite{10.1371/journal.pone.0076339} mentions a simple prediction method called the neighborhood majority voting algorithm. We considered two implementations of this algorithm. One implementation considers each vertex $v \epsilon V$ and all neighbors of $v$ within an $\varepsilon$ distance from $v$ (a ball of radius $\varepsilon$). The $\varepsilon$ distance depends on the metric under consideration, and may be changed as a parameter. In an unweighted scheme, each neighbor within the ball of radius $\varepsilon$ votes equally for their own label. In a weighted scheme, each neighbor gets a vote proportional to the reciprocal of their distance to the vertex $v$ in consideration. The other implementation of this algorithm considers each vertex $v \epsilon V$ and the $k$-nearest neighbors of $v$. Voting is done similarly in both an unweighted and weighted scheme.
 
 
@@ -24,6 +26,7 @@ We studied the classification problem on the complete components graph. After co
 
 To test the behavior of the prediction accuracy with respect to different parameters of the complete components graph, we ran several simulations using varying parameter inputs. The parameter $n$, the size of one complete graph used in the construction of the complete components graph, was set to $250$. A constant value for this parameter sufficiently large would allow us to observe differences in prediction accuracy and changing this parameter would not affect the prediction accuracy. The parameter for the average number of runs for calculating prediction accuracy, $avgRuns$ was also set to a constant value of $10$, since this parameter would not affect the prediction accuracy. The parameter for the proportion of the graph labels to censor, $censorP$, was also set to a constant $0.3$ because this would not affect the prediction accuracy, as shown in figure \ref{fig:censor_param}.
 
+% Hard to read
 \begin{figure}[h!]
 \centering
 \includegraphics[width=1.0\textwidth]{censor_param.png}
@@ -51,12 +54,5 @@ The parameters that we varied in our simulations for the complete components gra
 
 \subsection{Analysis}
 We can expect prediction using the DSD metric to do significantly better than prediction using the shortest path distance metric. This can be seen from Figure \ref{fig:cc_p_q} and Figure \ref{fig:cc_q_p}, and can also be shown using expected values.
-
-For an arbitrary vertex in the complete components graph, we can find the expected number of vertices with the same label. We will call this the same-class degree of a vertex. We can calculate this value by recalling the construction of the complete components graph. First, we fix a vertex $v$ of a complete components graph. There are $(n-1)$ other vertices of the same label as $v$, and originally, these vertices including $v$ made a complete graph. However, during construction, we deleted edges between vertices in the same class with a probability $q$. Thus, we can say
-$$deg_{same}(v) = (n-1) - (n-1)q = (1-q)(n-1)$$
-The same-class degree of $v$ is equal to the number of neighbors of $v$ when it was in a complete graph, minus the expected number of deleted edges. We can use a similar method to calculate the different-class degree, or the number of vertices with a different label.
-$$deg_{diff}(v) = np$$
-The different-class degree of $v$ is equal to the number of vertices with a different label multiplied by the probability $p$ of adding an edge between the components of different labels. The sum of the same-class degree and different-class degree of a vertex $v$ gives the expected degree of $v$.
-$$deg(v) = deg_{same}(v) + deg_{diff}(v) = (1-q)(n-1) + np$$
 
 Using the parameters from the simulation run shown in Figure \ref{fig:cc_p_q}, we get that for an arbitrary vertex $v$, $deg_{same}(v) = (1-0.5)(250-1) = 124.5$. Since $deg_{diff} = 250p$, we know that $deg_{diff}$ will increase or decrease proportional to the change in $p$. For values of $p$ between $0$ and $0.5$, we know that $deg_{same} > deg_{diff}$. It is clear that the shortest path distance metric should predict with a fairly high accuracy for $p$ close to $0$, but should predict no better than a random guess for $p$ close to $0.5$. The prediction accuracy of the shortest path distance only becomes worse for $p$ greater than $0.5$, since $deg_{same} < deg_{diff}$.
