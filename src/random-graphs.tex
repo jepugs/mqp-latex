@@ -1,7 +1,22 @@
-We wish to use random graphs to test vertex classifiers. An issue that arises is
-that the generative models presented so far do not suggest any natural labeling
-for the vertices of the resultant graphs. Thus, we propose some models for
-generating labeled small-world and scale-free networks.
+We wish to use random graphs to test vertex classifiers. An issue that arises is that the generative
+models presented so far do not suggest any natural labeling for the vertices of the resultant graphs.
+Thus, we propose some models for generating labeled small-world and scale-free networks.
+
+\begin{definition}
+  A \textbf{labeled graph} is a graph $G$ and a function $c : V_G \to S$, where $S$ is an arbitrary.
+  For $u \in V_G$, we call $c(u)$ the \textbf{class} of $u$.
+\end{definition}
+
+In considering labeled graphs, it is useful to look at not only at each vertex's degree, but also the
+number of neighbors with the same label vs the number of neighbors with a different label. For
+convenience, we define these quantities as follows:
+
+\begin{definition}
+  Let $G$ be a labeled graph, $u \in V_G$. The \textbf{same-class degree} of $u$, $\deg_{same}(u)$, is
+  the number of vertices in the neighborhood of $u$ in the same class as $u$. $\deg_{diff}(u) =
+  \deg(u) - \deg_{same}(u)$ is the number of vertices in a different class.
+\end{definition}
+
 
 \begin{definition}
   Let $m$ be a natural number. We construct the \textbf{complete components
@@ -12,13 +27,22 @@ generating labeled small-world and scale-free networks.
     E = \{ (u,v) : u,v \in \{1,...,m\} ~\text{or}~ u,v \in \{m+1,...,2m\} \}
   \]
 
-  i.e. the disjoint union of two complete graphs of order $m$.
+  i.e. the disjoint union of two complete graphs of order $m$. In addition, we label the graph by the
+  function
+
+  \[c(u) = \left\{
+      \begin{cases}
+        0 &: u \in \{1,...,m\} \\
+        1 &: u \in \{m+1,...,2m\}
+      \end{cases}
+    \right.\]
 \end{definition}
 
 \begin{definition}
-  Let parameters $(m,p,q)$ be given, $m \in \mathbb{N}$ and $p,q \in [0,1]$, and
-  let $G_0$ be the complete components graph of order $2m$. We construct a
-  \textbf{Noisy Complete Components (NCC)} graphs as follows.
+  \label{def:ncc}
+  Let parameters $(m,p,q)$ be given, $m \in \mathbb{N}$ and $p,q \in [0,1]$, and let $G_0$ be the
+  complete components graph of order $2m$. We construct a \textbf{Noisy Complete Components (NCC)}
+  graphs as follows.
 
   Iterate over ever pair of vertices in the graph (i.e. the edge set of
   $K_{2m}$). For every pair $(u,v) \in E_{G_0}$, that is, for the edges that
@@ -29,11 +53,115 @@ generating labeled small-world and scale-free networks.
   The resultant graph is an NCC graph.
 \end{definition}
 
-% TODO: Prove this for some values of p, q & identify interesting special cases
-For most values of $p$ and $q$, the resulting NCC graphs will be small world
-networks. However, these graphs are extremely regular, so they do not exhibit
-scale-free properties. Thus, we also propose a variant on the Barab\'asi-Albert
-model which adds labels while preserving the power law degree distribution.
+We will now inspect the properties of such graphs in order to demonstrate that they are, in fact,
+small worlds graphs in the subset of the parameter space in which we're interested.
+
+\textbf{Question for Profs. Walls \& \'O Cath\'ain} Should I define the binomial and Bernoulli
+distributions? If so, how much detail? Are the PMFs sufficient?
+
+\begin{theorem}
+  \label{thm:ncc_deg}
+  Let $G$ be an $(m,p,q)$ NCC graph and $u$ a vertex in $G$. Then $\deg(u)$ follows the distribution
+  $X + Y$, where $X$ and $Y$ are (independent) binomial random variables, $X \sim B(m-1,1-q)$ and
+  $Y \sim B(m,p)$. Moreover, $\deg_{same}(u) = X$ and $\deg_{diff}(u) = Y$.
+\end{theorem}
+\begin{proof}
+  First, observe that adding and deleting edges to an NCC graph is done independently for each edge.
+  In other words, the existence or nonexistence of any edge of $G$ is independent of every other edge.
+  In addition, the number of edges added between $u$ and all other different-class vertices is equal
+  to a sum of $m$ Bernoulli random variables of probability $p$, because there are $m$ possible edges
+  from $u$ to the opposite class. Thus $deg_{diff}(u)$ follows a binomial distribution on $m$ trials,
+  $deg_{diff}(u) = Y \sim B(m,p)$.
+
+  In the case of same-class edges, we will consider the probability that an edge is \textit{preserved}
+  rather than deleted. Edges are preserved with probability $(1-q)$, so as in the different-class
+  case, we can see that the same-class degree of $u$ follows a binomial distribution on $(m-1)$
+  trials, $deg_{same} = X \sim B(m-1,1-q)$.
+
+  As we've counted both the same- and different-class degrees, it is clear that $deg(u) = X + Y$.
+\end{proof}
+
+We must take care to note that this is not the same thing as the degree distribution over the whole
+graph $G$. While each edge with respect to a single vertex is picked independently, this is not true
+over the whole graph, since each edge is connected to two vertices.
+
+\begin{remark}
+  The previous theorem shows that the following is true
+  \begin{enumerate}
+  \item $\E(\deg_{same}(u)) = (m-1)(1-q)$ and $\E(\deg_{diff}(u)) = mp$, where $\E$ is expectation.
+  \item $\Var(\deg_{same}(u)) = (m-1)(1-q)q$ and $\Var(\deg_{diff}(u)) = mp(1-p)$, where $\Var$ is
+    variance.
+  \item $\E(\deg(u)) = (m-1)(1-q) + mp$ by linearity of expectation.
+  \item $\Var(\deg(u)) = (m-1)(1-q)q + mp(1-p)$ by linearity of variance on independent random
+    variables.
+  \end{enumerate}
+\end{remark}
+
+\begin{theorem}
+  Let $u$ and $v$ be vertices in an $(m,p,q)$ NCC graph. We write $P(\spd(u,v) = k)$ for the probability
+  that the shortest path between $u$ and $v$ is equal to $k$.
+
+  If $c(u) = c(v)$, then $\E(P(\spd(u,v) = 1)) = 1-q$ and
+  $\E(P(\spd(u,v) = 2)) = 1- (1 - (1-q)^2)^{m-1} (1-p^2)^{m}$.
+
+  If $c(u) \neq c(v)$, then $\E(P(\spd(u,v) = 1)) = mp$ and
+  $\E(P(\spd(u,v) = 2)) = 1- ((1-q)(1-p) + q)^{m-1}(pq+(1-p))^n$.
+\end{theorem}
+\begin{proof}
+  For the cases where $\spd(u,v) = 1$, the results follow immediately from definition \ref{def:ncc}.
+
+  \textbf{Note to Professors:} while typing this, I found an error. I need to nudge around the random
+  variables in the probability formulas because I'm operating under the assumption that 1) there's an
+  edge between $u$ and each neighbor, and 2) there's not an edge between $u$ and $v$. This just
+  reduces the number of trials on the binomial variables so it should just be changes by factors of $p$
+  and $q$, but I didn't have time to work it out.
+
+  % TODO: fix this. X changes slightly because we assume that the trial between u and v failed, and
+  % the trial between u and each neighbor succeeded.
+  Now, we consider the case where $\spd(u,v) = 2$ and $c(u) = c(v)$. Under these circumstances, we
+  denote the number of same-class neighbors by the random variable $X$ and the number of
+  different-class neighbors by $Y$. A length-2 path between $u$ and $v$ must exist unless we fail to
+  preserve/add every single edge from the neighborhood of $u$ to $v$, which happens with probability
+  $q^X(1-p)^Y$. Thus $P(\spd(u,v) = 2) = 1 - q^X(1-p)^Y$.
+
+  Since $X$ and $Y$ are binomial random variables by theorem \ref{thm:ncc_deg}, their probability mass
+  functions are:
+
+  \begin{align*}
+    f_X(x) &= {n-1 \choose x} (1-q)^xq^{n-1-x} \\
+    f_Y(y) &= {n \choose y} p^y(1-p)^{n-y}
+  \end{align*}
+
+  using the expectation formula, we can compute $q^x$ and $p^Y$:
+
+  \begin{align*}
+    \E(q^X) &= \sum_{i=0}^{n-1}q^i{n-1 \choose i}(1-q)^iq^{n-1-i} \\
+            &= q^{n-1}\sum_{i=0}^{n-1}{n-1 \choose i}(1-q)^i(1)^{n-1-i} \\
+            &= q^{n-1}(2-q)^{n-1} \\
+            &= (1 - (1 - q)^2)^{n-1}
+  \end{align*}
+
+  \begin{align*}
+    \E((1-p)^Y) &= \sum_{i=0}^{n}(1-p)^i{n \choose i}(1-(1-p))^i(1-p)^{n-i} \\
+            &= (1-p)^{n}\sum_{i=0}^{n}{n \choose i}(1-(1-p))^i(1)^{n-i} \\
+            &= (1-p)^{n}(p-1))^{n} \\
+            &= (1 - p^2)^{n}
+  \end{align*}
+  thus, in this case,
+
+  \[ P(\spd(u,v) = 2) = 1 - (1 - (1-q)^2)^{n-1}(1-p^2)^n \]
+
+  % TODO: fix this. Y changes slightly because we assume that the trial between u and v failed.
+  In the case where $c(u) \neq c(v)$, the probability becomes $P(\spd(u,v) = 2) = 1 - q^Y(1-p)^X$, so
+  by an analogous computation, we get
+
+  \[ P(\spd(u,v) = 2) = 1 - (q + (1-p)(1-q))^{n-1}(pq + (1-p))^n \]
+\end{proof}
+
+
+However, these graphs are extremely regular, so they do not exhibit scale-free properties. Thus, we
+also propose a variant on the Barab\'asi-Albert model which adds labels while preserving the power law
+degree distribution.
 
 %% prove theorem: the following are equal: frobenius norm of a matrix,
 %% \sum{\lambda^2}, number of edges in G (or something like this)
@@ -48,11 +176,10 @@ model which adds labels while preserving the power law degree distribution.
   each vertex in $G_0$ has been labeled by an element of $S$. Given a graph
   $G_t$, we build $G_{t+1}$ as follows.
 
-  As in the BA process, we will add one new vertex and draw edges using
-  preferential attachment, however, we label our new vertex $l$, which is chosen
-  from $S$ with uniform probability. Then, we reweight the probability of
-  drawing each edge in order to favor vertices with label $l$ by a factor of
-  $\rho$.
+  As in the BA process (see definition \ref{def:ba}, page \pageref{def:ba}), we will add one new vertex and draw
+  edges using preferential attachment, however, we label our new vertex $l$, which is chosen from $S$
+  with uniform probability. Then, we reweight the probability of drawing each edge in order to favor
+  vertices with label $l$ by a factor of $\rho$.
 
   Define $S_l$ to be the set of vertices with label $l$. Then, we define the
   probability of drawing an edge to a vertex $u$ as

@@ -1,15 +1,16 @@
 \subsection*{Definition of DSD}
 
-\noindent In their original definition, Cao et al. define DSD in terms of a
-vector-valued function $\mathrm{He}^{k}(u)$, which computes the expected number of times
-a length-$k$ random walk originating at a vertex $u$ will visit each other vertex
-in the graph. They compute DSD by taking the $l_1$-norm of the difference
-between two such vectors in the limit as $k \to \infty$. We present an
-alternative definition which is more compact and easier to manipulate with the
-usual machinery of linear algebra.
+\noindent In their original definition, Cao, Zhang, Park, Daniels, Crovella, Cowen, and Hescott define
+DSD in terms of a vector-valued function $\mathrm{He}^{k}(u)$, which computes the expected number of
+times a length-$k$ random walk originating at a vertex $u$ will visit each other vertex in the graph.
+They compute DSD by taking the $l_1$-norm of the difference between two such vectors in the limit as
+$k \to \infty$. We present an alternative definition which is more compact and easier to manipulate
+with the usual machinery of linear algebra.
 
 %% Fix this so D is D inverse (the degree matrix inverse)
 
+% TODO: more rigorously define random walks and markov chains
+% ask question about
 Random walks can be modeled as Markov chains, where the current state is a
 vertex $u$ in the graph, and the transition probability is $\frac{1}{\deg(u)}$
 for the neighbors of $u$ and $0$ otherwise. The transition matrix can be written

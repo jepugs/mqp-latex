@@ -1,4 +1,12 @@
+In this chapter, we lay out the necessary background in graph theory for our later results. Section
+\ref{sec:intro_graphs} includes fundamental definitions from graph theory and some important results
+from spectral graph theory, while section \ref{sec:small_world} introduces small world and scale-free
+networks, which are graphs that have particular structural properties often found in real-world data.
+Finally, \ref{sec:random_graphs} provides definitions relating to random graphs and relevant examples
+of generative models.
+
 \section{Elementary Graph Theory}
+\label{sec:intro_graphs}
 
 % two sentence summary of contents
 
@@ -17,21 +25,17 @@ theory.
 \end{definition}
 
 
-\begin{figure}
-  \begin{center}
-    \includegraphics[width=0.4\textwidth]{pentagon.eps}
-  \end{center}
-  \caption{The Pentagon}
-\end{figure}
-
 \begin{example}[The Pentagon]
-  The \textbf{pentagon}, also known as the \textbf{5-cycle}, is the graph
-  $(V,E)$ defined by $V = \{0,1,2,3,4\}$ and
-  $E = \{\{0,1\},\{1,2\},\{2,3\},\{\},\{4,0\}\}$
-
+  The \textbf{pentagon}, also known as the \textbf{5-cycle}, is the graph $(V,E)$ defined by
+  $V = \{0,1,2,3,4\}$ and $E = \{\{0,1\}, \{1,2\}, \{2,3\},\allowbreak \{3,4\}, \{4,0\}\}$.
 \end{example}
 
-
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.25\textwidth]{pentagon.eps}
+  \caption{The Pentagon}
+  \label{fig:pentagon}
+\end{figure}
 
 \begin{remark}[Notation]
   Let $G$ be a graph.
@@ -51,33 +55,53 @@ rather than the specific symbols in its vertex set. Thus we use the following
 definition of equality.
 
 \begin{definition}[Equivalence of graphs]
-  Two graphs $G_1$ and $G_2$ are equal if there exists a bijection
-  $\phi : V_{G_1} \to V_{G_2}$ such that
-  $(u,v) \in V_{G_1}$ if and only if $(\phi(u),\phi(v)) \in V_{G_2}$.
+  Two graphs $G_1$ and $G_2$ are equivalent if there exists a bijection $\phi : G_1 \to G_2$
+  such that $(u,v) \in G_1$ if and only if $(\phi(u),\phi(v)) \in G_2$.
 \end{definition}
 
-For convenience, when we talk about ``a graph'' in the future, we will generally
-be referring to the class of all equivalent graphs, as in the next example.
+For convenience, when we talk about ``a graph'' in the future, we will generally be referring to a
+maximal set of equivalent graphs, as in the next example.
 
 \begin{example}
   The \textbf{empty graph} of order $n$ is the graph such that $|V| = n$ and $E
   = \varnothing$.
 
-  The \textbf{complete graph} or order $n$, denoted $K_n$, is the graph
-  containing every possible edge, so that $|E_{K_n}| = \frac{n(n-1)}{2}$.
+  The \textbf{complete graph} or order $n$, denoted $K_n$, is the graph containing every possible
+  edge, so that $|E_{K_n}| = \frac{n(n-1)}{2}$.
+
+  We say a graph is \textbf{bipartite} when there exists a bipartition of its vertex set such that
+  there are no edges between vertices in the same partition. The \textbf{complete bipartite graph},
+  denoted $K_{n,m}$, is such a graph where the two partitions have cardinality $n$ and $m$
+  respectively, and every possible edge between $n$ and $m$ is drawn.
+\end{example}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.4\textwidth]{k34.eps}
+  \caption{The complete bipartite graph $K_{3,4}$}
+  \label{fig:k34}
+\end{figure}
+
+\begin{definition}
+  The \textbf{neighborhood} of a vertex $u \in G$, denoted $N(u)$, is the set of all vertices $v$
+  such that $\{u,v\} \in E_G$, and these $v$ are called the neighbors of $u$. The \textbf{degree} of
+  $u$ is defined by $\deg(u) = |N(u)|$. A graph in which every vertex has the same degree is
+  \textbf{regular}. If that degree is equal to $k$, then the graph is said to be $k$-\textbf{regular}.
+\end{definition}
+
+\begin{example}
+  $K_n$ is an $(n-1)$-regular graph, $K_{n,n}$ is an $n$-regular graph, and the pentagon is a
+  $2$-regular graph.
 \end{example}
 
 \begin{definition}
-  The \textbf{degree} of a vertex $u \in G$, denoted $\deg (u)$, is the number
-  of edges in $G$ which contain $u$.
-\end{definition}
+  A \textbf{walk} of a graph $G$ is an alternating sequence of edges and vertices such that each
+  vertex is incident to the edges before and after it.
 
-\begin{definition}
-  A \textbf{walk} of a graph $G$ is an alternating sequence of edges and
-  vertices such that each vertex is incident to the edges before and after it.
+  A \textbf{path} is the sequence of edges in a walk where every vertex is unique.
 
-  A \textbf{path} is the sequence of edges in a walk where every vertex is
-  unique.
+  The \textbf{shortest-path distance} between two vertices $u,v \in G$, denoted $\spd(u,v)$, is the
+  minimum number of edges in a path from $u$ to $v$.
 \end{definition}
 
 \begin{definition}
@@ -89,9 +113,9 @@ be referring to the class of all equivalent graphs, as in the next example.
     \end{cases}
   \]
 
-  where the set $\{v_i\}_{i=1}^{|V_G|}$ is an ordering of the vertices in $G$.
+  where the set $\{v_i\}_{i=1}^{|G|}$ is an ordering of the vertices in $G$.
 \end{definition}
-
+ 
 %% Adjacency matrix properties
 % - symmetric, (eigenvalues are real)
 % - eigenvectors
@@ -136,10 +160,9 @@ matrix. However, for every adjacency matrix the following holds:
     \end{bmatrix}
   \]
 
-  where $B$, $C$, are square block matrices. Say that $B$ has size $m \times m$.
-  It is clear that there are no edges connecting the vertices in $\{1, ..., m\}$
-  to those in $\{m+1, ..., n\}$. Thus $G$ is not be connected, which is a
-  contradiction.
+  where $B$, $C$, are square block matrices. Say that $B$ has size $m \times m$. It is clear that
+  there are no edges connecting the vertices in $\{1, ..., m\}$ to those in $\{m+1, ..., n\}$. Thus
+  $G$ is not connected, which is a contradiction.
 \end{proof}
 
 The irreducibility result allows us to apply the Perron-Frobenius Theorem for
@@ -192,6 +215,13 @@ those of adjacency matrices.
   \]
 \end{definition}
 
+\begin{proposition}
+  %%%%% \begin{enumerate}
+  %%%%%   \item 
+  %%%%% \end{enumerate}
+  Let $G$ be a $k$-regular graph
+\end{proposition}
+
 %% Graph laplacian discussion
 % adjacency and eigenvalues relationship
 
@@ -207,6 +237,7 @@ those of adjacency matrices.
 
 
 \section{Small-World and Scale-free Networks}
+\label{sec:small_world}
 
 Small-world networks are a class of graphs characterized by having a very small
 average shortest-path distance between any two vertices compared to the overall
@@ -250,8 +281,7 @@ properties which are not necessarily captured by their small-worldedness alone.
 %   coefficients, $C_G = \frac{\sum_{v \in V}{C_v}}{|V|}$.
 % \end{definition}
 
-% TODO: get citation of uncorr random scale-free networks
-\begin{definition}[Equation (1) of ~\cite{}]
+\begin{definition}[Pg. 1 of ~\cite{PhysRevE.71.027103}]
   A \textbf{scale-free network} is a graph whose vertex degrees follow a power
   law. That is, given a randomly selected $u \in G$,
   $P(\deg(u) = k) \sim k^{-\gamma}$ for some $\gamma > 0$.
@@ -262,19 +292,20 @@ very long tails. In a scale-free graph with many vertices, this implies the
 existence of \textbf{hubs}, which we informally define as vertices whose degrees
 are far larger than average in the graph.
 
-% TODO: cite with better precision?
-\begin{theorem}[Main result of ~\cite{PhysRevLett.90.058701}]
-  Scale-free networks are small-world networks.
-\end{theorem}
-
 Real world examples of scale-free networks are abundant and include the world
 wide web, cellular communication networks, and protein-protein interaction (PPI)
 networks. It is not surprising, then, that scale-free networks are necessarily
 small-world networks, however we defer to Cohen and Havlin for proof of this
-fact 
+fact.
+
+\begin{theorem}[Final result of ~\cite{PhysRevLett.90.058701}]
+  Scale-free networks are small-world networks.
+\end{theorem}
+
 
 
 \section{Random Graphs}
+\label{sec:random_graphs}
 
 % exponential distribution eigenvalues
 
@@ -326,15 +357,14 @@ is obtained.
   We call graphs sampled from $G_{|G|}$ \textbf{Watts-Strogatz graphs}.
 \end{definition}
 
-% TODO: email O Cathain about this: it was shown empirically-- should it be a
-% theorem?
-The Watts-Strogatz graphs are small-world networks for all but extremely small
-values of $p$ ~\cite{Watts1998Collective}. However, in general, they are not
-scale free networks ~\cite{Barabasi509}, and thus do not show the structural
-characteristics of many practical data sets.
+Watts and Strogatz showed empirically that the Watts-Strogatz graphs are small-world networks for all
+but extremely small values of $p$~\cite{Watts1998Collective}. However, in general, they are not scale
+free networks~\cite{Barabasi509}, and thus do not show the structural characteristics of many
+practical data sets.
 
 % TODO: ask about restated definitions
 \begin{definition}[Pg. 511 of ~\cite{Barabasi509}]
+  \label{def:ba}
   Let any graph $G_0$ be given as well as some parameter $m$, $m \leq |G_0|$. We
   build the random graph $G_{t+1}$ by adding a new vertex to $G_t$ and
   connecting it to $m$ vertices of $G_t$ with probabilities proportional to the
@@ -354,10 +384,13 @@ characteristics of many practical data sets.
 This type of model, where edges to a new vertex are drawn with non-uniform
 probability, is known as \textbf{preferential attachment}.
 
-\begin{theorem}[A. Barab\'asi and R. Albert]
+\begin{theorem}[Pg. 511 of ~\cite{Barabasi509}]
   \textbf{Barab\'asi-Albert graphs} are scale-free
 \end{theorem}
 
+The scale-free-ness of BA graphs makes them an attractive model, as they are likely to have degree
+distributions similar to those of many real data sets. In addition, BA graphs are guaranteed to be
+connected.
 
 %%% Local Variables:
 %%% mode: latex

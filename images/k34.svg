@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="102pt" height="64pt" viewBox="0.00 0.00 102.00 64.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g class="graph" transform="scale(1 1) rotate(0) translate(4 60)">
+
+<circle style="fill:blue;stroke:black;" cx="61" cy="-51" r="5.4"/>
+<circle style="fill:blue;stroke:black;" cx="19" cy="-5" r="5.4"/>
+<path style="fill:none;stroke:black;" d="M57,-47C49,-38 31,-18 23,-9"/>
+<circle style="fill:blue;stroke:black;" cx="47" cy="-5" r="5.4"/>
+<path style="fill:none;stroke:black;" d="M59,-46C57,-37 51,-19 49,-10"/>
+<circle style="fill:blue;stroke:black;" cx="75" cy="-5" r="5.4"/>
+<path style="fill:none;stroke:black;" d="M63,-46C65,-37 71,-19 73,-10"/>
+<circle style="fill:blue;stroke:black;" cx="89" cy="-51" r="5.4"/>
+<path style="fill:none;stroke:black;" d="M84,-48C72,-40 37,-17 24,-8"/>
+<path style="fill:none;stroke:black;" d="M85,-47C77,-38 59,-18 51,-9"/>
+<path style="fill:none;stroke:black;" d="M87,-46C85,-37 79,-19 77,-10"/>
+<circle style="fill:blue;stroke:black;" cx="5" cy="-51" r="5.4"/>
+<path style="fill:none;stroke:black;" d="M7,-46C9,-37 15,-19 17,-10"/>
+<path style="fill:none;stroke:black;" d="M9,-47C17,-38 35,-18 43,-9"/>
+<path style="fill:none;stroke:black;" d="M10,-48C22,-40 57,-17 70,-8"/>
+<circle style="fill:blue;stroke:black;" cx="33" cy="-51" r="5.4"/>
+<path style="fill:none;stroke:black;" d="M31,-46C29,-37 23,-19 21,-10"/>
+<path style="fill:none;stroke:black;" d="M35,-46C37,-37 43,-19 45,-10"/>
+<path style="fill:none;stroke:black;" d="M37,-47C45,-38 63,-18 71,-9"/></g></svg>
