@@ -29,6 +29,7 @@ Huang, Chung, and Chen~\cite{huang2004graph} considered three different recommen
 % Add more speculations, tie to rest of thesis
 The two-layer graph model introduced by Huang, Chung, and Chen~\cite{huang2004graph} can be interpreted as a graph labeling problem. As a simple example, we can take the vertices and edges from just the customer layer of the two-layer model. Since the customer layer included information  about demographic data and web usage patterns, we could label customers with age or certain websites visited and try to predict the labels of prospective customers. We can perform a similar analysis with the product layer as well as with the whole model including the interlayer edges.
 
+% Change DSD to "a metric"
 Such a model can be very useful for advertisers who wish to come up with strategic advertising plan. Assuming that an advertisement would have more success if it were shown to people more likely to buy the product being advertised, we can use the graph model to predict which customers would buy the product. The product layer can be used to find all products similar to the product being advertised. Then, we can construct a graph in which vertices are customers who had bought similar products, and edges existed between customers who had bought the same product. A prediction algorithm incorporating the DSD could be used to predict the customers who would buy the product if we knew a few customers that had already bought the product, or were very likely to buy the product.
 
 
