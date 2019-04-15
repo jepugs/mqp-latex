@@ -59,8 +59,8 @@ definition of equality.
   such that $(u,v) \in G_1$ if and only if $(\phi(u),\phi(v)) \in G_2$.
 \end{definition}
 
-For convenience, when we talk about ``a graph'' in the future, we will generally be referring to a
-maximal set of equivalent graphs, as in the next example.
+Equivalence of graphs induces an equivalence relation on the set of all graphs. For convenience, we
+will often only discuss graphs up to this equivalence relation (which only affects vertex labels).
 
 \begin{example}
   The \textbf{empty graph} of order $n$ is the graph such that $|V| = n$ and $E
@@ -72,7 +72,7 @@ maximal set of equivalent graphs, as in the next example.
   We say a graph is \textbf{bipartite} when there exists a bipartition of its vertex set such that
   there are no edges between vertices in the same partition. The \textbf{complete bipartite graph},
   denoted $K_{n,m}$, is such a graph where the two partitions have cardinality $n$ and $m$
-  respectively, and every possible edge between $n$ and $m$ is drawn.
+  respectively, and every pair of vertices in distinct partitions is joined by an edge.
 \end{example}
 
 \begin{figure}[H]
@@ -165,10 +165,10 @@ matrix. However, for every adjacency matrix the following holds:
   $G$ is not connected, which is a contradiction.
 \end{proof}
 
-The irreducibility result allows us to apply the Perron-Frobenius Theorem for
-nonnegative matrices, resulting immediately in the remaining properties of $A$.
+The irreducibility result allows us to apply the Perron-Frobenius Theorem, resulting immediately in
+these additional properties of $A$.
 
-\begin{theorem}[CITATION HERE]
+\begin{theorem}[Pg 673 (section 8.3) of ~\cite{alma991790573504746}]
   Let $A$ be an irreducible nonnegative square matrix of order $n$. The
   following is true.
 
@@ -188,6 +188,13 @@ Because $A$ is nonnegative and irreducible for all connected graphs, these
 properties hold for all such adjacency matrices. Indeed, The irreducibility and
 nonnegativity of $A$ yields many other interesting properties which we omit
 here.
+
+\begin{definition}
+  The \textbf{spectral gap} of a matrix $A$ is $\max_{i,j}|\lambda_i - \lambda_j|$, where
+  $\lambda_i$ and $\lambda_j$ are the two largest eigenvalues of $G$.
+
+  The \textbf{spectral gap of a graph} is the spectral gap of its adjacency matrix.
+\end{definition}
 
 We will next explore graph Laplacians, whose spectra are closely related to
 those of adjacency matrices.
@@ -219,8 +226,25 @@ those of adjacency matrices.
   %%%%% \begin{enumerate}
   %%%%%   \item 
   %%%%% \end{enumerate}
-  Let $G$ be a $k$-regular graph
+  Let $G$ be a $k$-regular graph, $\{\lambda_i\}$ and $\{x_i\}$ be the sets of eigenvalues and
+  eigenvectors for its adjacency matrix $A$, and $L$ be the graph Laplacian of $G$. Then
+  \begin{enumerate}
+  \item $\{\lambda_i - k\}$ is the eigenvalue set of $L$, and
+  \item $\{x_i\}$ is the eigenvector set of $L$
+  \item $L$ and $A$ have the same spectral gap
+  \end{enumerate}
 \end{proposition}
+
+\begin{proof}
+  Because $G$ is regular, the degree matrix $D$ is equal to $kI$. Let ant $x_i$ be given. Then
+  \begin{align*}
+    Lx_i &= (A-D)x_i \\
+         &= \lambda_ix_i - kx_i \\
+         &= (\lambda_i - k)x_i
+  \end{align*}
+
+  Which simultaneously shows (1) and (2). (3) follows trivially from (1).
+\end{proof}
 
 %% Graph laplacian discussion
 % adjacency and eigenvalues relationship
@@ -259,10 +283,11 @@ size of the graph.
   $L_G \sim \log{|V|}$.
 \end{definition}
 
-Small-world networks are ubiquitous in a variety of applications areas. However,
-many real-world examples of such graphs also have other distinctive structural
-properties which are not necessarily captured by their small-worldedness alone.
-[citation needed]
+Small-world networks are ubiquitous in a variety of applications areas. However, many real-world
+examples of such graphs also have other distinctive structural properties which are not necessarily
+captured by their small-worldedness alone ~\cite{Barabasi509}. Thus, we introduce the following
+definition:
+
 
 % We can partially describe this structure in terms of the
 % clustering coefficient.
