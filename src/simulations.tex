@@ -72,7 +72,23 @@ We can expect prediction using the DSD metric to do significantly better than pr
 Using the parameters from the simulation run shown in Figure \ref{fig:cc_p_q}, we get that for an arbitrary vertex $v$, $deg_{same}(v) = (1-0.5)(250-1) = 124.5$. Since $deg_{diff} = 250p$, we know that $deg_{diff}$ will increase or decrease proportional to the change in $p$. For values of $p$ between $0$ and $0.5$, we know that $deg_{same} > deg_{diff}$. It is clear that the shortest path distance metric should predict with a fairly high accuracy for $p$ close to $0$, but should predict no better than a random guess for $p$ close to $0.5$. The prediction accuracy of the shortest path distance only becomes worse for $p$ greater than $0.5$, since $deg_{same} < deg_{diff}$.
 
 \section{Noisy Complete Components with Hubs (NCCH) Graphs}
+We studied NCCH graphs in order to determine the effects of hub vertices on the prediction accuracies of NCC graphs. The graphs used were chosen with similar parameters from the NCC graphs in order to compare results. The NCCH graphs were also constructed with an intuitive binary labeling of vertices with hub vertices labeled randomly.
 \subsection{Data Collection}
+We used the same values for similar parameters to the NCC graphs as described in the previous sections. The same values for the parameters $n$,$avgRuns$, and $censorP$ were used. The same process of fixing the parameter $p$ while varying the parameter $q$ and fixing $q$ while varying $p$ was used.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.75\textwidth]{{NCCH_fix_q}.png}
+\caption{A plot showing the change in prediction accuracy for a fixed $q = 0.5$ and $p$ from $0$ to $1$ in intervals of $0.025$.}
+\label{fig:NCCH_fix_q}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.75\textwidth]{{NCCH_fix_p}.png}
+\caption{A plot showing the change in prediction accuracy for a fixed $p = 0.5$ and $q$ from $0$ to $1$ in intervals of $0.025$.}
+\label{fig:NCC_fix_p}
+\end{figure}
 \subsection{Analysis}
 
 \section{Class-weighted Barab\'{a}si-Albert (CWBA) Graphs}
