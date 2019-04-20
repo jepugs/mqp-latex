@@ -288,5 +288,76 @@ Figure \ref{fig:NCCH_fixq_r300}. The change in the rate of compression can
 be seen in Figure \ref{fig:NCCH_r400}.
 
 \section{Class-weighted Barab\'{a}si-Albert (CWBA) Graphs}
+In this section, we construct CWBA graphs (Chapter 3) and run label
+prediction methods on them. We study the CWBA graphs because they are
+scale-free.
+
 \subsection{Data Collection}
+Our CWBA graphs have two input parameters, where $m$ is the minimum vertex
+degree, and $\rho$ is the factor of same-class attachment. Table
+\ref{table:CWBA-params} shows the parameters used in our simulation. We
+also studied the prediction accuracies over $\frac{1}{\rho}$ in order to
+study the entire range of values for $rho$.
+
+\begin{table}[h!]
+\centering
+\begin{subfigure}[h]{0.4\linewidth}
+\begin{tabular}{|l|l|}
+\hline
+$n$ & $1000$ \\ \hline
+$m$ & Range from $1$ to $300$\\ \hline
+$\rho$ & $2$\\ \hline
+$censorP$ & $0.7$\\ \hline
+$avgRuns$ & $10$\\ \hline
+\end{tabular}
+\caption{Fixed $\rho$}
+\end{subfigure}
+\hfill
+\begin{subfigure}[h]{0.4\linewidth}
+\begin{tabular}{|l|l|}
+\hline
+$n$ & $1000$ \\ \hline
+$m$ & $300$\\ \hline
+$\frac{1}{\rho}$ & Range from $0.05$ to $1$\\ \hline
+$censorP$ & $0.7$\\ \hline
+$avgRuns$ & $10$\\ \hline
+\end{tabular}
+\caption{Fixed $\rho$}
+\end{subfigure}%
+\caption{Tables of parameter values used in our CWBA simulations. The table
+on the left shows simulation parameters for a fixed $\rho$, and the table
+on the right shows simulation parameters for a fixed $m$ over the inverse of $\rho$.}
+\label{table:CWBA-params}
+\end{table}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.8\textwidth]{CWBA_fixrho.png}
+\caption{Plot showing prediction accuracies over the $m$ parameter. In this simulation, the parameter $rho$ was fixed to $2$.}
+\label{fig:CWBA_fixrho}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.8\textwidth]{CWBA_rhoinv.png}
+\caption{Plot showing prediction accuracies over the inverse of the $\rho$
+parameter. In this simulation, the parameter $m$ was fixed to $300$.}
+\label{fig:CWBA_rhoinv}
+\end{figure}
+
 \subsection{Analysis}
+% Fix when Ch4 done
+Figures \ref{fig:CWBA_fixrho} and \ref{fig:CWBA_rhoinv} show DSD aids in
+predicting more accurately than the other two metrics. Figure 
+\ref{fig:CWBA_rhoinv} fixes a value for the parameter $m = 300$ and shows
+prediction accuracies over the entire range of values for the $\rho$
+parameter. The figure illustrates that when the same-class preferential
+attachment factor $\rho$ is $1$, the resulting CWBA graph is random, since
+there is no notion of preferential attachment for $\rho=1$. However, for
+$\rho > 1$, drawing same-class edges are preferred and this results in a
+sharp increase in accuracy for the prediction method using DSD, while the
+method using SPD increases at a linear rate. We must note that the 
+parameter for minimum vertex degree, $m$, was fixed at $m=300$, so the
+resulting CWBA graph is fairly dense. Figure \ref{fig:CWBA_fixrho} shows 
+that increasing the parameter $m$ will not change prediction accuracies for
+$\rho > 1$, as all of the curves in the plot level out very quickly.
