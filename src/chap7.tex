@@ -72,12 +72,12 @@ nearest-neighbor algorithm. The results are summarized in the bar plot in figure
 The coauthor results are especially striking, as all three metrics, including resistance distance,
 performed extremely well. This could probably be explained, at least partially, by the fact that the
 coauthor network is fairly sparse and that the number of labels is small. However, it seems likely
-that this behavior can mostly be explained by the fact that SCORE was used to generate ground truth.
-For some reason, the SCORE communities are clustered extremely tightly irrespective of the metric.
-This is an interesting finding in its own right because it suggests that the way that we think about
-clusters, at least in the context spectral clustering, probably doesn't capture some important
-properties of the communities found in real-world data. The fact that resistance distance works well
-on the spectral clusters but not the real ground truth is especially noteworthy in this regard.
+that this is mostly due to the fact that SCORE was used to generate ground truth. For some reason,
+the SCORE communities are clustered extremely tightly irrespective of the metric. This is an
+interesting finding in its own right because it suggests that the way that we think about clusters,
+at least in the context spectral clustering, probably doesn't capture some important properties of
+the communities found in real-world data. The fact that resistance distance works well on the
+spectral clusters but not the real ground truth is especially noteworthy in this regard.
 
 By contrast, the email-Eu-core results are much less surprising. DSD clearly provides the dominant
 classification algorithm, followed by a surprisingly strong showing from SPD. RD performs like
