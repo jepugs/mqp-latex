@@ -1,22 +1,47 @@
+Our simulations models were constructed to attempt to bring out the parts of 
+structures of graphs that would make prediction methods using the DSD metric 
+work better than other metrics on graphs. We came up with our NCC, NCCH, and
+CWBA models in order to see the effect of dense neighborhoods and a scale-
+free structure of graphs on prediction using the DSD. We varied parameters of 
+our models in order to get data about changes in prediction accuracy with
+respect to changes in the graph structure. More models could be constructed
+in future work to draw out characteristics of graph structure that the DSD
+metric is most affected by. Also, more data, such as subject-knowledge for
+specific types of networks, could be added to the models to add to our
+metric-based clustering algorithm.
+
 Our simulation results show that the DSD is more effective at detecting some 
 properties of graph structure than the shortest path distance and the
 resistance distance for dense graphs. Prediction methods using the DSD were 
-shown to be more robust to hub vertices and changes in graph structure, such
-as addition and removal of edges in a graph. The DSD was shown to be able to
-capture communities based on neighborhoods rather than direct neighbors.
+shown to be more robust to hub vertices and our NCC simulations were able to
+intuitively show how the DSD determines communities based on neighborhoods 
+rather than direct neighbors. Our project could have included simulations to
+study the resistance distance metric as well, and graph models that would
+cause the DSD metric to cause prediction accuracies to be significantly 
+worse than the shortest path distance.
 
-Our eu-Email-core network results show that the DSD is more effective at 
-detecting community structure in real-world networks. Our coauthor network 
-results show this as well, but this may be due to the spectral clustering
-algorithm SCORE, and may say more about how SCORE does not generate 
-realistic communities.
+Our analysis of real-world networks (coauthor, email-Eu-core) did not provide
+as much information as we wanted on how the DSD metric is useful on examples
+of real networks. However, both still showed that the DSD metric performed
+best of the three metrics that we studied.
 
-For future work we suggest creating more simulation models to find more
-specific properties of graph structure that cause the DSD to be more
-effective at detecting communities. Also more simulations on real-world data
-could be performed to further test the effectiveness of the DSD on real-world
-data.
-
-Overall, prediction methods using the DSD can be used for social networks,
-biological networks, or any network with an underlying graph community
-structure.
+% Add citations here?
+There are many interesting questions that could still be answered regarding 
+this project. Parameters of our CWBA model for which the SPD metric performs
+better than the DSD metric could provide insights into characteristics of
+scale-free graphs that help prediction methods using the DSD metric to work
+well. Another question to be studied could be how centrality and different
+measures on graphs are similar the the DSD. Measures on graphs are different
+from metrics in that measures describe attributes of a single graph vertex
+rather than the relation between two vertices. An example of a graph measure
+that could be studied is betweenness centrality.
+The effectiveness of the DSD in detecting manifold-like structures of
+graphs is also an interesting question. Several simulation models could be
+constructed to study this question. Also, the effect of the DSD metric in
+detecting the dispersion of rumors or the spread of information could also
+be studied. The way the DSD metric is defined by random walks seems to give
+a hint for what kinds of real-world data that it should be experimented with.
+The DSD metric could be compared to heat dispersion and different kinds
+of dispersions in nature, such as the dispersion of particles or biological
+dispersion of pollen and seeds. Such studies could provide a more accurate
+understanding of how natural biological networks interact with each other.
