@@ -1,80 +1,363 @@
-% Fix citations
-In this chapter, we perform simulations to gauge the effectiveness of the
-DSD metric in improving the prediction of labels on data for scale-free
-networks~\cite{PhysRevLett.90.058701}, Watts-Strogatz small-world
-networks~\cite{Watts1998Collective}, and some networks we constructed with
-hypotheses of how the DSD metric should affect classification on them. We 
-compare the DSD metric with the shortest-path distance metric, which is 
-used in some modern approaches of label prediction, such as k-nearest 
-neighbor classifiers~\cite{10.1371/journal.pone.0076339} and laplacian 
-eigenmaps~\cite{belkin2002laplacian}. Although several methods for 
-measuring distance or similarity among vertices in a network use the 
-shortest-path distance in the network, the DSD metric is designed to 
-capture distinctions in similarity not captured by the shortest-path 
-distance alone. Thus, we compare effectiveness of the DSD metric and the 
-shortest-path distance metric. We expect the shortest path distance metric 
-to be less effective than the DSD metric for networks with high clustering 
-coefficients or networks with a small diameter, such as small-world 
-networks. Any vertex in such a network is close to any other node in the 
-network, making the shortest-path distance of any two nodes close. We also 
-expect the DSD metric to be more effective on networks with hub vertices, 
-since these vertices tend to make the network highly connected with a small 
-diameter.
+In this chapter, we discuss data collected from several simulations run on
+our Noisy Complete Components (NCC), Noisy Complete Components with Hubs
+(NCCH), and Class-Weighted Barab\'{a}si-Albert (CWBA) models introduced in
+Chapter 3. We use these models because they are small-world and have an
+intuitive ground truth labeling of vertices. The simple structures of our
+models also allow us to test different parameters relating to graph 
+structure and examine their effects on prediction accuracies.
 
-% Change this to say something about resistance distance instead of centrality
-In the same way, we compare the DSD metric with resistance distance.
-
-We hope to reveal properties of graphs that allow the DSD metric to be more 
-effective at classification.
+For each model, we set a variety of parameters that we want to test.
+After constructing the graph, we censor a proportion ($censorP$) of the 
+graph, then use a weighted k-nearest neighbors voting (Chapter 5) to solve
+a vertex label prediction problem. This process is repeated with the same
+parameters $avgRuns$ number of times, and the prediction accuracies
+obtained are averaged. We incorporate three different metrics on graphs
+(Chapter 4) to our weighted k-nearest neighbors voting algorithm: 
+the diffusion state distance (DSD), shortest path distance (SPD), and
+resistance distance (RD).
 
 
 \section{Noisy Complete Components (NCC) Graphs}
-In this section, we construct NCC graphs and run simulations on these 
-graphs to determine the effectiveness of different label prediction methods 
-on these graphs. These graphs were chosen because they can be constructed 
-with an intuitive binary labeling of vertices; NCC graphs are constructed 
-from two complete graphs as defined in Chapter 3 Definition 18.
+% Add more?
+In this section, we construct NCC graphs (Chapter 3) and run label 
+prediction methods on them.
 
 \subsection{Data Collection}
-We studied the classification problem on the complete components graph. After constructing the complete components graph $G$ with parameters $n$, $p$ and $q$ described in the section above, we censored a proportion $censorP$ of the labels in $G$. We then used the weighted majority voting algorithm using $k$-nearest neighbors with respect to both the shortest path distance metric and the DSD metric to predict labels. To make sure the prediction accuracy was robust, we ran this process several times and took the average of the resulting prediction accuracies. We adding a parameter called $avgRuns$ to describe how many times we would run this process for the average prediction accuracy.
+Our NCC graphs have three input parameters, where $n$ is the number of
+vertices in one complete component ($2n$ total vertices), $p$ is the
+probability of adding an edge between components, and $q$ is the 
+probability of removing an edge within components.
 
-To test the behavior of the prediction accuracy with respect to different parameters of the complete components graph, we ran several simulations using varying parameter inputs. The parameter $n$, the size of one complete graph used in the construction of the complete components graph, was set to $250$. A constant value for this parameter sufficiently large would allow us to observe differences in prediction accuracy and changing this parameter would not affect the prediction accuracy. The parameter for the average number of runs for calculating prediction accuracy, $avgRuns$ was also set to a constant value of $10$, since this parameter would not affect the prediction accuracy. The parameter for the proportion of the graph labels to censor, $censorP$, was also set to a constant $0.3$ because this would not affect the prediction accuracy, as shown in figure \ref{fig:censor_param}.
+Table \ref{table:NCC-params} shows the parameter values we used in our
+simulations. The value of parameter $n$ was set to $250$ because this was a
+sufficiently large value to allow us to observe differences in prediction
+accuracy. Figure \ref{fig:NCC_n} shows that the parameter $n$ only
+increases the precision of the prediction accuracies. The parameters $p$
+and $q$ were considered probabilities of adding noise to our models, so we
+ran simulations to test the effects of these parameters on prediction
+accuracies. Figure \ref{fig:NCC_fixq} shows a plot of the prediction
+accuracies over the range of values for $p$, with a fixed $q=0.5$. Figure
+\ref{fig:NCC_fixp} shows a plot of the prediction accuracies over the range
+of values for $q$, with a fixed $p=0.5$.
 
-% Hard to read
-\begin{figure}[h!]
+\begin{table}[h!]
 \centering
-\includegraphics[width=1.0\textwidth]{censor_param.png}
-\caption{Plots showing that the censoring parameter $censorP$ has no affect on prediction accuracy. $n = 250$, $avgRuns = 10$, $q = 0.5$, $p$ goes from $0$ to $1$ in intervals of $0.025$, and $censorP$ goes from $0.1$ to $0.9$ in intervals of $0.2$.}
-\label{fig:censor_param}
+\begin{subfigure}[h]{0.4\linewidth}
+\begin{tabular}{|l|l|}
+\hline
+$n$ & $250$ \\ \hline
+$p$ & Range from $0$ to $1$\\ \hline
+$q$ & $0.5$\\ \hline
+$censorP$ & $0.7$\\ \hline
+$avgRuns$ & $10$\\ \hline
+\end{tabular}
+\caption{Fixed $q$}
+\end{subfigure}
+\hfill
+\begin{subfigure}[h]{0.4\linewidth}
+\begin{tabular}{|l|l|}
+\hline
+$n$ & $250$ \\ \hline
+$p$ & $0.5$\\ \hline
+$q$ & Range from $0$ to $1$\\ \hline
+$censorP$ & $0.7$\\ \hline
+$avgRuns$ & $10$\\ \hline
+\end{tabular}
+\caption{Fixed $p$}
+\end{subfigure}%
+\caption{Tables of parameter values used in our NCC simulations. The table
+on the left shows simulation parameters for a fixed $q$, and the table on
+the right shows simulation parameters for a fixed $p$.}
+\label{table:NCC-params}
+\end{table}
+
+\begin{figure}[h!]
+\begin{subfigure}[h]{0.5\linewidth}
+\includegraphics[width=\linewidth]{NCC_fixq_n50.png}
+\caption{$n = 50$}
+\end{subfigure}
+\hfill
+\begin{subfigure}[h]{0.5\linewidth}
+\includegraphics[width=\linewidth]{NCC_fixq_n150.png}
+\caption{$n = 150$}
+\end{subfigure}
+\hfill
+\begin{subfigure}[h]{0.5\linewidth}
+\includegraphics[width=\linewidth]{NCC_fixq_n250.png}
+\caption{$n = 250$}
+\end{subfigure}
+\hfill
+\begin{subfigure}[h]{0.5\linewidth}
+\includegraphics[width=\linewidth]{NCC_fixq_n550.png}
+\caption{$n = 550$}
+\end{subfigure}%
+\caption{These plots show that different values for the parameter $n$ in NCC graphs do not change results and a value of $n=250$ will be sufficiently large to observe differences in prediction accuracies. Figure (a) shows that a small value of $n$ may give slightly noisy prediction accuracies due to precision.}
+\label{fig:NCC_n}
 \end{figure}
 
-
-The parameters that we varied in our simulations for the complete components graphs were $p$ and $q$. Figure \ref{fig:cc_p_q} shows a plot of prediction accuracies for a fixed $q = 0.5$ and $p$ going from $0$ to $1$ in intervals of $0.025$. Figure \ref{fig:cc_q_p} shows a plot of prediction accuracies for a fixed $p = 0.5$ and $q$ going from $0$ to $1$ in intervals of $0.025$.
-
 \begin{figure}[h!]
 \centering
-\includegraphics[width=0.75\textwidth]{{cc_p_n250_q0.5_c0.1_avg10_mv-k20}.png}
-\caption{A plot showing the change in prediction accuracy for a fixed $q = 0.5$ and $p$ from $0$ to $1$ in intervals of $0.025$.}
-\label{fig:cc_p_q}
+\includegraphics[width=0.8\textwidth]{NCC_fixq.png}
+\caption{Plot showing prediction accuracies of the prediction method using the DSD, SPD, and RD metrics. In this simulation, the parameter $q$ was fixed to $0.5$.}
+\label{fig:NCC_fixq}
 \end{figure}
 
 \begin{figure}[h!]
 \centering
-\includegraphics[width=0.75\textwidth]{{cc_q_n250_p0.5_c0.1_avg10_mv-k20}.png}
-\caption{A plot showing the change in prediction accuracy for a fixed $p = 0.5$ and $q$ from $0$ to $1$ in intervals of $0.025$.}
-\label{fig:cc_q_p}
+\includegraphics[width=0.8\textwidth]{NCC_fixp.png}
+\caption{Plot showing prediction accuracies of the prediction method using the DSD, SPD, and RD metrics. In this simulation, the parameter $p$ was fixed to $0.5$.}
+\label{fig:NCC_fixp}
 \end{figure}
 
+% Add a part about censorP
 
 \subsection{Analysis}
-We can expect prediction using the DSD metric to do significantly better than prediction using the shortest path distance metric as described below. Figure \ref{fig:cc_p_q} and Figure \ref{fig:cc_q_p} show this using expected values.
+Figure \ref{fig:NCC_fixq} shows that with a fixed probability of deleting
+edges within components of NCC graphs, and a range of probabilities of
+adding edges between components of NCC graphs, the label prediction method
+using the DSD outperforms the method using SPD and the method using RD.
+We can use expected values of same-class degrees (Chapter 3) to reason why
+such behavior occurs.
 
-Using the parameters from the simulation run shown in Figure \ref{fig:cc_p_q}, we get that for an arbitrary vertex $v$, $deg_{same}(v) = (1-0.5)(250-1) = 124.5$. Since $deg_{diff} = 250p$, we know that $deg_{diff}$ will increase or decrease proportional to the change in $p$. For values of $p$ between $0$ and $0.5$, we know that $deg_{same} > deg_{diff}$. It is clear that the shortest path distance metric should predict with a fairly high accuracy for $p$ close to $0$, but should predict no better than a random guess for $p$ close to $0.5$. The prediction accuracy of the shortest path distance only becomes worse for $p$ greater than $0.5$, since $deg_{same} < deg_{diff}$.
+For a fixed $q=0.5$, we can say for any vertex $u$,
+$$\E(\deg_{same}(u)) = (249)(0.5)$$
+$$\E(\deg_{diff}(u)) = (250)p$$
+We can clearly see that for $p=0.5$, the resulting graph will be random,
+having roughly the same number of same-class neighbors as different-class 
+neighbors. This explains the near random prediction accuracies when $p$ is
+close to $0.5$. However, for $p < 0.5$, we can expect that
+$\E(\deg_{same}(u)) > \E(\deg_{diff}(u))$.
+In this case, the prediction method using SPD should predict with high
+accuracy, with a sharp decline as the value of $p$ approaches $0.5$. For 
+$p > 0.5$, the prediction method using SPD should predict with low 
+accuracy, since $\E(\deg_{same}(u)) < \E(\deg_{diff}(u))$. Figure
+\ref{fig:NCC_fixq} shows this behavior of the prediction method using SPD.
+
+The prediction method using DSD seems only to be affected by the $p$
+parameter when it approaches $0.5$, and the graph becomes random. This
+behavior can be explained by the fact that the DSD cares about common
+neighborhoods when determining similarity, or distance. First we must note
+that all vertices in the NCC graph should be very similar to each other,
+since they all share the same $\E(\deg_{same}(u))$ and
+$\E(\deg_{diff}(u))$. This means that there is no point in differentiating
+between low-degree and high-degree neighborhoods for the NCC graphs.
+For $p < 0.5$, we know that $\E(\deg_{same}(u)) > \E(\deg_{diff}(u))$.
+This means that when looking at the neighborhoods of an arbitrary vertex 
+$u$, a large number of common neighbors will be shared between vertices
+within the same component. Two vertices within the same component will 
+share more common neighbors than two vertices in different components. This 
+is also true for $p > 0.5$, where 
+$\E(\deg_{same}(u)) < \E(\deg_{diff}(u))$. This means that the DSD
+between any two vertices within the same component is expected to be closer
+than two vertices in different components for most values of $p$ given $q$ 
+is fixed.
+
+% Rewrite when Ch4 written
+The prediction method using RD performs the worst of the three metrics.
+Since the resistance distance considers the number of short paths between
+vertices when calculating distance, we can look at the short paths in NCC
+graphs. NCC graphs are very dense in edges, and because of the random
+probabilities of adding and deleting edges, it is difficult to obtain a
+structured notion of paths in this graph.
+
+A similar analysis can be done for the simulation for a fixed $p=0.5$ over
+the range of values for $q$, as shown in Figure \ref{fig:NCC_fixp}.
+
 
 \section{Noisy Complete Components with Hubs (NCCH) Graphs}
+In this section, we construct NCCH graphs (Chapter 3) and run label 
+prediction methods on them. We study these graphs in order to determine the
+effects of hub vertices on the prediction accuracies of NCC graphs. It is
+important to note that the hub vertices in NCCH graphs were labeled 
+randomly.
+
 \subsection{Data Collection}
+We used the same values for similar parameters to the NCC graphs as described in the previous sections. The same process of fixing the parameter $p$ or $q$ in the NCC graphs was used.
+
+The NCCH graphs have two more input parameters, $hubs$ and $hubsP$, as
+shown in Table \ref{table:NCCH-params}. The $hubs$ parameter specifies the
+number of hub vertices to add, and the $hubsP$ parameter specifies what
+proportion of the vertices in the complete components to add edges from each newly added hub vertex. A value of $0.8$ was decided for the $hubsP$ 
+parameter in order to capture the idea of hub vertices and their large 
+degrees. Figures \ref{fig:NCCH_fixq} and \ref{fig:NCCH_fixp} show our 
+simulation results.
+
+\begin{table}[h!]
+\centering
+\begin{subfigure}[h]{0.4\linewidth}
+\begin{tabular}{|l|l|}
+\hline
+$n$ & $250$ \\ \hline
+$p$ & Range from $0$ to $1$\\ \hline
+$q$ & $0.5$\\ \hline
+$hubs$ & $100$\\ \hline
+$hubsP$ & $0.8$\\ \hline
+$censorP$ & $0.7$\\ \hline
+$avgRuns$ & $10$\\ \hline
+\end{tabular}
+\caption{Fixed $q$}
+\end{subfigure}
+\hfill
+\begin{subfigure}[h]{0.4\linewidth}
+\begin{tabular}{|l|l|}
+\hline
+$n$ & $250$ \\ \hline
+$p$ & $0.5$\\ \hline
+$q$ & Range from $0$ to $1$\\ \hline
+$hubs$ & $100$\\ \hline
+$hubsP$ & $0.8$\\ \hline
+$censorP$ & $0.7$\\ \hline
+$avgRuns$ & $10$\\ \hline
+\end{tabular}
+\caption{Fixed $p$}
+\end{subfigure}%
+\caption{Tables of parameter values used in our NCCH simulations. The table
+on the left shows simulation parameters for a fixed $q$, and the table on
+the right shows simulation parameters for a fixed $p$.}
+\label{table:NCCH-params}
+\end{table}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.8\textwidth]{NCCH_fixq.png}
+\caption{Plot showing prediction accuracies of the prediction method using the DSD, SPD, and RD metrics. In this simulation, the parameter $q$ was fixed to $0.5$.}
+\label{fig:NCCH_fixq}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.8\textwidth]{NCCH_fixp.png}
+\caption{Plot showing prediction accuracies of the prediction method using the DSD, SPD, and RD metrics. In this simulation, the parameter $p$ was fixed to $0.5$.}
+\label{fig:NCCH_fixp}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.8\textwidth]{NCCH_fixq_r300.png}
+\caption{Plot showing compressed prediction accuracies for a larger value of the $hubs$ parameter. In this simulation, the parameter $q$ was fixed to $0.5$, and $hubs$ was set to $300$.}
+\label{fig:NCCH_fixq_r300}
+\end{figure}
+
+In order to test the effects of the number of hub nodes added, 
+prediction accuracies were plotted over the $hubs$ parameter. Both 
+parameters $p$ and $q$ were set to fixed values such that the prediction
+accuracies using DSD, SPD, and RD could be clearly separated. Thus a value
+of $p=0.2$ and $q=0.5$ was chosen. These parameters are shown in Table 
+\ref{table:NCCH-params-r}.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|l|}
+\hline
+$n$ & $250$ \\ \hline
+$p$ & $0.2$\\ \hline
+$q$ & $0.5$\\ \hline
+$hubs$ & Range from $0$ to $400$\\ \hline
+$hubsP$ & $0.8$\\ \hline
+$censorP$ & $0.7$\\ \hline
+$avgRuns$ & $10$\\ \hline
+\end{tabular}
+\caption{Tables of parameter values used for our NCCH simulations over the $hubs$ parameter.}
+\label{table:NCCH-params-r}
+\end{table}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.8\textwidth]{NCCH_r400.png}
+\caption{Plot showing prediction accuracies over the $hubs$ parameter. In this simulation, the parameter $p$ was fixed to $0.2$, and $q$ was fixed to $0.5$.}
+\label{fig:NCCH_r400}
+\end{figure}
+
 \subsection{Analysis}
+We can perform a similar analysis to that of the NCC graphs. We can see
+in Figures \ref{fig:NCCH_fixq} and \ref{fig:NCCH_fixp} that the shapes of 
+the prediction accuracy curves do not change significantly. The main
+difference between these plots and the plots for the NCC graphs are that
+the plots for NCCH graphs are slightly compressed vertically. This behavior
+can be explained by the presence of the hub vertices. Since these hub
+vertices are labeled at random, there will always be a proportion of the
+vertices in the NCCH graphs that can only be predicted at random. 
+Specifically in the case of Figure \ref{fig:NCCH_fixq}, we see that the
+prediction accuracies start at $0.9$ rather than $1.0$. If we consider the
+number of hub vertices added, $hubs=100$, in relation the the number of
+vertices in the NCCH graph, $2n + hubs = 600$, then we can see that since
+hub vertices will be predicted at random, we should expect a prediction
+accuracy of around $\frac{550}{600} \approx 0.92$. A simulation run with
+the parameter $hubs=300$ was run, and shows this idea of compression in
+Figure \ref{fig:NCCH_fixq_r300}. The change in the rate of compression can
+be seen in Figure \ref{fig:NCCH_r400}.
 
 \section{Class-weighted Barab\'{a}si-Albert (CWBA) Graphs}
+In this section, we construct CWBA graphs (Chapter 3) and run label
+prediction methods on them. We study the CWBA graphs because they are
+scale-free.
+
 \subsection{Data Collection}
+Our CWBA graphs have two input parameters, where $m$ is the minimum vertex
+degree, and $\rho$ is the factor of same-class attachment. Table
+\ref{table:CWBA-params} shows the parameters used in our simulation. We
+also studied the prediction accuracies over $\frac{1}{\rho}$ in order to
+study the entire range of values for $rho$.
+
+\begin{table}[h!]
+\centering
+\begin{subfigure}[h]{0.4\linewidth}
+\begin{tabular}{|l|l|}
+\hline
+$n$ & $1000$ \\ \hline
+$m$ & Range from $1$ to $300$\\ \hline
+$\rho$ & $2$\\ \hline
+$censorP$ & $0.7$\\ \hline
+$avgRuns$ & $10$\\ \hline
+\end{tabular}
+\caption{Fixed $\rho$}
+\end{subfigure}
+\hfill
+\begin{subfigure}[h]{0.4\linewidth}
+\begin{tabular}{|l|l|}
+\hline
+$n$ & $1000$ \\ \hline
+$m$ & $300$\\ \hline
+$\frac{1}{\rho}$ & Range from $0.05$ to $1$\\ \hline
+$censorP$ & $0.7$\\ \hline
+$avgRuns$ & $10$\\ \hline
+\end{tabular}
+\caption{Fixed $\rho$}
+\end{subfigure}%
+\caption{Tables of parameter values used in our CWBA simulations. The table
+on the left shows simulation parameters for a fixed $\rho$, and the table
+on the right shows simulation parameters for a fixed $m$ over the inverse of $\rho$.}
+\label{table:CWBA-params}
+\end{table}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.8\textwidth]{CWBA_fixrho.png}
+\caption{Plot showing prediction accuracies over the $m$ parameter. In this simulation, the parameter $rho$ was fixed to $2$.}
+\label{fig:CWBA_fixrho}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.8\textwidth]{CWBA_rhoinv.png}
+\caption{Plot showing prediction accuracies over the inverse of the $\rho$
+parameter. In this simulation, the parameter $m$ was fixed to $300$.}
+\label{fig:CWBA_rhoinv}
+\end{figure}
+
 \subsection{Analysis}
+% Fix when Ch4 done
+Figures \ref{fig:CWBA_fixrho} and \ref{fig:CWBA_rhoinv} show DSD aids in
+predicting more accurately than the other two metrics. Figure 
+\ref{fig:CWBA_rhoinv} fixes a value for the parameter $m = 300$ and shows
+prediction accuracies over the entire range of values for the $\rho$
+parameter. The figure illustrates that when the same-class preferential
+attachment factor $\rho$ is $1$, the resulting CWBA graph is random, since
+there is no notion of preferential attachment for $\rho=1$. However, for
+$\rho > 1$, drawing same-class edges are preferred and this results in a
+sharp increase in accuracy for the prediction method using DSD, while the
+method using SPD increases at a linear rate. We must note that the 
+parameter for minimum vertex degree, $m$, was fixed at $m=300$, so the
+resulting CWBA graph is fairly dense. Figure \ref{fig:CWBA_fixrho} shows 
+that increasing the parameter $m$ will not change prediction accuracies for
+$\rho > 1$, as all of the curves in the plot level out very quickly.
