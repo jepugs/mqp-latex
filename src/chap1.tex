@@ -1,0 +1,48 @@
+Suppose we have a graph in which every vertex belongs to a unique class and a map from a proper
+subset of vertices to labels corresponding to their classes. The vertex label prediction problem is
+to predict the missing labels. This problem has great practical importance. Data with a network
+structure is ubiquitous in real problems involving social media, the world wide web, and the biology
+of genes and proteins, and label prediction presents interesting possibilities ~\cite{FRASCA201384}.
+
+One such possibility is presented by protein protein-interaction (PPI) networks. A PPI network is a
+graph where each vertex represents a protein and edges are drawn between any two proteins which are
+known to interact. In this case, some proteins are labeled based upon their function in the
+organism, and the task is to predict functions for the unlabeled proteins based upon the PPI
+network.
+%% TODO: Summarize history & current state of the art? (i.e. competing with Cao et al)
+To tackle this problem, Cao, Zhang, Park, Daniels, Crovella, Cowen, and Hescott developed a new
+metric on graph vertices, the diffusion state distance (DSD). They used DSD to build a predictor
+that performed very strongly compared to competing methods based upon shortest-path distance
+~\cite{10.1371/journal.pone.0076339}. %which competing methods?!
+
+% need here: a description of the problem: (analysis of DSD is limited)
+
+% ?TODO: incorporate here numeric information about PPI data set used by Cao et al.
+
+The goal of our project was to further explore metric-based classification approaches in order to
+better understand the aspects of graph structure to which DSD reacts. To accomplish this, we
+generalize the weighted nearest neighbors prediction method used by Cao et al. to use arbitrary
+graph metrics, and then performed a number of classification experiments using both simulated and
+real-world data sets.
+
+We succeeded in developing novel generative models for labeled graphs which have a recoverable
+community structure. In addition, we show that DSD-based classification is more robust to noise and
+performs better all around than the other metrics do in a variety of different classification
+experiments. We conclude that the DSD is a robust and meaningful measurement of distance on graphs
+with certain sorts of underlying community structure.
+
+Chapter 2 provides the background in graph theory needed to understand our methods, while chapter 3
+presents the novel data simulation models developed to test vertex label prediction algorithms. In
+chapter 4, we develop background in metrics on graphs, particularly the DSD. These metrics are the
+keystone of our weighted nearest neighbors label prediction approach, which is described in chapter
+5 alongside a discussion of related machine learning methods of graphs.
+
+Chapter 6 details the methods, results, and analyses of a suite of classification experiments
+performed on data simulated using the models described in chapter 3. Chapter 7 builds upon these
+results with further experiments run on two real data sets.
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../Main.tex"
+%%% End:
