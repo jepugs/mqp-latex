@@ -13,10 +13,12 @@ convenience, we define these quantities as follows:
 
 \begin{definition}
   Let $G$ be a labeled graph, $u \in V_G$. The \textbf{same-class degree} of $u$, $\deg_{same}(u)$, is
-  the number of vertices in the neighborhood of $u$ in the same class as $u$. $\deg_{diff}(u) =
+  the number of vertices in the neighborhood of $u$ in the same class as $u$. Similarly, $\deg_{diff}(u) =
   \deg(u) - \deg_{same}(u)$ is the number of vertices in a different class.
 \end{definition}
 
+
+\section{Noisy Complete Components (NCC) Graphs}
 
 \begin{definition}
   Let $m$ be a natural number. We construct the \textbf{complete components
@@ -50,7 +52,7 @@ convenience, we define these quantities as follows:
   each pair $(u,v) \notin E_{G_0}$, we add the edge $(u,v)$ with probability
   $p$.
 
-  The resultant graph is an NCC graph.
+  The resultant graph is an NCC graph. We can also observe a natural generalization to graphs with more than two complete components.
 \end{definition}
 
 We will now inspect the properties of such graphs in order to demonstrate that they are, in fact,
@@ -58,7 +60,7 @@ small worlds graphs in the subset of the parameter space in which we're interest
 we recall some basic distributions from statistics
 
 \begin{definition}
-  A \textbf{bernoulli distribution} with probability $p$ is a discrete probability distribution
+  A \textbf{Bernoulli distribution} with probability $p$ is a discrete probability distribution
   with probability mass function
 
   \[
@@ -185,7 +187,7 @@ over the whole graph, since each edge is connected to two vertices.
 % \end{proof}
 
 
-However, these graphs are extremely regular, so they do not exhibit scale-free properties. Thus, we
+These graphs are extremely regular, so they do not exhibit scale-free properties. Thus, we
 also propose a variant on the Barab\'asi-Albert model which adds labels while preserving the power
 law degree distribution.
 
@@ -194,6 +196,8 @@ law degree distribution.
 
 % sketch: recall \sum \lambda_i = \tr(M). Consider A^2, whose trace is the sum
 % of degrees
+
+\section{Class-Weighted Barab\'{a}si-Albert (CWBA) Graphs}
 
 % TODO: refer back to previous chapter definition of BA 
 \begin{definition}
@@ -232,7 +236,7 @@ law degree distribution.
 \end{definition}
 
 We do not prove that CWBA graphs are scale-free, but degree plots over arbitrary choices of
-parameters demonstrate that they almost certainly are. See figure ~\ref{fig:cwba_degs}.
+parameters suggest that they are. See figure ~\ref{fig:cwba_degs}.
 
 \begin{figure}[H]
   \centering
