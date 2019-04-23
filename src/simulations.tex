@@ -66,7 +66,7 @@ accuracy. Figure \ref{fig:NCC_n} shows that the parameter $n$ only
 increases the precision of the prediction accuracies. The parameters $p$
 and $q$ were considered probabilities of adding noise to our models, so we
 ran simulations to test the effects of these parameters on prediction
-accuracies. Figure \ref{fig:NCC_fixq} shows a plot of the prediction
+accuracies. Figure \ref{fig:NCC_n}(c) shows a plot of the prediction
 accuracies over the range of values for $p$, with a fixed $q=0.5$. Figure
 \ref{fig:NCC_fixp} shows a plot of the prediction accuracies over the range
 of values for $q$, with a fixed $p=0.5$.
@@ -91,15 +91,8 @@ of values for $q$, with a fixed $p=0.5$.
 \includegraphics[width=\linewidth]{NCC_fixq_n550.png}
 \caption{$n = 550$}
 \end{subfigure}%
-\caption{These plots show that different values for the parameter $n$ in NCC graphs do not change results and a value of $n=250$ will be sufficiently large to observe differences in prediction accuracies. Figure (a) shows that a small value of $n$ may give slightly noisy prediction accuracies due to precision.}
+\caption{These plots show that varying the parameter $n$ in NCC graphs does not change results and a value of $n=250$ will be sufficiently large to observe differences in prediction accuracies. Figure (a) shows that a small value of $n$ may give slightly noisy prediction accuracies due to the smaller number of examples that the prediction accuracies are calculated from.}
 \label{fig:NCC_n}
-\end{figure}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{NCC_fixq.png}
-\caption{Plot showing prediction accuracies of the prediction method using the DSD, SPD, and RD metrics. In this simulation, the parameter $q$ was fixed to $0.5$.}
-\label{fig:NCC_fixq}
 \end{figure}
 
 \begin{figure}[H]
@@ -115,7 +108,7 @@ of values for $q$, with a fixed $p=0.5$.
 It is important to note the structure of NCC graphs in extreme cases.
 For parameter $p=0$ in NCC graphs (Chapter 3), there is zero probability
 of adding edges between components. Since we only consider the largest 
-connected component in our analysis, we simply take one of the original components. 
+connected component in our analysis, we simply take one of the original components.
 If $p=0$ and $q=0$, then we get one complete component. This is not 
 interesting, as all prediction methods should attain $100\%$ prediction 
 accuracy on these graph. For $p=0$ and $q=1$, we have a set of vertices and no edges. The largest 
@@ -133,25 +126,28 @@ as all prediction methods would give random results. This leads us to our
 next proposition.
 
 \begin{proposition}
-For $p = 1 - q$, NCC graphs will be random.
+For $q = 1 - \frac{mp}{(m-1)}$, NCC graphs are Erd\H{o}s-R\'{e}nyi graphs
+with edge probability $p$.
 \end{proposition}
 \begin{proof}
 We know that for NCC graphs (Chapter 3),
 $$\E(\deg_{\textit{same}}(u)) = (m-1)(1-q)$$
 $$\E(\deg_{\textit{diff}}(u)) = (m)p$$
-If $p=1-q$, then we get
-$$\E(\deg_{\textit{same}}(u)) = (m-1)(p)$$
+If $q = 1 - \frac{mp}{(m-1)}$, then we get
+$$\E(\deg_{\textit{same}}(u)) = (m-1)(1 - (1 - \frac{mp}{(m-1)})) = mp$$
 $$\E(\deg_{\textit{diff}}(u)) = (m)p$$
-For large values of $m$, $m \approx (m-1)$. Thus, we have that all vertices
-are expected to have the same degree, with approximately the same amount
-of same-class neighbors as different-class neighbors.
+Thus, we get
+$$\E(\deg_{\textit{same}}(u)) = \E(\deg_{\textit{diff}}(u))$$
 \end{proof}
 
-\begin{proposition}
+The NCC graph with parameters $p$, and $q = 1 - \frac{mp}{(m-1)}$ is expected
+to be close to an $(2mp)$-regular graph, where each vertex is expected to 
+have the same number of same-class neighbors as different-class neighbors.
+
 The expected number of same-class and different-class neighbors of a vertex
 $u$ in an NCC graph corresponds to the expected same-class and 
-different-class degrees from Chapter 3.
-\end{proposition}
+different-class degrees from Chapter 3. So, from Theorem \ref{thm:ncc_deg}, 
+we derive the following result.
 
 \begin{proposition}
 For two vertices $u,v$ in an NCC graph,
@@ -160,11 +156,11 @@ For two vertices $u,v$ in an NCC graph,
 $(m-1)(1-q)-1$ common same-class neighbors, and $(m)p$ common different-class neighbors.
 
 \item If $u,v$ belong to the opposite class, $u,v$ are expected to have
-$2*\textit{max}\{(m-1)(1-q), (m)p\}$ common neighbors.
+$2*\max\{(m-1)(1-q), (m)p\}$ common neighbors.
 \end{enumerate}
 \end{proposition}
 
-Figure \ref{fig:NCC_fixq} shows that with a fixed probability of deleting
+Figure \ref{fig:NCC_n}(c) shows that with a fixed probability of deleting
 edges within components of NCC graphs, and a range of probabilities of
 adding edges between components of NCC graphs, the label prediction method
 using the DSD outperforms the method using SPD and the method using RD.
@@ -183,7 +179,7 @@ In this case, the prediction method using SPD should predict with high
 accuracy, with a sharp decline as the value of $p$ approaches $0.5$. For 
 $p > 0.5$, the prediction method using SPD should predict with low 
 accuracy, since $\E(\deg_{\textit{same}}(u)) < \E(\deg_{\textit{diff}}(u))$. Figure
-\ref{fig:NCC_fixq} shows this behavior of the prediction method using SPD.
+\ref{fig:NCC_n}(c) shows this behavior of the prediction method using SPD.
 
 The prediction method using DSD seems only to be affected by the $p$
 parameter when it approaches $0.5$, and the graph becomes random. This
@@ -408,17 +404,26 @@ When $\rho=1$ for CWBA graphs, we get a randomly labeled scale-free graph.
 \end{proposition}
 \begin{proof}
 We note that when $\rho=1$, the probability of drawing an edge to a vertex $u$ in the CWBA process (Chapter 3) becomes
-$$\frac{deg(u)}{w} : u \in S_1, u \in (V_G - S_1)$$
+\[
+  p_u = \begin{cases}
+    \frac{\deg(u)}{w} &: u \in S_l\\
+    
+    \frac{\deg(u)}{w} &: u \in (V_G - S_l)\\
+  \end{cases}
+\]
 where
-$$w = \sum_{v \in S_l}\deg(v) + \sum_{v \in (V_G - S_l)}\deg(v)$$
+\[
+  w = \sum_{v \in S_l}\deg(v) + \sum_{v \in (V_G - S_l)}\deg(v)
+\]
+
 We can clearly see that with $\rho=1$, there is no preference in attachment
 based on the label, so all vertices are preferentially connected based on
 the degree of vertices.
 \end{proof}
 
-For $rho=0$, we can see that vertices with opposite label would only be
+For $\rho=0$, we can see that vertices with opposite label would only be
 considered for attachment, and the opposite would be true for extremely 
-high values of $rho$.
+high values of $\rho$.
 
 Figures \ref{fig:CWBA_fixrho} and \ref{fig:CWBA_rhoinv} show DSD aids in
 predicting more accurately than the other two metrics. Figure 
@@ -436,11 +441,9 @@ that increasing the parameter $m$ will not change prediction accuracies for
 $\rho > 1$, as all of the curves in the plot level out very quickly.
 
 \section{Overall Findings}
-After analyzing the results of our simulations, we have found that the DSD
-and SPD do fairly well when communities are tightly clustered, and there 
-are not too many edges between clusters. This can be seen from the NCC and
-NCCH graph simulations. However, the DSD performs better over a broader
-range of circumstances. In the case of NCC and NCCH graphs, the DSD works
-well even when there are more edges between clusters than within them. The
-RD, however, does not seem to work very well with our simulations, as its
-performance was not considered when creating our simulation models.
+After analyzing the results of our simulations, we have found that the 
+shortest path distance (SPD) works well with few paths between clusters. The
+diffusion state distance (DSD) works well in general as long as neighborhoods
+can be distinguished. This can be seen from the NCC and NCCH graph 
+simulations. The resistance distance (RD), however, does not seem to work
+very well with our simulations, and seems to work best on very sparse graphs.
