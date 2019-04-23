@@ -55,8 +55,8 @@ rather than the specific symbols in its vertex set. Thus we use the following
 definition of equality.
 
 \begin{definition}[Equivalence of graphs]
-  Two graphs $G_1$ and $G_2$ are equivalent if there exists a bijection $\phi : G_1 \to G_2$
-  such that $(u,v) \in G_1$ if and only if $(\phi(u),\phi(v)) \in G_2$.
+  Two graphs $G$ and $H$ are equivalent if there exists a bijection $\phi : V_G \to V_H$
+  such that $\{u,v\} \in G$ if and only if $\{\phi(u),\phi(v)\} \in H$.
 \end{definition}
 
 Equivalence of graphs induces an equivalence relation on the set of all graphs. For convenience, we
@@ -66,7 +66,7 @@ will often only discuss graphs up to this equivalence relation (which only affec
   The \textbf{empty graph} of order $n$ is the graph such that $|V| = n$ and $E
   = \varnothing$.
 
-  The \textbf{complete graph} or order $n$, denoted $K_n$, is the graph containing every possible
+  The \textbf{complete graph} of order $n$, denoted $K_n$, is the graph containing every possible
   edge, so that $|E_{K_n}| = \frac{n(n-1)}{2}$.
 
   We say a graph is \textbf{bipartite} when there exists a bipartition of its vertex set such that
@@ -136,7 +136,7 @@ matrix. However, for every adjacency matrix the following holds:
 \end{definition}
 
 \begin{proposition}
-  Let $A$ be the adjacency matrix of a graph $G$. Then the following is true:
+  Let $A$ be the adjacency matrix of a graph $G$. Then the following are true:
 
   \begin{enumerate}
   \item $A$ is symmetric (so the eigenvalues of $A$ are real)
@@ -180,7 +180,7 @@ these additional properties of $A$.
   \item The only eigenvectors of $A$ whose components are all positive have
     eigenvalue $r$.
   \item
-    \[ \min_i \sum_j a_{ij} \leq r \leq \max_i \sum_j a_{ij} \].
+    \[ \min_i \sum_j a_{ij} \leq r \leq \max_i \sum_j a_{ij} \]
   \end{enumerate}
 \end{theorem}
 
