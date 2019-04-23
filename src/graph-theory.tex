@@ -1,8 +1,8 @@
 In this chapter, we lay out the necessary background in graph theory for our later results. Section
 \ref{sec:intro_graphs} includes fundamental definitions from graph theory and some important results
-from spectral graph theory, while section \ref{sec:small_world} introduces small world and scale-free
+from spectral graph theory, while Section \ref{sec:small_world} introduces small world and scale-free
 networks, which are graphs that have particular structural properties often found in real-world data.
-Finally, \ref{sec:random_graphs} provides definitions relating to random graphs and relevant examples
+Finally, Section \ref{sec:random_graphs} provides definitions relating to random graphs and relevant examples
 of generative models.
 
 \section{Elementary Graph Theory}
@@ -70,7 +70,7 @@ will often only discuss graphs up to this equivalence relation (which only affec
   edge, so that $|E_{K_n}| = \frac{n(n-1)}{2}$.
 
   We say a graph is \textbf{bipartite} when there exists a bipartition of its vertex set such that
-  there are no edges between vertices in the same partition. The \textbf{complete bipartite graph},
+  there are no edges between vertices in the same part. The \textbf{complete bipartite graph},
   denoted $K_{n,m}$, is such a graph where the two partitions have cardinality $n$ and $m$
   respectively, and every pair of vertices in distinct partitions is joined by an edge.
 \end{example}
@@ -149,7 +149,7 @@ matrix. However, for every adjacency matrix the following holds:
   We omit proofs for (1) and (2) as they are self-evident.
 
   For (3), we first observe that $P^{-1}AP$ is an adjacency matrix of a graph
-  equivalent to $G$ for any permutation matrix $P$. So WLOG, suppose that $G$ is
+  equivalent to $G$ for any permutation matrix $P$. So without loss of generality, suppose that $G$ is
   connected and $A$ is already in block upper triangular form. Then because $A$
   is symmetric, we have
 
@@ -185,7 +185,7 @@ these additional properties of $A$.
 \end{theorem}
 
 Because $A$ is nonnegative and irreducible for all connected graphs, these
-properties hold for all such adjacency matrices. Indeed, The irreducibility and
+properties hold for all such adjacency matrices. Indeed, the irreducibility and
 nonnegativity of $A$ yields many other interesting properties which we omit
 here.
 
@@ -379,7 +379,7 @@ is obtained.
   over the vertices of the ring lattice and rewire each one with probability
   $p$.
 
-  We call graphs sampled from $G_{|G|}$ \textbf{Watts-Strogatz graphs}.
+  We call graphs sampled from $G_{|n|}$ \textbf{Watts-Strogatz graphs}.
 \end{definition}
 
 Watts and Strogatz showed empirically that the Watts-Strogatz graphs are small-world networks for all
