@@ -122,129 +122,25 @@ Finally, we can define DSD as such
   standard basis vector in $\mathbb{R}^n$.
 \end{definition}
 
-
-\subsection{Proof that DSD is a Metric}
-
-Here we prove that DSD is a metric. In order to present significantly more elegant proof, we will
-restrict to the case where the graph $G$ is not bipartite. This is due to the following fact:
-
-%% cite bollobas
-\begin{theorem}[Page 310 of ]
-  Let $G$ be a connected graph. The markov chain modeling random walks of $G$ converges to a
-  stationary distribution if and only if $G$ is not bipartite.
-\end{theorem}
-
-\begin{definition}
-  A markov chain is said to \textbf{converge to a stationary distribution} if the limit
-  $\lim_{t \to \infty}T^t$ exists, where $T$ is the markov chain's transition matrix. In this case,
-  we denote the stationary distribution by $T^\infty = \lim_{t \to \infty}T^t$
-\end{definition}
-
-For the rest of this subsection, we will let an arbitrary non-bipartite graph $G$ be given and let
-$T$ and $T^{\infty}$ be defined as above.
-
-
-\begin{proposition}
-  Let $x$ be an eigenvector of $T$ with corresponding eigenvalue $\lambda$. Then $x$ is also
-  an eigenvector of $T^{\infty}$, where it has corresponding eigenvalue
-  \[
-    \lambda^{\infty} = \begin{cases}
-      0 &~: |\lambda| < 1 \\
-      1 &~: |\lambda| = 1
-    \end{cases}
-  \]
-\end{proposition}
-
-\begin{proof}
-  Let $\lambda$, $x$ be given such that $Tx = \lambda x$. Then
-
-  \begin{align*}
-    T^{\infty}x &= \lim_{k\to\infty}T^k x \\
-               &= \lim_{k\to\infty}\lambda^k x \\
-  \end{align*}
-
-  \[ T^{\infty}x = \begin{cases}
-      0 &~: |\lambda| < 1 \\
-      x &~: |\lambda| = 1
-    \end{cases}
-  \]
-\end{proof}
-
-\begin{corollary}
-  From the previous proof, it becomes clear that $-1$ is not an eigenvalue of $T$, as the existence
-  of a corresponding eigenvector would create a contradiction on the existence of $T^{\infty}$.
-\end{corollary}
-
-
-We will denote row vectors of matrices with a single subscript, i.e. $S_u$ is
-the $u\nth$ row of $S$ which is equal to the $u\nth$ column. The columns of $S$
-are our finite analog for the $\mathrm{He}$ vectors. Now, note that $T^ke_u$ is
-equal to $T^k_u$. This allows us to rewrite DSD as
-
-\begin{align*}
-  \dsd(u,v) &= ||\sum_{k=0}^{\infty}((T^k)_u - (T^k)_v)||_1 \\
-              &= ||\sum_{k=0}^{\infty}((T^k-T^\infty)_u - (T^k-T^\infty)_v)||_1 \\
-              &= ||S_u - S_v||_1
-\end{align*}
-
 \begin{theorem}
   DSD is a metric.
 \end{theorem}
-\begin{proof}
-  We must show:
-
-  \begin{enumerate}
-  \item $\dsd(u,v)\geq 0 ~ \forall u,v \in G$,
-  \item $\dsd(u,v) = 0 \iff u = v$ (identity of indiscernables),
-  \item $\dsd(u,v) = \dsd(v,u) ~\forall u,v \in G$, and
-  \item $\dsd(u,v) \leq \dsd(u,w) + \dsd(v,w) ~\forall u,v,w \in G$
-    (triangle inequality).
-  \end{enumerate}
-
-  Let $G = (V,E)$ be an arbitrary graph of order $n$ and define $T$, $T^\infty$,
-  and $S$ as above. We define a map $f : V \to \R^n$ by $f(u) = S_u$. DSD is
-  equivalent to taking the $l_1$-norm of differences between these points. Since
-  $l_1$ distance is a metric in $\R^n$, we have shown (1), (3), and (4).
-
-  Because $T$ is invertible, no two rows or columns of $T$ are equal, which also
-  applies to the powers of $T$. Consequently, $S$ is also invertible. Thus,
-  $f$ is injective, proving (2).
-
-  % The eigenvectors of $T$ span $\R^n$, which also means that no two
-  % rows of $T$ are equal, as otherwise $\dim T$ would be less than $n$. We
-  % rewrite every row/column $T_u$ as a linear combination
-  % \[
-  %   T_u = \sum_{i=1}^n \theta_i(u) x_i
-  % \]
-
-  % for some coefficient vector $\theta(u)$, where $x_i$ are eigenvectors of $T$.
-  % Let $\lambda_i$ be the respective eigenvalues. Because all the rows in $T$ are
-  % distinct, every coefficient vector $\theta(u)$ is distinct. Also, the
-  % corresponding coefficients for powers of $T$ are
-  % $T^k_u = \sum{\lambda_i^{k-1} \theta_i(u) x_i}$.
-
-  % Let $k$ be arbitrary, and suppose $T^k_u = T^k_v$ for some $u \neq v$. Then
-  % $\lambda_i^{k-1}\theta_i(u) = \lambda_i^{k-1}\theta_i(v)$ for all
-  % $i = 1,...,n$. Clearly, this only holds for the case that
-  % $\theta_i(u) = \theta_i(v)$ for all $i$, which is a contradiction because it
-  % implies $T_v = T_u$. Thus, every row (and column) of $T^k$ is distinct for all
-  % powers $k$, and this property extends to $S$, thus proving (2).
-
-\end{proof}
 
 
-\section{DSD on Special Graphs}
+\section{DSD on the Complete Graph}
 
-\subsection{Complete Graphs}
-Consider the complete graph $K_n$. In this case, $D = \frac{1}{n-1}I$ and
-$A = (J - I)$, so $T=\frac{1}{n-1}(J-I)$. In order to compute $T^ke_u$ in the
-limit, we will represent $e_u$ as a linear combination of eigenvectors of $A$.
+In this section, we work through the problem of computing DSD on the complete graph. This is not a
+particularly illuminating result, but we hope it will help to familiarize the reader with the DSD.
 
-\begin{remark}
+Consider the complete graph $K_n$. In this case, $D = (n-1)I$ and $A = (J - I)$, so our transition
+matrix $T$ is given by $\frac{1}{n-1}(J-I)$. In order to compute $T^ke_u$ in the limit, we will
+represent $e_u$ as a linear combination of eigenvectors of $A$.
+
+\begin{proposition}
   $1_n$ is an eigenvector of $T$ with eigenvalue $\lambda = 1$, and every
   vector $x \in \R^n$ such that $\sum_i x_i = 0$ is an eigenvector of $T$ with
   $\lambda = -\frac{1}{n-1}$.
-\end{remark}
+\end{proposition}
 \begin{proof}
   Multiplying a vector by the all-ones matrix takes the sum of that vector's
   values for every index in the result, so $J \cdot 1_n = n \cdot 1_n$.
@@ -273,11 +169,11 @@ $T\alpha_u=-\frac{1}{n-1}\alpha_u$. We can write
 $e_u = \frac{1}{n}(1_n + \alpha_u)$.
 
 \begin{corollary}
-  The eigenvectors of $J-I$ span $\R^n$.
+  The eigenvectors of $J-I$ span $\mathbb{R}^n$.
 \end{corollary}
 \begin{proof}
-  Since all standard basis elements $e_j$ of $\R^n$ can be expressed as linear
-  combinations of eigenvectors for $J-I$, the eigenvectors of $J-I$ span $\R^n$.
+  Since all standard basis elements $e_j$ of $\mathbb{R}^n$ can be expressed as linear
+  combinations of eigenvectors for $J-I$, the eigenvectors of $J-I$ span $\mathbb{R}^n$.
 \end{proof}
 
 \begin{theorem}
@@ -312,71 +208,6 @@ $||\alpha(u)-\alpha(v)||_1 = 2n$, and so
 
 \end{proof}
 
-\subsection{Circulant Graphs}
-
-Circulant graphs have well-understood spectra, so we can perform a similar
-analysis to the complete case.
-
-\begin{definition}
-  We {\bf rotate} a row vector by moving each of its elements over one index to
-  the right. The rightmost element wraps around and is put in the leftmost index
-  in the result.
-\end{definition}
-
-\begin{example}
-  The rotation of $\colvec{1 & 2 & 3 & 4}$ is $\colvec{4 & 1 & 2 & 3}$.
-\end{example}
-
-\begin{definition}
-  A matrix is {\bf circulant} if each row is equal to the A graph is {\bf
-    circulant} if it has a circulant adjacency matrix.
-\end{definition}
-
-\begin{example}
-  The pentagon with this circulant adjacency matrix:
-  \[
-    \begin{bmatrix}
-      0 & 1 & 0 & 0 & 1 \\
-      1 & 0 & 1 & 0 & 0 \\
-      0 & 1 & 0 & 1 & 0 \\
-      0 & 0 & 1 & 0 & 1 \\
-      1 & 0 & 0 & 1 & 0 \\
-    \end{bmatrix}
-  \]
-\end{example}
-
-\subsubsection*{Spectrum}
-
-[The expressions for eigenvectors/eigenvalues are sourced from Wikipedia --JP]
-
-All circulant matrices have the same eigenvectors given by
-
-\[x_j = \colvec{1 \\ z^j \\ z^{2j} \\ ... \\ z^{(n-1)j}}\]
-
-where $j=1,2,...,n$ and $z=\exp(\frac{2 \pi i}{n})$ is an $n^{th}$ root of
-unity. Note that the $n^{th}$ eigenvector is $1_n$, and that multiplying $x_j$
-by $z^{n-j}$ rotates it, as $1 = z^0 = z^n$. We can write our basis vectors $e_u$ as
-linear combinations of elements in $x_j$ like so:
-
-\[e_u = \frac{1}{n}(1_n + \sum^{n-1}_{j=1} z^{(u-1)(n-j)} x_j)\]
-
-This depends on the fact that the sum of all $n^{th}$ roots of unity is 0, so
-$1 + \sum_{j=1}^{n-1}z^j = 0$. Therefore, we get $ne_1$ by summing over all
-eigenvectors, since every index except the first will vanish. We can get the
-other basis vectors by repeatedly rotating all the eigenvectors except $1_n$,
-which is where the $z^{(u-1)(n-k)}$ comes from in the form above.
-
-The corresponding eigenvalues $\lambda_j$ depend on the matrix. Let
-$r = \colvec{r_1 & r_2 & ... & r_n}$ be the first row of the matrix. Then, the
-$j^{th}$ eigenvalue is given by
-
-\[\lambda_j = \sum_{k}r_kz^{(k-1)j} \]
-
-
-\subsubsection*{Cycles}
-
-Cycles are the most obvious example of circulant graphs. The eigenvalues of a
-cycle are given by $\lambda_j = z^{j-1} + z^{j+1}$.
 
 %%% Local Variables:
 %%% mode: latex

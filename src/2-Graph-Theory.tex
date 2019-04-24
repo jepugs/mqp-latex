@@ -63,6 +63,7 @@ Equivalence of graphs induces an equivalence relation on the set of all graphs. 
 will often only discuss graphs up to this equivalence relation (which only affects vertex labels).
 
 \begin{example}
+  \label{ex:basic_graphs}
   The \textbf{empty graph} of order $n$ is the graph such that $|V| = n$ and $E
   = \varnothing$.
 
@@ -95,6 +96,8 @@ will often only discuss graphs up to this equivalence relation (which only affec
 \end{example}
 
 \begin{definition}
+  \label{def:walk_path}
+
   A \textbf{walk} of a graph $G$ is an alternating sequence of edges and vertices such that each
   vertex is incident to the edges before and after it.
 
@@ -105,6 +108,7 @@ will often only discuss graphs up to this equivalence relation (which only affec
 \end{definition}
 
 \begin{definition}
+  \label{def:adj_mat}
   The \textbf{adjacency matrix} $A$ of a graph $G$ is given by
   \[
     A_{ij} = \begin{cases}
@@ -136,6 +140,7 @@ matrix. However, for every adjacency matrix the following holds:
 \end{definition}
 
 \begin{proposition}
+  \label{prop:adj}
   Let $A$ be the adjacency matrix of a graph $G$. Then the following are true:
 
   \begin{enumerate}
@@ -169,6 +174,7 @@ The irreducibility result allows us to apply the Perron-Frobenius Theorem, resul
 these additional properties of $A$.
 
 \begin{theorem}[Pg 673 (section 8.3) of ~\cite{alma991790573504746}]
+  \label{thm:perron_frobenius}
   Let $A$ be an irreducible nonnegative square matrix of order $n$. The
   following is true.
 
@@ -200,6 +206,7 @@ We will next explore graph Laplacians, whose spectra are closely related to
 those of adjacency matrices.
 
 \begin{definition}
+  \label{def:deg_mat}
   The \textbf{degree matrix} of $G$ is the diagonal matrix defined by
   \[
     D_{ij} = \begin{cases}
