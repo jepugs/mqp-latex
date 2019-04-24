@@ -1,86 +1,180 @@
-\section{Definition of DSD}
+In this chapter, we provide background about metrics on graph vertices, with a particular focus on
+the diffusion state distance (DSD). The three prediction algorithms compared in Chapters
+\ref{chap:simulations} and \ref{chap:real_world} are identical except for the choice of metric, as a
+key part of our project is understanding how that choice affects label prediction performance. For
+details about how our classification algorithm uses metrics to pick labels, see Chapter
+\ref{chap:prediction}.
 
-\noindent In their original definition, Cao, Zhang, Park, Daniels, Crovella, Cowen, and Hescott define
-DSD in terms of a vector-valued function $\mathrm{He}^{k}(u)$, which computes the expected number of
-times a length-$k$ random walk originating at a vertex $u$ will visit each other vertex in the graph.
-They compute DSD by taking the $l_1$-norm of the difference between two such vectors in the limit as
-$k \to \infty$. We present an alternative definition which is more compact and easier to manipulate
-with the usual machinery of linear algebra.
 
-%% Fix this so D is D inverse (the degree matrix inverse)
+\section{Definition and Shortest-Path Distance}
 
-% TODO: more rigorously define random walks and markov chains
-% ask question about
-Random walks can be modeled as Markov chains, where the current state is a
-vertex $u$ in the graph, and the transition probability is $\frac{1}{\deg(u)}$
-for the neighbors of $u$ and $0$ otherwise. The transition matrix can be written
-$T = AD$, where $A$ is the adjacency matrix of the graph and $D$ is the unique
-diagonal matrix such that every column of $T$ sums to 1 (i.e.
-$D_{u,u}=\frac{1}{deg(u)}$, or equivalently, $D$ is the inverse of the degree
-matrix). For our purposes, we assume that vertices are labeled by the positive
-integers $1,2,...,n$ and that the rows and columns of the $G$ correspond to this
-ordering.
-
-The marginal distribution of vertices in the $k\nth$ step of a random walk
-originating from vertex $u$ is given by $T^ke_u$, where $e_u$ is the initial
-state vector, which is the $u\nth$ standard basis vector in $\R^n$,
-$e_{u,u} := 1$ and $e_{u,j} := 0, u \neq j$ for $u=1,...,n$.
-
-Thus, we can define the DSD, $\dsd(u,v)$, by
-
-\[
-  \dsd(u,v) = ||\sum_{k =0}^{\infty}{T^ke_u - T^ke_v}||_1
-\]
-
-\subsection{Proof that DSD is a Metric}
-
-A metric is a nonnegative real-valued function that generalizes Euclidean
-distance between points in $R^n$ to general sets. In our case, the set is the
-vertices of the graph. Metrics allow us to define metric spaces which are
-generally useful, but the context of our problem, we are mainly interested in
-them because they allow us to partially order all vertices in a graph based on
-their distance from a fixed vertex.
+A metric is a nonnegative real-valued function that generalizes Euclidean distance between points in
+$\mathbb{R}^n$ to general sets. In our case, the set is the vertices of the graph, and in the context of the
+label prediction problem, we use metrics to determine similiarity of two vertices in the graph.
 
 \begin{definition}
-  A \textbf{metric} with respect to a set $S$ is a function $d : S x S \to \R$
+  A \textbf{metric} on a set $S$ is a function $f : S \times S \to \R$
   satisfying
 
   \begin{enumerate}
-  \item $d(u,v)\geq 0 ~ \forall u,v \in G$,
-  \item $d(u,v) = 0 \iff u = v$ (identity of indiscernables),
-  \item $d(u,v) = \dsd(v,u) ~\forall u,v \in G$, and
-  \item $d(u,v) \leq \dsd(u,w) + \dsd(v,w) ~\forall u,v,w \in G$
+  \item $f(u,v)\geq 0 ~ \forall u,v \in G$,
+  \item $f(u,v) = 0 \iff u = v$ (identity of indiscernables),
+  \item $f(u,v) = f(v,u) ~\forall u,v \in G$, and
+  \item $f(u,v) \leq f(u,w) + f(v,w) ~\forall u,v,w \in G$
     (triangle inequality).
-  \end{enumerate}\end{definition}
+  \end{enumerate}
+\end{definition}
 
-First, we will define a finite analog to the $\mathrm{He(u)}$ vectors of Cao et al. Because
-$T$ is a transition matrix for a Markov chain, this means that
-$\lim_{k \to \infty} T^k$ converges to a stationary distribution which we will
-call $T^\infty$.
+The standard metric on graphs is the shortest-path distance (definition \ref{def:walk_path}), whose
+definition we reiterate here for convenience. The \textbf{shortest-path distance} between two
+vertices $u,v \in G$, denoted $\spd(u,v)$, is the minimum number of edges in a path from $u$ to $v$.
 
-\begin{lemma}
-  Let $T$ be a transition matrix for a markov chain and $T^\infty$ the
-  corresponding stationary distribution. The matrix sum
+\begin{proposition}
+  Shortest-path distance is a metric (on the vertices of connected graphs).
+\end{proposition}
+
+\begin{proof}
+  From the definition of shortest-path distance, it is clear that metric conditions (1), (2),
+  and (3) are satisfied, since we're dealing with unweighted, undirected graphs.
+
+  To prove (4), let any three vertices in a connected graph $u,v,w$ be given. Define $a=\spd(u,w)$
+  and $b=\spd(v,w)$. Then there exists a path from $u$ to $w$ of length $a$ and from $w$ to $v$ of
+  length $b$, and concatenating these paths gives a path from $u$ to $v$ of length $a+b$. Thus, by
+  definition of shortest-path distance, $\spd(u,v) \leq a + b = \spd(u,w) + \spd(v,w)$ for any three
+  vertices $u,v,w$, which is more than sufficient to show (4).
+\end{proof}
+
+
+\section{Diffusion State Distance}
+
+The diffusion state distance (DSD) is a metric on graphs which determines distance between two
+vertices based upon the convergence behavior of random walks starting from each vertex. Intuitively,
+it provides a way to measure vertex distance that is sensitive to the local structure of the graph,
+and appears to be well suited to detecting community structures in graphs.
+
+In the original paper, Cao, Zhang, Park, Daniels, Crovella, Cowen, and Hescott define DSD in terms
+of a vector-valued function $\mathrm{He}^{k}(u)$, which computes the expected number of times a
+length-$k$ random walk originating at a vertex $u$ will visit each other vertex in the graph. They
+compute DSD by taking the $l_1$-norm of the difference between two such vectors in the limit as
+$k \to \infty$. We present an alternative definition which is easier to manipulate with the usual
+machinery of linear algebra. We begin by recalling some definitions.
+
+\begin{definition}
+  A \textbf{random walk} of a graph is a walk (see definition \ref{def:walk_path}) originating at
+  some vertex in which each edge is picked uniformly randomly from all the edges adjoined to the
+  vertex preceding it.
+\end{definition}
+
+%% TODO: find cite Bollobas
+\begin{definition}[Page 302 of \cite{} ]
+  A (discrete-time) \textbf{markov chain} on a finite set of states $V$ is a sequence of random
+  variables $X_0,X_1,....$ taking values $x_o,x_1,... \in V$ such that for a given $t$, the
+  probability of each outcome of $X_{t+1}$ depends only on $x_t$ (the outcome before it).
+
+  Let $u,v \in V$. Then the conditional probability $P(X_{t+1}=v|X_t=u)$ is called the
+  \textbf{transition probability} from $u$ to $v$.
+  
+  The \textbf{transition matrix} of a markov chain is the matrix $T$ given by
 
   \[
-    S = \sum_{k=0}^{\infty}(T^k - T^\infty)
+    T_{ij} = \text{The probability of transitioning from state $j$ to state $i$}
   \]
+\end{definition}
 
-  converges.
-\end{lemma}
+Random walks may be modeled as markov chains where the states are the vertices in the graph. The
+random walk transition matrix of a graph $G$ can be written $T = AD^{-1}$, where $A$ is the
+adjacency and $D$ is the degree matrix, (definitions \ref{def:adj_mat} and \ref{def:deg_mat}). For
+our purposes, we assume that vertices are labeled by the positive integers $1,2,...,n$ and that the
+rows and columns of $G$ correspond to this ordering.
+
+\begin{proposition}[Properties of $T$]
+  The following is true:
+  \begin{enumerate}
+  \item $T$ is irreducible
+  \item every eigenvalue of $T$ has magnitude $\leq 1$
+  \end{enumerate}
+\end{proposition}
+
 \begin{proof}
-  \textbf{TODO} [I thought this was an easy proof, but now I'm not sure -- JP]
+  To show (1), we first recall from proposition \ref{prop:adj} that the adjacency matrix is
+  irreducible. From the definition $T = AD^{-1}$, we can see that $T$ has zeros in the same set of
+  indices as $A$, and so must be irreducible by analogous argument.
+
+  (2) follows from (1) and application of the Perron-Frobenius Theorem (theorem
+  \ref{thm:perron_frobenius}).
 \end{proof}
 
-\begin{remark}
-  $S$ is symmetric.
-\end{remark}
+Based on how we've defined that transition matrix, it can be thought of as an operator which takes a
+marginal distribution of states in the markov chain, and outputs the marginal distribution after one
+step. So, the marginal distribution of vertices in the $k\nth$ step of a random walk originating
+from vertex $u$ is given by $T^ke_u$, where $e_u$ is the $u\nth$ standard basis vector in $\R^n$,
+$e_{u,u} := 1$ and $e_{u,j} := 0, u \neq j$ for $u=1,...,n$.
+
+Finally, we can define DSD as such
+
+\begin{definition}
+  Let $G$ be a graph, $u,v \in G$. The \textbf{diffusion state distance (DSD)}, denoted $\dsd(u,v)$,
+  is defined by
+  \[
+    \dsd(u,v) = ||\sum_{k =0}^{\infty}{T^ke_u - T^ke_v}||_1
+  \]
+  where $T$ is the transition matrix of $G$'s random walk markov chain and $e_i$ is th $i\nth$
+  standard basis vector in $\mathbb{R}^n$.
+\end{definition}
+
+
+\subsection{Proof that DSD is a Metric}
+
+Here we prove that DSD is a metric. In order to present significantly more elegant proof, we will
+restrict to the case where the graph $G$ is not bipartite. This is due to the following fact:
+
+%% cite bollobas
+\begin{theorem}[Page 310 of ]
+  Let $G$ be a connected graph. The markov chain modeling random walks of $G$ converges to a
+  stationary distribution if and only if $G$ is not bipartite.
+\end{theorem}
+
+\begin{definition}
+  A markov chain is said to \textbf{converge to a stationary distribution} if the limit
+  $\lim_{t \to \infty}T^t$ exists, where $T$ is the markov chain's transition matrix. In this case,
+  we denote the stationary distribution by $T^\infty = \lim_{t \to \infty}T^t$
+\end{definition}
+
+For the rest of this subsection, we will let an arbitrary non-bipartite graph $G$ be given and let
+$T$ and $T^{\infty}$ be defined as above.
+
+
+\begin{proposition}
+  Let $x$ be an eigenvector of $T$ with corresponding eigenvalue $\lambda$. Then $x$ is also
+  an eigenvector of $T^{\infty}$, where it has corresponding eigenvalue
+  \[
+    \lambda^{\infty} = \begin{cases}
+      0 &~: |\lambda| < 1 \\
+      1 &~: |\lambda| = 1
+    \end{cases}
+  \]
+\end{proposition}
+
 \begin{proof}
-  Clearly, since $T$ is symmetric and commutes with itself, $T^k$ is symmetric
-  for all $k$. This implies that $T^\infty$ is also symmetric, as is the
-  difference $T^k - T^\infty$ for all $k$. Thus, every term in the sum is
-  symmetric, completing the proof.
+  Let $\lambda$, $x$ be given such that $Tx = \lambda x$. Then
+
+  \begin{align*}
+    T^{\infty}x &= \lim_{k\to\infty}T^k x \\
+               &= \lim_{k\to\infty}\lambda^k x \\
+  \end{align*}
+
+  \[ T^{\infty}x = \begin{cases}
+      0 &~: |\lambda| < 1 \\
+      x &~: |\lambda| = 1
+    \end{cases}
+  \]
 \end{proof}
+
+\begin{corollary}
+  From the previous proof, it becomes clear that $-1$ is not an eigenvalue of $T$, as the existence
+  of a corresponding eigenvector would create a contradiction on the existence of $T^{\infty}$.
+\end{corollary}
+
 
 We will denote row vectors of matrices with a single subscript, i.e. $S_u$ is
 the $u\nth$ row of $S$ which is equal to the $u\nth$ column. The columns of $S$
