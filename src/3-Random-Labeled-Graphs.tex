@@ -12,9 +12,9 @@ number of neighbors with the same label vs the number of neighbors with a differ
 convenience, we define these quantities as follows:
 
 \begin{definition}
-  Let $G$ be a labeled graph, $u \in V_G$. The \textbf{same-class degree} of $u$, $\deg_{same}(u)$, is
-  the number of vertices in the neighborhood of $u$ in the same class as $u$. Similarly, $\deg_{diff}(u) =
-  \deg(u) - \deg_{same}(u)$ is the number of vertices in a different class.
+  Let $G$ be a labeled graph, $u \in V_G$. The \textbf{same-class degree} of $u$, $\deg_{\textit{same}}(u)$, is
+  the number of vertices in the neighborhood of $u$ in the same class as $u$. Similarly, $\deg_{\textit{diff}}(u) =
+  \deg(u) - \deg_{\textit{same}}(u)$ is the number of vertices in a different class.
 \end{definition}
 
 
@@ -91,7 +91,7 @@ we recall some basic distributions from statistics
   \label{thm:ncc_deg}
   Let $G$ be an $(m,p,q)$ NCC graph and $u$ a vertex in $G$. Then $\deg(u)$ follows the distribution
   $X + Y$, where $X$ and $Y$ are (independent) binomial random variables, $X \sim B(m-1,1-q)$ and
-  $Y \sim B(m,p)$. Moreover, $\deg_{same}(u) = X$ and $\deg_{diff}(u) = Y$.
+  $Y \sim B(m,p)$. Moreover, $\deg_{\textit{same}}(u) = X$ and $\deg_{\textit{diff}}(u) = Y$.
 \end{theorem}
 \begin{proof}
   First, observe that adding and deleting edges to an NCC graph is done independently for each edge.
@@ -116,8 +116,8 @@ over the whole graph, since each edge is connected to two vertices.
 \begin{remark}
   The previous theorem shows that the following is true
   \begin{enumerate}
-  \item $\E(\deg_{same}(u)) = (m-1)(1-q)$ and $\E(\deg_{diff}(u)) = mp$, where $\E$ is expectation.
-  \item $\Var(\deg_{same}(u)) = (m-1)(1-q)q$ and $\Var(\deg_{diff}(u)) = mp(1-p)$, where $\Var$ is
+  \item $\E(\deg_{\textit{same}}(u)) = (m-1)(1-q)$ and $\E(\deg_{\textit{diff}}(u)) = mp$, where $\E$ is expectation.
+  \item $\Var(\deg_{\textit{same}}(u)) = (m-1)(1-q)q$ and $\Var(\deg_{\textit{diff}}(u)) = mp(1-p)$, where $\Var$ is
     variance.
   \item $\E(\deg(u)) = (m-1)(1-q) + mp$ by linearity of expectation.
   \item $\Var(\deg(u)) = (m-1)(1-q)q + mp(1-p)$ by linearity of variance on independent random
