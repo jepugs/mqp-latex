@@ -44,6 +44,34 @@ vertices $u,v \in G$, denoted $\spd(u,v)$, is the minimum number of edges in a p
   vertices $u,v,w$, which is more than sufficient to show (4).
 \end{proof}
 
+\section{Resistance Distance}
+
+\begin{definition}[from ~\cite{weissteinRD}]
+  Let $G$ be a connected graph. Imagine that $G$ is an electrical network where every edge is a
+  1-ohm resistor. The resistance distance between $u,v \in G$, denoted $\rd(u,v)$, is the reciprocal
+  of the resistance between $u$ and $v$ as calculated by Kirchoff's laws, with the unit (ohms)
+  dropped.
+
+  Formally, we can define it as follows. Let $L$ be the graph laplacian of $G$ and define $\Gamma$
+  as
+
+  \[ \Gamma = L + \frac{\mathbf{1}}{n} \]
+
+  where $\mathbf{1}$ is the matrix consisting of all $1$s. Then,
+
+  \[ \rd(u,v) = (\Gamma)^{-1}_{ii} + (\Gamma)^{-1}_{jj} - 2(\Gamma)^{-1}_{ij}\]
+\end{definition}
+
+\begin{theorem}[Page 89, Theorem B of ~\cite{KleinRandic1993}]
+  $\rd$ is a metric (on the vertices of an arbitrary connected graph)
+\end{theorem}
+
+Resistance distance is another example of a metric on graphs, and it is dramatically different from
+shortest-path distance. One of its key characteristics is that as we add more paths connecting two
+vertices, the distance between them decreases ~\cite{KleinRandic1993}. Because resistance distance
+gives consideration to the entire graph (as opposed to just the shortest path), we expect it to be
+more stable to noise in the form of randomly added or deleted edges than shortest path.
+
 
 \section{Diffusion State Distance}
 
@@ -65,7 +93,6 @@ machinery of linear algebra. We begin by recalling some definitions.
   vertex preceding it.
 \end{definition}
 
-%% TODO: find cite Bollobas
 \begin{definition}[Page 302 of \cite{Bollobas1998} ]
   A (discrete-time) \textbf{markov chain} on a finite set of states $V$ is a sequence of random
   variables $X_0,X_1,....$ taking values $x_o,x_1,... \in V$ such that for a given $t$, the
@@ -128,6 +155,16 @@ Finally, we can define DSD.
 \end{theorem}
 
 We defer to Cao et. al for proof of this.
+
+As compared to shortest-path distance, we would expect DSD to be more resilient to random noise in
+the graph in the form of randomly added and deleted edges. This is because DSD considers the
+structure of the entire graph instead of just the shortest path. Resistance distance is also
+computed using the whole graph, so we would expect that to be similarly resilient. However, DSD
+appears to be measuring the similarity of two vertices' neighborhoods by comparing random walk
+convergence behavior, whereas resistance distance is measuring electrical current capacity between
+two vertices. In the context of most label prediction problems, where labels correspond to some sort
+of community, this suggests intuitively that DSD is a superior metric.
+
 
 \section{DSD on the Complete Graph}
 
