@@ -66,7 +66,7 @@ machinery of linear algebra. We begin by recalling some definitions.
 \end{definition}
 
 %% TODO: find cite Bollobas
-\begin{definition}[Page 302 of \cite{} ]
+\begin{definition}[Page 302 of \cite{Bollobas1998} ]
   A (discrete-time) \textbf{markov chain} on a finite set of states $V$ is a sequence of random
   variables $X_0,X_1,....$ taking values $x_o,x_1,... \in V$ such that for a given $t$, the
   probability of each outcome of $X_{t+1}$ depends only on $x_t$ (the outcome before it).
@@ -88,6 +88,7 @@ our purposes, we assume that vertices are labeled by the positive integers $1,2,
 rows and columns of $G$ correspond to this ordering.
 
 \begin{proposition}[Properties of $T$]
+  Let $G$ be a graph and $T$ the transition matrix for the corresponding random walk markov chain.
   The following is true:
   \begin{enumerate}
   \item $T$ is irreducible
@@ -100,17 +101,17 @@ rows and columns of $G$ correspond to this ordering.
   irreducible. From the definition $T = AD^{-1}$, we can see that $T$ has zeros in the same set of
   indices as $A$, and so must be irreducible by analogous argument.
 
-  (2) follows from (1) and application of the Perron-Frobenius Theorem (theorem
+  (2) follows from (1) and application of the Perron-Frobenius Theorem (Theorem
   \ref{thm:perron_frobenius}).
 \end{proof}
 
-Based on how we've defined that transition matrix, it can be thought of as an operator which takes a
+Based on how we've defined the transition matrix, it can be thought of as an operator which takes a
 marginal distribution of states in the markov chain, and outputs the marginal distribution after one
 step. So, the marginal distribution of vertices in the $k\nth$ step of a random walk originating
 from vertex $u$ is given by $T^ke_u$, where $e_u$ is the $u\nth$ standard basis vector in $\R^n$,
 $e_{u,u} := 1$ and $e_{u,j} := 0, u \neq j$ for $u=1,...,n$.
 
-Finally, we can define DSD as such
+Finally, we can define DSD.
 
 \begin{definition}
   Let $G$ be a graph, $u,v \in G$. The \textbf{diffusion state distance (DSD)}, denoted $\dsd(u,v)$,
@@ -122,10 +123,11 @@ Finally, we can define DSD as such
   standard basis vector in $\mathbb{R}^n$.
 \end{definition}
 
-\begin{theorem}
+\begin{theorem}[Page 7 of \cite{10.1371/journal.pone.0076339}]
   DSD is a metric.
 \end{theorem}
 
+We defer to Cao et. al for proof of this.
 
 \section{DSD on the Complete Graph}
 
@@ -137,7 +139,7 @@ matrix $T$ is given by $\frac{1}{n-1}(J-I)$. In order to compute $T^ke_u$ in the
 represent $e_u$ as a linear combination of eigenvectors of $A$.
 
 \begin{proposition}
-  $1_n$ is an eigenvector of $T$ with eigenvalue $\lambda = 1$, and every
+  The all-ones vector $1_n$ is an eigenvector of $T$ with eigenvalue $\lambda = 1$, and every
   vector $x \in \R^n$ such that $\sum_i x_i = 0$ is an eigenvector of $T$ with
   $\lambda = -\frac{1}{n-1}$.
 \end{proposition}

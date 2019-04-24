@@ -26,11 +26,9 @@ $c : V_G \to S$ is a set $V_{G_c}$ and a function
 $c_p: V_G \setminus V_{G_c} \to S$ such that $c_p$ is a partial labeling
 of $G$.
 
-The function $c$ of the labeled graph $G$ is called the
-\textbf{ground truth labeling} of the censoring of $G$.
-
-Note that the set $V_{G_c}$ is the set of unlabeled vertices of the
-partial labeling of $G$.
+The function $c$ of the labeled graph $G$ is called the \textbf{ground truth labeling} of the
+censoring of $G$. Note that the set $V_{G_c}$ is the set of unlabeled vertices of the partial
+labeling of $G$.
 \end{definition}
 
 Given a partially labeled graph $G$, a censoring $(V_{G_c}, c_{censor})$
@@ -39,11 +37,10 @@ of $G$, and a ground truth labeling $c_{gt}$ of $G$, a
 guess the labels of the unlabeled vertices $V_{G_c}$ with respect to the
 ground truth labels $c_{gt}(v), v \in V_{G_c}$.
 
-We must note that in order for a label prediction method on a graph to have
-any success, the ground truth labeling must reflect some underlying vertex
-structure. If the labels in a graph were assigned at random to each vertex, a 
-label prediction algorithm could not be expected to perform better than 
-randomly guessing the labels on vertices.
+In order for a label prediction method on a graph to have any success, the ground truth labeling
+must reflect some underlying graph structure. If the labels in a graph were assigned at random to
+each vertex, a label prediction algorithm could not be expected to perform better than randomly
+guessing the labels on vertices.
 
 We now discuss label prediction methods that we considered for our 
 simulations in Chapter 6.
@@ -51,7 +48,7 @@ simulations in Chapter 6.
 % Fix wording make more mathematical
 \subsection{Majority Voting Algorithm}
 Cao, Zhang, Park, Daniels, Crovella, Cowen, and Hescott~\cite{10.1371/journal.pone.0076339}
-mention a simple prediction method called the neighborhood majority voting
+describe a simple prediction method called the neighborhood majority voting
 algorithm. This algorithm considers each vertex with unknown label and has
 its neighbors vote on the label for the vertex. We considered two
 implementations of this algorithm, which differ in how they determine which neighbors vote. One 
@@ -61,7 +58,7 @@ under consideration, and may be changed as a parameter. In an unweighted scheme,
 within the ball of radius $\varepsilon$ votes equally for their own label. In 
 a weighted scheme, we must consider a metric on a graph to use (chapter 4).
 Using this metric, each neighbor gets a vote proportional to the reciprocal 
-of their distance to the vertex $v$ in
+of its distance to the vertex $v$ in
 consideration. The other implementation of this algorithm considers each vertex $v \in V$ and
 the $k$-nearest neighbors of $v$ with respect to the graph metric. Voting is done similarly in both an unweighted and weighted
 scheme.
@@ -188,7 +185,7 @@ that clearly showed separate clusters for the vertical and horizontal bars, whic
 
 This study is quite different from the previous two studies. However, it still raises some interesting questions in relation to our project.
 The Laplacian Eigenmaps algorithm focused on being able to detect graph structure, assuming that
-the given data lied in a lower dimensional manifold. In our project, we try 
+the given data lies in a lower dimensional manifold. In our project, we try 
 to detecting properties of graph structure that allows prediction methods
 using the DSD to perform well. We could also examine whether label prediction
 methods using the DSD would be able to detect these lower dimensional manifolds.

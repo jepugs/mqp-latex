@@ -38,13 +38,12 @@ theory.
 \end{figure}
 
 \begin{remark}[Notation]
-  Let $G$ be a graph.
+  Let $G = (V,E)$ be a graph.
 
   % reword access, ensure that these accessors are useful
   \begin{itemize}
-  \item Let $G = (V,E)$ be a graph. For convenience, we will use subscript
-    notation to refer to the edge and vertex sets of $G$, i.e. $V_G = V$ and
-    $E_G = E$.
+  \item For convenience, we will use subscript notation to refer to the edge and vertex sets of $G$,
+    i.e. $V_G = V$ and $E_G = E$.
   \item $v \in G$ is an equivalent statement to $v \in V_G$
   \item $|G|$, called the \textbf{order} of $G$, is equal to $|V_G|$.
   \end{itemize}
@@ -52,7 +51,7 @@ theory.
 
 When we speak about graphs, we are concerned with the structure of the graph
 rather than the specific symbols in its vertex set. Thus we use the following
-definition of equality.
+definition of equivalence.
 
 \begin{definition}[Equivalence of graphs]
   Two graphs $G$ and $H$ are equivalent if there exists a bijection $\phi : V_G \to V_H$
