@@ -1,6 +1,6 @@
 We wish to use random graphs to test vertex classifiers. An issue that arises is that the generative
 models presented so far do not suggest any natural labeling for the vertices of the resultant graphs.
-Thus, we propose some models for generating labeled small-world and scale-free networks.
+Thus, we propose some models for generating labeled small-world and scale-free networks with a natural community structure.
 
 \begin{definition}
   A \textbf{labeled graph} is a graph $G$ and a function $c : V_G \to S$, where $S$ is an arbitrary.
@@ -52,7 +52,9 @@ convenience, we define these quantities as follows:
   each pair $(u,v) \notin E_{G_0}$, we add the edge $(u,v)$ with probability
   $p$.
 
-  The resultant graph is an NCC graph. We can also observe a natural generalization to graphs with more than two complete components.
+  The resultant graph is an NCC graph. This definition generalizes easily 
+  to graphs with multiple components, and components with different sizes, 
+  but the defined graph will be sufficient for our purposes.
 \end{definition}
 
 We will now inspect the properties of such graphs in order to demonstrate that they are, in fact,
@@ -206,7 +208,7 @@ law degree distribution.
   each vertex in $G_0$ has been labeled by an element of $S$. Given a graph
   $G_t$, we build $G_{t+1}$ as follows.
 
-  As in the BA process (see definition \ref{def:ba}, page \pageref{def:ba}), we will add one new vertex and draw
+  As in the BA process (see Definition \ref{def:ba}, page \pageref{def:ba}), we will add one new vertex and draw
   edges using preferential attachment, however, we label our new vertex $l$, which is chosen from $S$
   with uniform probability. Then, we reweight the probability of drawing each edge in order to favor
   vertices with label $l$ by a factor of $\rho$.
@@ -236,12 +238,12 @@ law degree distribution.
 \end{definition}
 
 We do not prove that CWBA graphs are scale-free, but degree plots over arbitrary choices of
-parameters suggest that they are. See figure ~\ref{fig:cwba_degs}.
+parameters suggest that they are. See Figure ~\ref{fig:cwba_degs}.
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.7\textwidth]{CWBA_degree_dist.eps}
-  \caption{Degree distribution of CWBA graphs demonstrates clear scale-free behavior.}
+  \caption{Degree distribution of CWBA graphs demonstrates scale-free behavior.}
   \label{fig:cwba_degs}
 \end{figure}
 
