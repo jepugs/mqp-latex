@@ -152,13 +152,39 @@ we derive the following result.
 \begin{proposition}
 For two vertices $u,v$ in an NCC graph,
 \begin{enumerate}[(1)]
-\item If $u,v$ belong to the same class, $u,v$ are expected to have
-$(m-1)(1-q)-1$ common same-class neighbors, and $(m)p$ common different-class neighbors.
+\item If $u,v$ belong to the same class, they are expected to have 
+$$(m-2)(1-q)^2$$ 
+common same-class neighbors, and 
+$$(m)p^2$$
+common different-class neighbors.
 
-\item If $u,v$ belong to the opposite class, $u,v$ are expected to have
-$2*\max\{(m-1)(1-q), (m)p\}$ common neighbors.
+\item If $u,v$ belong to different classes, they are expected to have 
+$$(2m-2)(1-q)p$$
+common neighbors.
 \end{enumerate}
 \end{proposition}
+
+\begin{proof}
+(1) We can see that if $u,v$ belong to the same class, there are $(m-2)$ 
+possible same-class vertices that could be common neighbors between them. 
+Each of these vertices has a $(1-q)$ probability of being a same-class 
+neighbor of $u$ and a $(1-q)$ probability of being a same-class neighbor of 
+$v$ (chapter 3). Therefore, we get that the expected number of common same-
+class neighbors is $(m-2)(1-q)^2$.
+
+Also, there are $m$ possible different-class vertices that could be common
+neighbors between $u$ and $v$. Each of these vertices has a $p$ probability
+of being a different-class neighbor of $u$ and a $p$ probability of being a
+different-class neighbor of $v$. Therefore, we get that the expected number
+of common different-class neighbors is $(m)p^2$.\\
+
+\noindent
+(2) If $u,v$ belong to different classes, there are $(2m-2)$ possible 
+vertices that could be common neighbors of $u$ and $v$. Without loss of 
+generality, each vertex has a $(1-q)$ probability of being a neighbor of $u$
+and a $p$ probability of being a neighbor of $v$. Therefore, we get that the
+expected number of common neighbors is $(2m-2)(1-q)p$.
+\end{proof}
 
 Figure \ref{fig:NCC_n}(c) shows that with a fixed probability of deleting
 edges within components of NCC graphs, and a range of probabilities of
@@ -267,14 +293,14 @@ simulation results.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.8\textwidth]{NCCH_fixq.png}
+\includegraphics[width=0.7\textwidth]{NCCH_fixq.png}
 \caption{Plot showing prediction accuracies of the prediction method using the DSD, SPD, and RD metrics. In this simulation, the parameter $q$ was fixed to $0.5$.}
 \label{fig:NCCH_fixq}
 \end{figure}
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.8\textwidth]{NCCH_fixp.png}
+\includegraphics[width=0.7\textwidth]{NCCH_fixp.png}
 \caption{Plot showing prediction accuracies of the prediction method using the DSD, SPD, and RD metrics. In this simulation, the parameter $p$ was fixed to $0.5$.}
 \label{fig:NCCH_fixp}
 \end{figure}
