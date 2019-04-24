@@ -81,7 +81,7 @@ representations of data that we can use to test the effects of different metrics
 algorithms.
 
 \subsection{Protein-Protein Interaction (PPI) networks}
-Crovella, Cowen, and Hescott~\cite{10.1371/journal.pone.0076339} studied the prediction of protein
+Cao et al.~\cite{10.1371/journal.pone.0076339} studied the prediction of protein
 functional labels on the \emph{S. cerevisiae} protein-protein interaction (PPI) network. The
 authors constructed a graph using annotated physical interactions in this PPI network. Proteins
 corresponded to vertices, and an annotated physical interaction between two proteins corresponded to
@@ -110,6 +110,9 @@ of the PPI network causes the notion of a shortest paths neighborhood to lose si
 vertices in this network are close to every other vertex in the graph, so any neighborhood would
 contain a large portion of the vertices in the graph.
 
+We used a similar approach in our project, studying the DSD metric and
+incorporating it into a label prediction algorithm.
+
 \subsection{Graph model for recommender systems} Huang, Chung, and Chen~\cite{huang2004graph}
 introduce a generic graph model for e-commerce transaction data that can support various
 recommendation methods. The two-layer graph model proposed represents relationships between products
@@ -126,7 +129,7 @@ information such as purchase history, customer rating, and related browsing beha
 \label{fig:recommender_example}
 \end{figure}
 
-% more info Huang, Chung, and Chen~\cite{huang2004graph} considered three different recommendation
+Huang, Chung, and Chen considered three different recommendation
 methods to use on the model mentioned previously. The direct retrieval method looks at a customer's
 previous purchases and products purchased by similar customers to retrieve products to recommend to
 the customer. The association mining method uses the purchase history of a customer to generate
@@ -137,15 +140,15 @@ estimate and determine if the product should be recommended. Transactions from o
 online bookstores in Taiwan were used for data including 9695 books, 2000 customers, and 18,771
 transaction records.
 
-% Add more speculations, tie to rest of thesis The two-layer graph model introduced by Huang, Chung,
-and Chen~\cite{huang2004graph} can be interpreted as a graph labeling problem. As a simple example,
+The two-layer graph model introduced by Huang, Chung,
+and Chen can be interpreted as a graph labeling problem. As a simple example,
 we can take the vertices and edges from just the customer layer of the two-layer model. Since the
 customer layer included information about demographic data and web usage patterns, we could label
 customers with age or certain websites visited and try to predict the labels of prospective
 customers. We can perform a similar analysis with the product layer as well as with the whole model
 including the interlayer edges.
 
-% Change DSD to "a metric" Such a model can be very useful for advertisers who wish to come up with
+Such a model can be very useful for advertisers who wish to come up with a
 strategic advertising plan. Assuming that an advertisement would have more success if it were shown
 to people more likely to buy the product being advertised, we can use the graph model to predict
 which customers would buy the product. The product layer can be used to find all products similar to
@@ -154,6 +157,14 @@ bought similar products, and edges existed between customers who had bought the 
 prediction algorithm incorporating the DSD could be used to predict the customers who would buy the
 product if we knew a few customers that had already bought the product, or were very likely to buy
 the product.
+
+Overall, this study shows that subject-knowledge can be used to create real
+world graphs (customer layer, product layer, purchase history). We can extend
+this to see how subject-knowledge can be used to determine weights during
+the voting process for label prediction methods. Labels can also be 
+determined from subject-knowledge. However, these labels must have an
+underlying structure or intuition behind them in order for label prediction
+algorithms to work.
 
 
 \subsection{Laplacian Eigenmaps} Belkin and Niyogi~\cite{belkin2002laplacian} propose an algorithm
@@ -164,7 +175,7 @@ $\mathbb{R}^{n^{2}}$, but the inherent dimensionality of this data should be the
 of freedom of the camera. The presented algorithm constructs a representation of the data that
 reduces the dimensionality of the data.
 
-Belkin and Niyogi~\cite{belkin2002laplacian} construct a weighted graph from a given set of points
+Belkin and Niyogi construct a weighted graph from a given set of points
 in $\mathbb{R}^{n}$. Each point is represented by a vertex, and edges are drawn between neighboring
 points. Neighborhoods can be determined using $k$ nearest neighbors or $\varepsilon$-neighborhoods.
 Weights are determined using heat kernels, or simply adjacency. Finally, eigenmaps are used to
@@ -174,4 +185,11 @@ $1000$ binary $40 \times 40$ images of vertical and horizontal bars at arbitrary
 randomly chosen as data. The Laplacian Eigenmap algorithm and Principal Component Analysis (PCA) was
 applied to this data and compared. The Laplacian Eigenmap algorithm produced a data representation
 that clearly showed separate clusters for the vertical and horizontal bars, which PCA failed to do.
+
+This study is quite different from the previous two studies. However, it still raises some interesting questions in relation to our project.
+The Laplacian Eigenmaps algorithm focused on being able to detect graph structure, assuming that
+the given data lied in a lower dimensional manifold. In our project, we try 
+to detecting properties of graph structure that allows prediction methods
+using the DSD to perform well. We could also examine whether label prediction
+methods using the DSD would be able to detect these lower dimensional manifolds.
 
