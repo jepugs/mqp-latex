@@ -86,7 +86,7 @@ an edge. Cao et al. removed redundant edges and the largest connected component 
 resulting in a graph of 4990 vertices and 74,310 edges. They also noted that PPI networks are known
 to resemble small-world networks, as they have a small maximum shortest path, and a small
 characteristic path length. This implies that most vertices in the graph are close to every other
-vertex in the graph. Figure \ref{fig:PPI_example} shows an example of functional annotation using
+vertex in the graph. One reason for the closeness of vertices in PPI networks was due to hub vertices, which are vertices with very high degree, representing proteins that interact with many other proteins. Figure \ref{fig:PPI_example} shows an example of functional annotation using
 the DSD from Cao et al.
 
 \begin{figure}[h] \centering \includegraphics[width=0.75\textwidth]{dsd_ex.png}
@@ -150,10 +150,10 @@ strategic advertising plan. Assuming that an advertisement would have more succe
 to people more likely to buy the product being advertised, we can use the graph model to predict
 which customers would buy the product. The product layer can be used to find all products similar to
 the product being advertised. Then, we can construct a graph in which vertices are customers who had
-bought similar products, and edges existed between customers who had bought the same product. A
-prediction algorithm incorporating the DSD could be used to predict the customers who would buy the
+bought similar products, and edges existed between customers who had bought the same product.
+A prediction algorithm incorporating the DSD could be used to predict the customers who would buy the
 product if we knew a few customers that had already bought the product, or were very likely to buy
-the product.
+the product. The DSD proved useful in filtering out hub vertices in the PPI networks, and it may be useful for e-commerce networks as well. Customers with a large amount of purchases may be less informative about product preferences than customers with fewer purchases.
 
 Overall, this study shows that subject-knowledge can be used to create real
 world graphs (customer layer, product layer, purchase history). We can extend
@@ -183,10 +183,10 @@ randomly chosen as data. The Laplacian Eigenmap algorithm and Principal Componen
 applied to this data and compared. The Laplacian Eigenmap algorithm produced a data representation
 that clearly showed separate clusters for the vertical and horizontal bars, which PCA failed to do.
 
-This study is quite different from the previous two studies. However, it still raises some interesting questions in relation to our project.
+This study is quite different from the previous two studies. However, it still raises some interesting questions and challenges in relation to our project.
 The Laplacian Eigenmaps algorithm focused on being able to detect graph structure, assuming that
 the given data lies in a lower dimensional manifold. In our project, we try 
-to detecting properties of graph structure that allows prediction methods
-using the DSD to perform well. We could also examine whether label prediction
-methods using the DSD would be able to detect these lower dimensional manifolds.
+to detect properties of graph structure that allow prediction methods
+using the DSD to perform well. We could examine whether label prediction
+methods using the DSD would be able to detect information about these lower dimensional manifolds.
 
