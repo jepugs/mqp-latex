@@ -43,8 +43,8 @@ identified were ``Objective Bayes,'' ``Biostatistics,'' and ``High-Dimensional D
 
 After restricting to the largest connected component, the network has 4388 edges on 2263 vertices,
 and so is a relatively sparse graph. The average degree is 3.88, while the max is 65. The number of
-hubs is 98, which is $4.43\%$ of all vertices. This graph appear have a scale-free degree
-distribution, as can be seen from figure \ref{fig:real_world_degree_dist}, and so would be expected
+hubs is 98, which is $4.43\%$ of all vertices. This graph appears to have a scale-free degree
+distribution, as can be seen from Figure \ref{fig:real_world_degree_dist}, and so would be expected
 to have a relatively large number of high-degree hubs.
 
 \begin{figure}
@@ -91,18 +91,18 @@ be run on every single vertex of the graph. A disadvantage is that it requires u
 censorship proportions. In this case, $20\%$ of vertices would be censored in each run.
 
 $k=20$ was used as the parameter for the nearest neighbors algorithm. The results are summarized in
-the bar plot in figure \ref{fig:real_world_results}.
+the bar plot in Figure \ref{fig:real_world_results}.
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{real_world_results.eps}
-  \caption{Real-world data prediction accuracy results}
+  \caption{Real-world data prediction accuracy results.}
   \label{fig:real_world_results}
 \end{figure}
 
-The coauthor results are especially striking, as all three metrics, including resistance distance,
+The Coauthor results are especially striking, as all three metrics, including resistance distance,
 performed extremely well. This could probably be explained, at least partially, by the fact that the
-coauthor network is fairly sparse and that the number of labels is small. The lower censorship
+Coauthor network is fairly sparse and that the number of labels is small. The lower censorship
 proportion, $20\%$ as compared to the $70\%$ used in the simulated experiments, probably contributes
 to the high accuracies as well, but informal experiments using random censoring at high proportions
 yield very similar results.

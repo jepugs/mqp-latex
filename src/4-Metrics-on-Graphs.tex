@@ -25,7 +25,7 @@ label prediction problem, we use metrics to determine similiarity of two vertice
   \end{enumerate}
 \end{definition}
 
-The standard metric on graphs is the shortest-path distance (definition \ref{def:walk_path}), whose
+The standard metric on graphs is the shortest-path distance (Definition \ref{def:walk_path}), whose
 definition we reiterate here for convenience. The \textbf{shortest-path distance} between two
 vertices $u,v \in G$, denoted $\spd(u,v)$, is the minimum number of edges in a path from $u$ to $v$.
 
@@ -88,7 +88,7 @@ $k \to \infty$. We present an alternative definition which is easier to manipula
 machinery of linear algebra. We begin by recalling some definitions.
 
 \begin{definition}
-  A \textbf{random walk} of a graph is a walk (see definition \ref{def:walk_path}) originating at
+  A \textbf{random walk} of a graph is a walk (see Definition \ref{def:walk_path}) originating at
   some vertex in which each edge is picked uniformly randomly from all the edges adjoined to the
   vertex preceding it.
 \end{definition}
@@ -110,7 +110,7 @@ machinery of linear algebra. We begin by recalling some definitions.
 
 Random walks may be modeled as markov chains where the states are the vertices in the graph. The
 random walk transition matrix of a graph $G$ can be written $T = AD^{-1}$, where $A$ is the
-adjacency and $D$ is the degree matrix, (definitions \ref{def:adj_mat} and \ref{def:deg_mat}). For
+adjacency and $D$ is the degree matrix, (Definitions \ref{def:adj_mat} and \ref{def:deg_mat}). For
 our purposes, we assume that vertices are labeled by the positive integers $1,2,...,n$ and that the
 rows and columns of $G$ correspond to this ordering.
 
@@ -124,7 +124,7 @@ rows and columns of $G$ correspond to this ordering.
 \end{proposition}
 
 \begin{proof}
-  To show (1), we first recall from proposition \ref{prop:adj} that the adjacency matrix is
+  To show (1), we first recall from Proposition \ref{prop:adj} that the adjacency matrix is
   irreducible. From the definition $T = AD^{-1}$, we can see that $T$ has zeros in the same set of
   indices as $A$, and so must be irreducible by analogous argument.
 
