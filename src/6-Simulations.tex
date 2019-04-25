@@ -23,8 +23,8 @@ In this section, we construct NCC graphs (Chapter 3) and run label
 prediction methods on them.
 
 \subsection{Data Collection}
-Our NCC graphs have three input parameters, where $n$ is the number of
-vertices in one complete component ($2n$ total vertices), $p$ is the
+Our NCC graphs have three input parameters, where $m$ is the number of
+vertices in one complete component ($n = 2m$ total vertices), $p$ is the
 probability of adding an edge between components, and $q$ is the 
 probability of removing an edge within components.
 
@@ -33,7 +33,7 @@ probability of removing an edge within components.
 \begin{subfigure}[h]{0.4\linewidth}
 \begin{tabular}{|l|l|}
 \hline
-$n$ & $250$ \\ \hline
+$n ~(= 2m)$ & $500$ \\ \hline
 $p$ & Range from $0$ to $1$\\ \hline
 $q$ & $0.5$\\ \hline
 $censorP$ & $0.7$\\ \hline
@@ -45,7 +45,7 @@ $avgRuns$ & $10$\\ \hline
 \begin{subfigure}[h]{0.4\linewidth}
 \begin{tabular}{|l|l|}
 \hline
-$n$ & $250$ \\ \hline
+$n ~(= 2m)$ & $500$ \\ \hline
 $p$ & $0.5$\\ \hline
 $q$ & Range from $0$ to $1$\\ \hline
 $censorP$ & $0.7$\\ \hline
@@ -60,9 +60,9 @@ the right shows simulation parameters for a fixed $p$.}
 \end{table}
 
 Table \ref{table:NCC-params} shows the parameter values we used in our
-simulations. The value of parameter $n$ was set to $250$ because this was a
+simulations. The value of parameter $m$ was set to $250$ because this was a
 sufficiently large value to allow us to observe differences in prediction
-accuracy. Figure \ref{fig:NCC_n} shows that the parameter $n$ only
+accuracy. Figure \ref{fig:NCC_n} shows that the parameter $m$ only
 increases the precision of the prediction accuracies. The parameters $p$
 and $q$ were considered probabilities of adding noise to our models, so we
 ran simulations to test the effects of these parameters on prediction
@@ -74,31 +74,36 @@ of values for $q$, with a fixed $p=0.5$.
 \begin{figure}[H]
 \begin{subfigure}[h]{0.5\linewidth}
 \includegraphics[width=\linewidth]{NCC_fixq_n50.png}
-\caption{$n = 50$}
+\caption{$m = 50$}
 \end{subfigure}
 \hfill
 \begin{subfigure}[h]{0.5\linewidth}
 \includegraphics[width=\linewidth]{NCC_fixq_n150.png}
-\caption{$n = 150$}
+\caption{$m = 150$}
 \end{subfigure}
 \hfill
 \begin{subfigure}[h]{0.5\linewidth}
 \includegraphics[width=\linewidth]{NCC_fixq_n250.png}
-\caption{$n = 250$}
+\caption{$m = 250$}
 \end{subfigure}
 \hfill
 \begin{subfigure}[h]{0.5\linewidth}
 \includegraphics[width=\linewidth]{NCC_fixq_n550.png}
-\caption{$n = 550$}
+\caption{$m = 550$}
 \end{subfigure}%
-\caption{These plots show that varying the parameter $n$ in NCC graphs does not change results and a value of $n=250$ will be sufficiently large to observe differences in prediction accuracies. Figure (a) shows that a small value of $n$ may give slightly noisy prediction accuracies due to the smaller number of examples that the prediction accuracies are calculated from.}
+\caption{These plots show that varying the parameter $m$ in NCC graphs does not change results and a
+  value of $m=250$ will be sufficiently large to observe differences in prediction accuracies.
+  Figure (a) shows that a small value of $m$ may give slightly noisy prediction accuracies due to
+  the smaller number of examples that the prediction accuracies are calculated from.}
 \label{fig:NCC_n}
 \end{figure}
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.8\textwidth]{NCC_fixp.png}
-\caption{Plot showing prediction accuracies of the prediction method using the DSD, SPD, and RD metrics. In this simulation, the parameter $p$ was fixed to $0.5$, and $n$ was set to $250$. This plot suggests simulations are symmetric in $p$ and $q$.}
+\caption{Plot showing prediction accuracies of the prediction method using the DSD, SPD, and RD
+  metrics. In this simulation, the parameter $p$ was fixed to $0.5$, and $m$ was set to $250$. This
+  plot suggests simulations are symmetric in $p$ and $q$.}
 \label{fig:NCC_fixp}
 \end{figure}
 
@@ -250,7 +255,7 @@ randomly.
 \begin{subfigure}[h]{0.4\linewidth}
 \begin{tabular}{|l|l|}
 \hline
-$n$ & $250$ \\ \hline
+$n ~(= 2m + \textit{hubs})$ & $500$ \\ \hline
 $p$ & Range from $0$ to $1$\\ \hline
 $q$ & $0.5$\\ \hline
 \textit{hubs} & $100$\\ \hline
@@ -264,7 +269,7 @@ $avgRuns$ & $10$\\ \hline
 \begin{subfigure}[h]{0.4\linewidth}
 \begin{tabular}{|l|l|}
 \hline
-$n$ & $250$ \\ \hline
+$n ~(= 2m + \textit{hubs})$ & $500$ \\ \hline
 $p$ & $0.5$\\ \hline
 $q$ & Range from $0$ to $1$\\ \hline
 \textit{hubs} & $100$\\ \hline
@@ -323,7 +328,7 @@ of $p=0.2$ and $q=0.5$ was chosen. These parameters are shown in Table
 \centering
 \begin{tabular}{|l|l|}
 \hline
-$n$ & $250$ \\ \hline
+$n ~(= 2m + \textit{hubs})$ & $250$ \\ \hline
 $p$ & $0.2$\\ \hline
 $q$ & $0.5$\\ \hline
 \textit{hubs} & Range from $0$ to $400$\\ \hline
@@ -354,10 +359,10 @@ vertices in the NCCH graphs that can only be predicted at random.
 Specifically in the case of Figure \ref{fig:NCCH_fixq}, we see that the
 prediction accuracies start at $0.9$ rather than $1.0$. If we consider the
 number of hub vertices added, $hubs=100$, in relation the the number of
-vertices in the NCCH graph, $2n + hubs = 600$, then we can see that since
+vertices in the NCCH graph, $n = 2m + \textit{hubs} = 600$, then we can see that since
 hub vertices will be predicted at random, we should expect a prediction
 accuracy of around $\frac{550}{600} \approx 0.92$. A simulation run with
-the parameter $hubs=300$ was run, and shows this idea of compression in
+the parameter $\textit{hubs}=300$ was run, and shows this idea of compression in
 Figure \ref{fig:NCCH_fixq_r300}. The change in the rate of compression can
 be seen in Figure \ref{fig:NCCH_r400}.
 
@@ -451,20 +456,17 @@ For $\rho=0$, we can see that vertices with opposite label would only be
 considered for attachment, and the opposite would be true for extremely 
 high values of $\rho$.
 
-Figures \ref{fig:CWBA_fixrho} and \ref{fig:CWBA_rhoinv} show DSD aids in
-predicting more accurately than the other two metrics. Figure 
-\ref{fig:CWBA_rhoinv} fixes a value for the parameter $m = 300$ and shows
-prediction accuracies over the entire range of values for the $\rho$
-parameter. The figure illustrates that when the same-class preferential
-attachment factor $\rho$ is $1$, the resulting CWBA graph is random, since
-there is no notion of preferential attachment for $\rho=1$. However, for
-$\rho > 1$, drawing same-class edges are preferred and this results in a
-sharp increase in accuracy for the prediction method using DSD, while the
-method using SPD increases at a linear rate. We must note that the 
-parameter for minimum vertex degree, $m$, was fixed at $m=300$, so the
-resulting CWBA graph is fairly dense. Figure \ref{fig:CWBA_fixrho} shows 
-that increasing the parameter $m$ will not change prediction accuracies for
-$\rho > 1$, as all of the curves in the plot level out very quickly.
+Figures \ref{fig:CWBA_fixrho} and \ref{fig:CWBA_rhoinv} show DSD aids in predicting more accurately
+than the other two metrics. Figure \ref{fig:CWBA_rhoinv} fixes a value for the parameter $m = 300$
+and shows prediction accuracies over the entire range of values for the $\rho$ parameter. The figure
+illustrates that when the same-class preferential attachment factor $\rho$ is $1$, the resulting
+CWBA graph is random, since there is no notion of preferential attachment for $\rho=1$. However, for
+$\rho > 1$, drawing same-class edges is preferred which results in a sharp increase in accuracy for
+the prediction method using DSD, while the method using SPD increases at a linear rate. We must note
+that the parameter for minimum vertex degree, $m$, was fixed at $m=300$, so the resulting CWBA graph
+is fairly dense. Figure \ref{fig:CWBA_fixrho} shows that increasing the parameter $m$ will not
+change prediction accuracies for $\rho > 1$, as all of the curves in the plot level out very
+quickly.
 
 \section{Overall Findings}
 After analyzing the results of our simulations, we have found that the 
@@ -473,3 +475,7 @@ diffusion state distance (DSD) works well in general as long as neighborhoods
 can be distinguished. This can be seen from the NCC and NCCH graph 
 simulations. The resistance distance (RD), however, does not seem to work
 very well with our simulations, and seems to work best on very sparse graphs.
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../Main.tex"
+%%% End:
