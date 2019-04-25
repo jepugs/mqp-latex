@@ -84,9 +84,10 @@ will often only discuss graphs up to this equivalence relation (which only affec
 
 \begin{definition}
   The \textbf{neighborhood} of a vertex $u \in G$, denoted $N(u)$, is the set of all vertices $v$
-  such that $\{u,v\} \in E_G$, and these $v$ are called the neighbors of $u$. The \textbf{degree} of
-  $u$ is defined by $\deg(u) = |N(u)|$. A graph in which every vertex has the same degree is
-  \textbf{regular}. If that degree is equal to $k$, then the graph is said to be $k$-\textbf{regular}.
+  such that $\{u,v\} \in E_G$, and these $v$ are called the \textbf{neighbors} of $u$. The
+  \textbf{degree} of $u$ is defined by $\deg(u) = |N(u)|$. A graph in which every vertex has the
+  same degree is \textbf{regular}. If that degree is equal to $k$, then the graph is said to be
+  $k$-\textbf{regular}.
 \end{definition}
 
 \begin{example}
@@ -189,10 +190,9 @@ these additional properties of $A$.
   \end{enumerate}
 \end{theorem}
 
-Because $A$ is nonnegative and irreducible for all connected graphs, these
-properties hold for all such adjacency matrices. Indeed, the irreducibility and
-nonnegativity of $A$ yields many other interesting properties which we omit
-here.
+Because $A$ is nonnegative and irreducible for all connected graphs, these properties hold for all
+such adjacency matrices. Indeed, the irreducibility and nonnegativity of $A$ yield many other
+interesting properties which we omit here.
 
 \begin{definition}
   The \textbf{spectral gap} of a matrix $A$ is $\max_{i,j}|\lambda_i - \lambda_j|$, where
@@ -408,8 +408,8 @@ practical data sets.
 
   on the first step, and this is done a total of m times without replacement.
 
-  We call $(G_t)$ the $(G_o,m)$-\textbf{Barab\'asi-Albert (BA) process} and graphs
-  sampled from $G_n$ $(G_o,m,n)$-\textbf{Barab\'asi-Albert (BA) graphs}.
+  We call $(G_t)$ the $(G_0,m)$-\textbf{Barab\'asi-Albert (BA) process} and graphs
+  sampled from $G_n$ $(G_0,m,n)$-\textbf{Barab\'asi-Albert (BA) graphs}.
 \end{definition}
 
 This type of model, where edges to a new vertex are drawn with non-uniform
