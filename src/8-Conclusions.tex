@@ -1,7 +1,6 @@
-Our simulation models were constructed to attempt to bring out the parts of 
-structures of graphs that would make prediction methods using the diffusion state distance (DSD) metric work better than other metrics on graphs. In chapter 3, we came up with our NCC and NCCH models in order to see whether tightly clustered graphs and dense neighborhoods would affect prediction using the DSD. We then created our CWBA model in order to see the effects of scale-free properties on prediction using the DSD.
+Our project hopes to provide information about what makes prediction methods using the diffusion state distance(DSD) metric work better than methods using other metrics on graphs. Our simulation models were constructed to attempt to identify structures within graphs that caused the DSD to work better. In Chapter 3, we proposed our Noisy Complete Components (NCC) and Noisy Complete Components with Hubs (NCCH) models in order to see whether tightly clustered graphs and dense neighborhoods would affect prediction using the DSD. We then created our Class-Weighted Barab\'{a}si-Albert (CWBA) model in order to see the effects of scale-free properties on prediction using the DSD.
 
-Using our simulation models, we experimented with various parameters of our models in order to get data about changes in prediction accuracy with respect to changes in the graph structure (chapter 6). More models could be constructed in future work to draw out characteristics of graph structure that the DSD metric is most affected by. Also, more data, such as subject-knowledge for specific types of networks, could be added to the models to add to our metric-based clustering algorithm.
+Using our simulation models, we experimented with various parameters of our models in order to get data about changes in prediction accuracy with respect to changes in the graph structure (Chapter 6). We tested parameters that affected neighborhoods of vertices in our models as well as the number of hub vertices. More models could be constructed in future work to draw out characteristics of graph structure that the DSD metric is most affected by. Also, subject-knowledge for specific types of networks, mentioned in Chapter 5, could be added to the models to add to our metric-based clustering algorithm.
 
 Our simulation results show that the DSD is more effective at detecting some 
 properties of graph structure than the shortest path distance and the
@@ -14,22 +13,19 @@ cause the DSD metric to cause prediction accuracies to be significantly
 worse than the shortest path distance.
 
 Our analysis of real-world networks (coauthor, email-Eu-core) did not provide
-as much information as we wanted on how the DSD metric is useful on examples
+as much information as we expected on how the DSD metric is useful on examples
 of real networks. However, both still showed that the DSD metric performed
 best of the three metrics that we studied.
 
-There are many interesting questions that could still be answered regarding 
-this project. It would be interesting to investigate parameter sets for CWBA
-graphs for which SPD performs better than the DSD. We believe that such an 
-investigation would provide further insight into properties of scale-free
-networks which would indicate the most appropriate metric for classification
+There are many interesting questions remaining. For what parameters for CWBA graphs would the SPD perform better than the DSD? We believe that such 
+an investigation would provide further insight into properties of scale-free networks which would indicate the most appropriate metric for classification
 problems on scale-free networks. This analysis could also examine other 
 statistics on graphs such as betweenness centrality~\cite{newman2005measure} and eigencentrality based on dissimilarity measures~\cite{alvarez2015eigencentrality}
 to see whether they are correlated with DSD performance. The effectiveness of the DSD in detecting manifold-like structures of
-graphs is also an interesting question. Several simulation models could be
+graphs is also a challenge that could be explored. Several simulation models could be
 constructed to study this question. Also, the effect of the DSD metric in
 detecting the dispersion of rumors or the spread of information could also
-be studied. The way the DSD metric is defined by random walks seems to give
+be studied. This would relate to the virality of news, products, clothing, and other trends. The way the DSD metric is defined by random walks seems to give
 a hint for what kinds of real-world data that it should be experimented with.
 The DSD metric could be compared to heat dispersion and different kinds
 of dispersions in nature, such as the dispersion of particles or biological
