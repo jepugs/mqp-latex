@@ -3,8 +3,8 @@ models presented so far do not suggest any natural labeling for the vertices of 
 Thus, we propose some models for generating labeled small-world and scale-free networks with a natural community structure.
 
 \begin{definition}
-  A \textbf{labeled graph} is a graph $G$ and a function $c : V_G \to S$, where $S$ is an arbitrary.
-  For $u \in V_G$, we call $c(u)$ the \textbf{class} of $u$.
+  A \textbf{labeled graph} is a graph $G$ and a function $c : V_G \to S$, where $S$ is an arbitrary
+  finite set. For $u \in V_G$, we call $c(u)$ the \textbf{class} of $u$.
 \end{definition}
 
 In considering labeled graphs, it is useful to look at not only at each vertex's degree, but also the
@@ -12,9 +12,10 @@ number of neighbors with the same label vs the number of neighbors with a differ
 convenience, we define these quantities as follows:
 
 \begin{definition}
-  Let $G$ be a labeled graph, $u \in V_G$. The \textbf{same-class degree} of $u$, $\deg_{\textit{same}}(u)$, is
-  the number of vertices in the neighborhood of $u$ in the same class as $u$. Similarly, $\deg_{\textit{diff}}(u) =
-  \deg(u) - \deg_{\textit{same}}(u)$ is the number of vertices in a different class.
+  Let $G$ be a labeled graph, $u \in V_G$. The \textbf{same-class degree} of $u$,
+  $\deg_{\textit{same}}(u)$, is the number of neighbors of $u$ in the same class as $u$. Similarly,
+  $\deg_{\textit{diff}}(u) = \deg(u) - \deg_{\textit{same}}(u)$ is the number of neighbors in a
+  different class.
 \end{definition}
 
 
@@ -47,19 +48,19 @@ convenience, we define these quantities as follows:
   graphs as follows.
 
   Iterate over ever pair of vertices in the graph (i.e. the edge set of
-  $K_{2m}$). For every pair $(u,v) \in E_{G_0}$, that is, for the edges that
+  $K_{2m}$). For every pair $\{u,v\} \in E_{G_0}$, that is, for the edges that
   already exist in $G_0$, we delete the edge with probability $q$. Likewise, for
-  each pair $(u,v) \notin E_{G_0}$, we add the edge $(u,v)$ with probability
+  each pair $\{u,v\} \notin E_{G_0}$, we add the edge $\{u,v\}$ with probability
   $p$.
 
-  The resultant graph is an NCC graph. This definition generalizes easily 
-  to graphs with multiple components, and components with different sizes, 
-  but the defined graph will be sufficient for our purposes.
+  The resultant graph is an NCC graph. This definition generalizes easily to graphs with multiple
+  components and components with different sizes, but the defined case will be sufficient for our
+  purposes.
 \end{definition}
 
 We will now inspect the properties of such graphs in order to demonstrate that they are, in fact,
 small worlds graphs in the subset of the parameter space in which we're interested. Before doing so,
-we recall some basic distributions from statistics
+we recall some basic distributions from statistics.
 
 \begin{definition}
   A \textbf{Bernoulli distribution} with probability $p$ is a discrete probability distribution
@@ -96,19 +97,19 @@ we recall some basic distributions from statistics
   $Y \sim B(m,p)$. Moreover, $\deg_{\textit{same}}(u) = X$ and $\deg_{\textit{diff}}(u) = Y$.
 \end{theorem}
 \begin{proof}
-  First, observe that adding and deleting edges to an NCC graph is done independently for each edge.
-  In other words, the existence or nonexistence of any edge of $G$ is independent of every other edge.
-  In addition, the number of edges added between $u$ and all other different-class vertices is equal
-  to a sum of $m$ Bernoulli random variables of probability $p$, because there are $m$ possible edges
-  from $u$ to the opposite class. Thus $deg_{diff}(u)$ follows a binomial distribution on $m$ trials,
-  $deg_{diff}(u) = Y \sim B(m,p)$.
+  First, observe that adding and deleting edges while building an NCC graph is done independently
+  for each edge. In other words, the existence or nonexistence of any edge of $G$ is independent of
+  every other edge. In addition, the number of edges added between $u$ and all other different-class
+  vertices is equal to a sum of $m$ Bernoulli random variables of probability $p$, because there are
+  $m$ possible edges from $u$ to the opposite class. Thus $\deg_{\textit{diff}}(u)$ follows a
+  binomial distribution on $m$ trials, $\deg_{\textit{diff}}(u) = Y \sim B(m,p)$.
 
   In the case of same-class edges, we will consider the probability that an edge is \textit{preserved}
   rather than deleted. Edges are preserved with probability $(1-q)$, so as in the different-class
   case, we can see that the same-class degree of $u$ follows a binomial distribution on $(m-1)$
-  trials, $deg_{same} = X \sim B(m-1,1-q)$.
+  trials, $\deg_{\textit{same}} = X \sim B(m-1,1-q)$.
 
-  As we've counted both the same- and different-class degrees, it is clear that $deg(u) = X + Y$.
+  As we've counted both the same- and different-class degrees, it is clear that $\deg(u) = X + Y$.
 \end{proof}
 
 We must take care to note that this is not the same thing as the degree distribution over the whole
@@ -243,13 +244,13 @@ parameters suggest that they are. See Figure ~\ref{fig:cwba_degs}.
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.7\textwidth]{CWBA_degree_dist.eps}
-  \caption{Degree distribution of CWBA graphs demonstrates scale-free behavior.}
+  \caption{Degree distribution of CWBA graphs demonstrate scale-free behavior.}
   \label{fig:cwba_degs}
 \end{figure}
 
 Between the apparent power law degree distribution and the straightforward reweighting of the
-preferential attachment algorithm, we expect CWBA graphs to be a reasonably good indicator of how a
-metric-based classifier would perform on real-world data.
+preferential attachment algorithm, we expect label prediction experiments on CWBA graphs to be a
+reasonably good indicator of how an algorithm would perform on real-world data.
 
 %%% Local Variables:
 %%% mode: latex
