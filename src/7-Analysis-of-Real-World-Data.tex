@@ -85,8 +85,8 @@ In order to evaluate the efficacy of each classifier, the label prediction exper
 5-fold cross-validation on each predictor. Cross-validation is a common machine learning technique
 where the point set (in our case, the vertex set of the graph) is divided into $k$ equal-size
 \textbf{folds}. Each fold is censored one at a time, and a trial is run using a predictor built from
-the uncensored data. These trial results are then averaged in order to compute an overall
-measurement of similarity. The primary advantage of cross validation is that it forces prediction to
+the uncensored data. These trial accuracies are then averaged in order to compute an overall
+measurement of accuracy. The primary advantage of cross validation is that it forces prediction to
 be run on every single vertex of the graph. A disadvantage is that it requires use of small
 censorship proportions. In this case, $20\%$ of vertices would be censored in each run.
 
